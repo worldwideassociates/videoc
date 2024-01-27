@@ -61,9 +61,9 @@ export const SignInForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="sr-only">Password</FormLabel>
+                    <FormLabel className="sr-only">Email</FormLabel>
                     <FormControl>
-                      <Input type='email' disabled={loading} placeholder='name@exampl.com' {...field} />
+                      <Input type='email' disabled={loading} placeholder='name@example.com' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
