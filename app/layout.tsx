@@ -2,6 +2,7 @@ import "@/styles/globals.css"
 import { Inter as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/toaster";
 
 
 
@@ -26,7 +27,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        test
+        {children}
+        <Toaster />
       </body>
     </html>
   )
