@@ -11,6 +11,15 @@ datasource db {
 }
 
 model Account {
-  id   String @id @default(uuid())
-  name String
+  id        String @id @default(uuid())
+  user_id   String @default(uuid())
+  firstName String
+  lastName  String
+  role      Role
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  EMPLOYEE
 }

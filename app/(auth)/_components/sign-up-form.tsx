@@ -37,7 +37,7 @@ export const SignUpForm = () => {
   const confirmPassword = form.watch('confirmPassword')
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+
     try {
       setLoading(true)
 
