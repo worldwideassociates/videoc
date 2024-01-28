@@ -19,16 +19,34 @@ const writeLog = (log) => {
   });
 };
 
+// Function to handle errors and log them
+const logError = (error) => {
+  writeLog(`[${new Date().toISOString()}] Error: ${error.stack || error}`);
+};
+
 app.prepare().then(() => {
   createServer((req, res) => {
     const parsedUrl = parse(req.url, true);
     const { pathname, query } = parsedUrl;
 
-    writeLog(`[${new Date().toISOString()}] Request: ${req.url}`); // Log the request
-
-    handle(req, res, parsedUrl);
+    try {
+      // Handle requests
+      handle(req, res, parsedUrl);
+      writeLog(`[${new Date().toISOString()}] Request: ${req.url}`); // Log the request
+    } catch (error) {
+      // Log errors
+      logError(error);
+      res.statusCode = 500;
+      res.end('Internal Server Error');
+    }
   }).listen(3000, (err) => {
     if (err) throw err;
     console.log('> Ready on http://localhost:3000');
+    // Create or clear log file
+    fs.writeFile(logFilePath, '', (err) => {
+      if (err) {
+        console.error('Error clearing log file:', err);
+      }
+    });
   });
 });
