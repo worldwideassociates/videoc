@@ -11,11 +11,14 @@ datasource db {
 }
 
 model Account {
-  id        String @id @default(uuid())
-  user_id   String @default(uuid())
+  id        String   @id @default(uuid())
+  user_id   String   @default(uuid())
   firstName String
   lastName  String
+  email     String
   role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
