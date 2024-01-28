@@ -4,6 +4,7 @@ import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import prismadb from '@/lib/prismadb';
 
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -23,8 +24,8 @@ export const {
     }),
   ],
   adapter: PrismaAdapter(prismadb),
-  pages: {
-    signIn: '/auth',
-    signOut: '/auth',
-  },
+  // pages: {
+  //   signIn: '/auth',
+  //   signOut: '/auth',
+  // },
 });
