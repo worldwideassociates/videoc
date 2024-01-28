@@ -20,12 +20,12 @@ export const {
           pass: process.env.SMTP_PASSWORD,
         },
       },
-      from: process.env.SMTP_FROM,
-    }),
+    },
+    ),
   ],
   adapter: PrismaAdapter(prismadb),
-  // pages: {
-  //   signIn: '/auth',
-  //   signOut: '/auth',
-  // },
+  pages: {
+    signIn: '/sign-in',
+    signOut: '/sign-in',
+  },
 });

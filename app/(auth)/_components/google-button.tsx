@@ -8,7 +8,7 @@ export const GoogleButton = () => {
   const [loading, setLoading] = useState(false)
   const handleClick = () => {
     setLoading(true)
-    signIn('google')
+    signIn('google', { callbackUrl: '/dashboard' })
   }
 
   return (

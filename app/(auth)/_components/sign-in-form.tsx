@@ -10,11 +10,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useToast } from "@/components/ui/use-toast"
+import { signIn } from 'next-auth/react'
 
 
 const formSchema = z.object({
   email: z.string().min(1, 'Email is required.'),
-  password: z.string().min(1, 'Password is required.')
 })
 
 
@@ -27,18 +27,23 @@ export const SignInForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
     }
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
     try {
       setLoading(true)
-
-      const response: any = '' // use the fetch api
-
-      // window.location.assign(`/${response.data.id}`)
+      await signIn(
+        'email',
+        {
+          email: values.email,
+          callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`,
+          redirect: false
+        })
+      toast({
+        title: "You're almost in",
+        description: "a sign in link was sent to your mail box"
+      })
     } catch (error: any) {
       toast({
         title: "Oops",
@@ -69,22 +74,8 @@ export const SignInForm = () => {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only">Password</FormLabel>
-                    <FormControl>
-                      <Input placeholder='**************' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
-            <Button>Sign in</Button>
+            <Button disabled={loading}>{loading ? "..." : "Sign in with Email"}</Button>
           </div>
         </div>
       </form>

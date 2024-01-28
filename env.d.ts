@@ -7,5 +7,7 @@ declare namespace NodeJS {
     STREAM_API_TOKEN: string;
     STREAM_USER_ID: string;
     STREAM_CALL_ID: string;
+    NEXT_PUBLIC_BASE_URL: string;
+    BASE_URL: string;
   }
 }
