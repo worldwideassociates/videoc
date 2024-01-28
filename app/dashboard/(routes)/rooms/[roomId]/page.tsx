@@ -9,9 +9,6 @@ const callId = "3nkF5OkIsj5X" //process.env.STREAM_CALL_ID; // the call id can b
 
 
 
-console.log('-------------------------', apiKey, token, userId, callId);
-
-
 // set up the user object
 const user: User = {
   id: userId,
@@ -23,7 +20,7 @@ const client = new StreamVideoClient({ apiKey, user, token });
 const call = client.call('default', callId);
 call.join({ create: true });
 
-export default function App() {
+export default function RoomDetailPage() {
   return (
     <StreamVideo client={client}>
       <StreamCall call={call}>
@@ -33,7 +30,7 @@ export default function App() {
   );
 }
 
-export const MyUILayout = () => {
+const MyUILayout = () => {
   const call = useCall();
 
   const { useCallCallingState, useParticipantCount } = useCallStateHooks();

@@ -7,21 +7,16 @@ import { Role } from "@prisma/client";
 import { EmployeeClient } from "./components/employees-client";
 
 const EmployeesPage = async ({ params }: { params: { storeId: string } }) => {
-  const employees = await prismadb.account.findMany({
+  const employees = await prismadb.user.findMany({
     where: {
       role: Role.EMPLOYEE,
-    },
-    orderBy: {
-      createdAt: "desc",
     },
   });
 
   const formattedEmployees: EmployeeColumn[] = employees.map((item) => ({
     id: item.id,
-    firstName: item.firstName,
-    lastName: item.lastName,
+    name: item.name,
     email: item.email,
-    createdAt: format(item.createdAt, "MMM do yyyy"),
   }));
 
   return (

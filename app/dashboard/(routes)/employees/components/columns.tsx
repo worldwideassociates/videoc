@@ -13,10 +13,8 @@ const StatusColors: Record<string, string> = {
 
 export type EmployeeColumn = {
   id: string;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-  email: string
+  name: string | null; //TODO: enforce these types
+  email: string | null
 };
 
 export const columns: ColumnDef<EmployeeColumn>[] = [
