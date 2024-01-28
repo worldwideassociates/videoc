@@ -1,15 +1,16 @@
 import { Navbar } from "@/components/navbar"
 import prismadb from "@/lib/prismadb"
 import { redirect } from 'next/navigation'
+import { auth } from '../api/auth/[...nextauth]/auth';
 
 
 
-export default async function DashboardLayout({ children, params }: {
+export default async function DashboardLayout({ children }: {
   children: React.ReactNode,
-  params: { storeId: string }
 }) {
+  const session = await auth();
 
-  //  TODO: protect this route
+  if (!session) return redirect('/');
 
   return (
     <>
