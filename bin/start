@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rm -rf tmp
-(PATH=/opt/plesk/node/18/bin/:$PATH; yarn install && sed -i ‘s/const defaultCommand = “dev”;/const defaultCommand = “start”;/g’ node_modules/.bin/next && yarn build &> npm-install.log)
-mkdir tmp
-touch tmp/restart.txt
