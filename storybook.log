@@ -1,0 +1,126 @@
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Progress: resolved 36, reused 34, downloaded 0, added 0
+Progress: resolved 42, reused 34, downloaded 3, added 0
+Progress: resolved 366, reused 352, downloaded 7, added 0
+Progress: resolved 496, reused 478, downloaded 12, added 0
+Progress: resolved 511, reused 480, downloaded 23, added 0
+Progress: resolved 515, reused 480, downloaded 26, added 0
+Progress: resolved 530, reused 482, downloaded 39, added 0
+Progress: resolved 536, reused 482, downloaded 47, added 0
+Progress: resolved 537, reused 482, downloaded 49, added 0
+Progress: resolved 542, reused 482, downloaded 52, added 0
+Progress: resolved 547, reused 482, downloaded 55, added 0
+Progress: resolved 559, reused 482, downloaded 63, added 0
+Progress: resolved 573, reused 483, downloaded 70, added 0
+Progress: resolved 594, reused 494, downloaded 81, added 0
+Progress: resolved 609, reused 495, downloaded 96, added 0
+Progress: resolved 641, reused 507, downloaded 115, added 0
+Progress: resolved 666, reused 508, downloaded 137, added 0
+Progress: resolved 675, reused 511, downloaded 145, added 0
+Progress: resolved 695, reused 512, downloaded 162, added 0
+Progress: resolved 723, reused 514, downloaded 183, added 0
+Progress: resolved 742, reused 514, downloaded 200, added 0
+Progress: resolved 773, reused 518, downloaded 228, added 0
+Progress: resolved 794, reused 520, downloaded 246, added 0
+Progress: resolved 811, reused 521, downloaded 257, added 0
+Progress: resolved 829, reused 521, downloaded 274, added 0
+Progress: resolved 859, reused 535, downloaded 294, added 0
+Progress: resolved 874, reused 536, downloaded 304, added 0
+Progress: resolved 922, reused 542, downloaded 343, added 0
+Progress: resolved 964, reused 554, downloaded 376, added 0
+Progress: resolved 1002, reused 557, downloaded 388, added 0
+Progress: resolved 1019, reused 557, downloaded 392, added 0
+Progress: resolved 1049, reused 559, downloaded 417, added 0
+Progress: resolved 1076, reused 562, downloaded 440, added 0
+Progress: resolved 1100, reused 569, downloaded 458, added 0
+Progress: resolved 1110, reused 569, downloaded 463, added 0
+Progress: resolved 1130, reused 573, downloaded 482, added 0
+Progress: resolved 1168, reused 579, downloaded 511, added 0
+Progress: resolved 1210, reused 586, downloaded 538, added 0
+Progress: resolved 1231, reused 587, downloaded 561, added 0
+Progress: resolved 1263, reused 588, downloaded 591, added 0
+Progress: resolved 1277, reused 590, downloaded 605, added 0
+Progress: resolved 1311, reused 599, downloaded 624, added 0
+Progress: resolved 1339, reused 602, downloaded 650, added 0
+Progress: resolved 1384, reused 610, downloaded 682, added 0
+Progress: resolved 1408, reused 611, downloaded 725, added 0
+Packages: +878 -2
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+Progress: resolved 1409, reused 611, downloaded 757, added 872
+Progress: resolved 1409, reused 611, downloaded 758, added 875
+Progress: resolved 1409, reused 611, downloaded 759, added 875
+Progress: resolved 1409, reused 611, downloaded 759, added 876
+Progress: resolved 1409, reused 611, downloaded 760, added 876
+Progress: resolved 1409, reused 611, downloaded 761, added 878, done
+.../node_modules/core-js-pure postinstall$ node -e "try{require('./postinstall')}catch(e){}"
+.../sharp@0.32.6/node_modules/sharp install$ (node install/libvips && node install/dll-copy && prebuild-install) || (node install/can-compile && node-gyp rebuild && node install/dll-copy)
+.../node_modules/core-js-pure postinstall: Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+.../node_modules/core-js-pure postinstall: The project needs your help! Please consider supporting core-js:
+.../node_modules/core-js-pure postinstall: > https://opencollective.com/core-js 
+.../node_modules/core-js-pure postinstall: > https://patreon.com/zloirock 
+.../node_modules/core-js-pure postinstall: > https://boosty.to/zloirock 
+.../node_modules/core-js-pure postinstall: > bitcoin: bc1qlea7544qtsmj2rayg0lthvza9fau63ux0fstcz 
+.../node_modules/core-js-pure postinstall: I highly recommend reading this: https://github.com/zloirock/core-js/blob/master/docs/2023-02-14-so-whats-next.md 
+.../node_modules/core-js-pure postinstall: Done
+.../sharp@0.32.6/node_modules/sharp install: sharp: Downloading https://github.com/lovell/sharp-libvips/releases/download/v8.14.5/libvips-8.14.5-linux-x64.tar.br
+.../sharp@0.32.6/node_modules/sharp install: sharp: Integrity check passed for linux-x64
+.../sharp@0.32.6/node_modules/sharp install: prebuild-install warn install Request timed out
+.../sharp@0.32.6/node_modules/sharp install: gyp info it worked if it ends with ok
+.../sharp@0.32.6/node_modules/sharp install: gyp info using node-gyp@10.0.1
+.../sharp@0.32.6/node_modules/sharp install: gyp info using node@20.11.0 | linux | x64
+.../sharp@0.32.6/node_modules/sharp install: gyp info find Python using Python version 3.7.2 found at "/home/dellan/.pyenv/versions/3.7.2/bin/python3"
+.../sharp@0.32.6/node_modules/sharp install: gyp http GET https://nodejs.org/download/release/v20.11.0/node-v20.11.0-headers.tar.gz
+.../sharp@0.32.6/node_modules/sharp install: gyp http 200 https://nodejs.org/download/release/v20.11.0/node-v20.11.0-headers.tar.gz
+.../sharp@0.32.6/node_modules/sharp install: gyp http GET https://nodejs.org/download/release/v20.11.0/SHASUMS256.txt
+.../sharp@0.32.6/node_modules/sharp install: gyp http 200 https://nodejs.org/download/release/v20.11.0/SHASUMS256.txt
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn /home/dellan/.pyenv/versions/3.7.2/bin/python3
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args [
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '/home/dellan/.nvm/versions/node/v20.11.0/lib/node_modules/npm/node_modules/node-gyp/gyp/gyp_main.py',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args 'binding.gyp',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-f',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args 'make',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-I',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '/home/dellan/work/next-template/node_modules/.pnpm/sharp@0.32.6/node_modules/sharp/build/config.gypi',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-I',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '/home/dellan/.nvm/versions/node/v20.11.0/lib/node_modules/npm/node_modules/node-gyp/addon.gypi',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-I',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '/home/dellan/.cache/node-gyp/20.11.0/include/node/common.gypi',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Dlibrary=shared_library',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Dvisibility=default',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Dnode_root_dir=/home/dellan/.cache/node-gyp/20.11.0',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Dnode_gyp_dir=/home/dellan/.nvm/versions/node/v20.11.0/lib/node_modules/npm/node_modules/node-gyp',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Dnode_lib_file=/home/dellan/.cache/node-gyp/20.11.0/<(target_arch)/node.lib',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Dmodule_root_dir=/home/dellan/work/next-template/node_modules/.pnpm/sharp@0.32.6/node_modules/sharp',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Dnode_engine=v8',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '--depth=.',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '--no-parallel',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '--generator-output',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args 'build',
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args '-Goutput_dir=.'
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args ]
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn make
+.../sharp@0.32.6/node_modules/sharp install: gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
+.../sharp@0.32.6/node_modules/sharp install: make: Entering directory '/home/dellan/work/next-template/node_modules/.pnpm/sharp@0.32.6/node_modules/sharp/build'
+.../sharp@0.32.6/node_modules/sharp install:   CC(target) Release/obj.target/nothing/../../../node-addon-api@6.1.0/node_modules/node-addon-api/nothing.o
+.../sharp@0.32.6/node_modules/sharp install: rm -f Release/obj.target/../../../node-addon-api@6.1.0/node_modules/node-addon-api/nothing.a Release/obj.target/../../../node-addon-api@6.1.0/node_modules/node-addon-api/nothing.a.ar-file-list; mkdir -p `dirname Release/obj.target/../../../node-addon-api@6.1.0/node_modules/node-addon-api/nothing.a`
+.../sharp@0.32.6/node_modules/sharp install: ar crs Release/obj.target/../../../node-addon-api@6.1.0/node_modules/node-addon-api/nothing.a @Release/obj.target/../../../node-addon-api@6.1.0/node_modules/node-addon-api/nothing.a.ar-file-list
+.../sharp@0.32.6/node_modules/sharp install:   COPY Release/nothing.a
+.../sharp@0.32.6/node_modules/sharp install:   TOUCH Release/obj.target/libvips-cpp.stamp
+.../sharp@0.32.6/node_modules/sharp install:   CXX(target) Release/obj.target/sharp-linux-x64/src/common.o
+.../sharp@0.32.6/node_modules/sharp install: ../src/common.cc:13:10: fatal error: vips/vips8: No such file or directory
+.../sharp@0.32.6/node_modules/sharp install:    13 | #include <vips/vips8>
+.../sharp@0.32.6/node_modules/sharp install:       |          ^~~~~~~~~~~~
+.../sharp@0.32.6/node_modules/sharp install: compilation terminated.
+.../sharp@0.32.6/node_modules/sharp install: make: *** [sharp-linux-x64.target.mk:138: Release/obj.target/sharp-linux-x64/src/common.o] Error 1
+.../sharp@0.32.6/node_modules/sharp install: make: Leaving directory '/home/dellan/work/next-template/node_modules/.pnpm/sharp@0.32.6/node_modules/sharp/build'
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! build error 
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! stack Error: `make` failed with exit code: 2
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! stack at ChildProcess.<anonymous> (/home/dellan/.nvm/versions/node/v20.11.0/lib/node_modules/npm/node_modules/node-gyp/lib/build.js:209:23)
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! System Linux 5.15.0-92-generic
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! command "/home/dellan/.nvm/versions/node/v20.11.0/bin/node" "/home/dellan/.nvm/versions/node/v20.11.0/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js" "rebuild"
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! cwd /home/dellan/work/next-template/node_modules/.pnpm/sharp@0.32.6/node_modules/sharp
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! node -v v20.11.0
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! node-gyp -v v10.0.1
+.../sharp@0.32.6/node_modules/sharp install: gyp ERR! not ok 
+.../sharp@0.32.6/node_modules/sharp install: Failed
+ ELIFECYCLE  Command failed with exit code 1.
