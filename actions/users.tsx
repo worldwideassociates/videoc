@@ -1,6 +1,24 @@
 'use server'
 
+import prismadb from "@/lib/prismadb";
+import { Role, User } from "@prisma/client";
 
-export const updateUser = async (values: any) => {
 
+
+export const updateUser = async (email: string, values: User) => {
+  try {
+    await prismadb.user.update({
+      where: { email: email },
+      data: {
+        name: values.name,
+        phone: values.phone,
+        dateOfBirth: values.dateOfBirth,
+        role: Role.EMPLOYEE
+      },
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
 }

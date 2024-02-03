@@ -3,9 +3,8 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
-import { format } from "date-fns";
-import { CalendarIcon, UserIcon } from "lucide-react";
+import { useTransition } from "react";
+import { UserIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"
 
 import { Modal } from "@/components/ui/modal";
@@ -21,41 +20,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAccountDetailsModal } from "@/hooks/use-account-details-modal";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import Link from "next/link";
-import { DatePicker } from "@/components/ui/datepicker";
+
+
+import { DateField, DatePicker } from "@/components/ui/datepicker";
 import { updateUser } from "@/actions/users";
+import { useSession } from "next-auth/react";
+import { User } from "@prisma/client";
 
 const currentYear = new Date().getFullYear();
-const fromMonth = new Date(currentYear, 0);
-const toMonth = new Date(currentYear + 10, 11);
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  phone: z.string().min(10),
-  dateOfBirth: z.date({
-    required_error: "A date of birth is required.",
-  }),
+  name: z.string().min(3, "Full name is required (minuimum of 3 characters)."),
+  phone: z.string().min(10, "Invalid phone number."),
+  dateOfBirth: z.object({
+    year: z.number().min(1900, "Invalid year").max(currentYear, "Invalid year"),
+    month: z.number().min(1, "Invalid month").max(12, "Invalid month"),
+    day: z.number().min(1, "Invalid day").max(31, "Invalid day"),
+  }, { required_error: 'Invalid date of birth' })
 });
 
 export const AccountDetailsModal = () => {
   const userDetailsModal = useAccountDetailsModal();
-  const [step, setStep] = useState(0);
+  const { data: session } = useSession()
+  const { toast } = useToast()
 
   const [isPending, startTransition] = useTransition();
 
@@ -69,19 +56,23 @@ export const AccountDetailsModal = () => {
   });
 
   const onSubmit = form.handleSubmit((values: z.infer<typeof formSchema>) => {
-    const { toast } = useToast()
 
     startTransition(async () => {
-      try {
-        await updateUser(values);
+      const email = session?.user?.email!
 
-        window.location.reload();
-      } catch (error: any) {
-        toast({
-          title: "Oops",
-          description: error.message,
-        });
+      const payload = {
+        ...values,
+        dateOfBirth: new Date(values.dateOfBirth.year, values.dateOfBirth.month - 1, values.dateOfBirth.day)
       }
+
+      const result = await updateUser(email, payload as User);
+
+      if (result.success) return window.location.reload();
+
+      toast({
+        title: "Oops",
+        description: result.message,
+      });
     });
   });
 
@@ -137,37 +128,13 @@ export const AccountDetailsModal = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Date of birth</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    {/* TODO: Fix this type issue */}
+                    <DatePicker
+                      date={field.value}
+                      onChange={field.onChange}
+                      label="Pick a date">
+                      <DateField {...field} date={field.value} onChange={field.onChange} />
+                    </DatePicker>
                     <FormDescription>
                       Your date of birth is used to calculate your age.
                     </FormDescription>
@@ -177,8 +144,8 @@ export const AccountDetailsModal = () => {
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
 
-                <Button disabled={isPending} type="submit">
-                  Finish
+                <Button disabled={isPending} type="submit" className="min-w-[100px]">
+                  {isPending ? "..." : "Finish"}
                 </Button>
               </div>
             </form>

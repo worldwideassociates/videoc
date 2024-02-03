@@ -14,7 +14,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children?: React.ReactNode;
-  Icon?: React.ReactNode;
+  Icon?: React.ComponentType<{ size: number, className: string }> | React.ElementType
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -35,9 +35,9 @@ export const Modal: React.FC<ModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-2xl">
-            {i}
-            {title}</DialogTitle>
+          <DialogTitle className="text-2xl flex">
+            {Icon && <Icon className="mr-2" size={24} />}
+            <span>{title}</span></DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <div>{children}</div>

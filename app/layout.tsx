@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster";
 import { ModalProvider } from "@/providers/modal-provider";
+import { SessionProvider } from "next-auth/react";
 
 
 
@@ -28,9 +29,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        {children}
-        <Toaster />
-        <ModalProvider />
+        <SessionProvider>
+          {children}
+          <Toaster />
+          <ModalProvider />
+        </SessionProvider>
       </body>
     </html>
   )

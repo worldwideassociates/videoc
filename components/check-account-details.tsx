@@ -13,7 +13,6 @@ export const CheckAccountDetails: React.FC<Props> = ({ user }) => {
   const onOpen = useAccountDetailsModal((state) => state.onOpen);
 
   useEffect(() => {
-    debugger;
     if (!isOpen && !user.role) {
       onOpen();
     }
