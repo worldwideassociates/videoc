@@ -1,0 +1,1 @@
+export { default as Heading } from './heading' // Path: components/heading/heading.tsx

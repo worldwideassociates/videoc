@@ -36,9 +36,9 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -46,6 +46,8 @@ model User {
   role          Role?
   phone         String?
   dateOfBirth   DateTime?
+  department    Department? @relation("DepartmentMembers", fields: [departmentId], references: [id])
+  departmentId  Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -64,4 +66,36 @@ enum Role {
   ADMIN
   EMPLOYEE
   SUPER_ADMIN
+}
+
+model Company {
+  id                Int      @id @default(autoincrement())
+  singleton         String   @unique @default("singleton")
+  name              String?
+  vatNumber         String?
+  localTaxOffice    String?
+  companyProfession String?
+  address           String?
+  city              String?
+  postalCode        String?
+  region            String?
+  country           String?
+  webkitURL         String?
+  accountingEmail   String?
+  generalEmail      String?
+  phone             String?
+  alternativePhone  String?
+  companyLogo       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Department {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  members     User[]   @relation("DepartmentMembers") // One-to-many relation
+  moderatorId Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
