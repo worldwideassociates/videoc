@@ -12,7 +12,7 @@ export default async function AuthLayout({ children }: RootLayoutProps) {
 
   // const session = await auth();
 
-  // if (session) return redirect('/dashboard');
+  // if (session) return redirect('/');
 
   return <div className="">{children}</div>;
 }

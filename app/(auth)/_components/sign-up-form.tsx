@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useToast } from "@/components/ui/use-toast"
 import { signIn } from 'next-auth/react'
+import { SubmitButton } from './submit-button'
 
 
 const formSchema = z.object({
@@ -74,7 +74,7 @@ export const SignUpForm = () => {
               )}
             />
           </div>
-          <Button disabled={loading} >{loading ? '...' : 'Sign up'}</Button>
+          <SubmitButton loading={loading} label='Sign up' />
         </div>
       </form>
     </Form>

@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster";
+import { ModalProvider } from "@/providers/modal-provider";
 
 
 
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         {children}
         <Toaster />
+        <ModalProvider />
       </body>
     </html>
   )

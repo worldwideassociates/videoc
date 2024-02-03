@@ -1,8 +1,11 @@
-import NextAuth from 'next-auth';
+import NextAuth, { Session } from 'next-auth';
 import Google from 'next-auth/providers/google';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import prismadb from '@/lib/prismadb';
+import { User as NextAuthUser, Account as NextAuthAccount, Profile as NextAuthProfile } from 'next-auth';
+import { User as PrismaUser } from '@prisma/client';
+
 
 
 export const {
@@ -23,6 +26,27 @@ export const {
     },
     ),
   ],
+ callbacks: {
+  async signIn(params: { user: NextAuthUser | PrismaUser}) {
+    const { user } = params;
+    const superAdminExists = await prismadb.user.findFirst({
+      where: {
+        role: 'SUPER_ADMIN',
+      },
+    });
+
+    if (!superAdminExists) {
+      (user as PrismaUser).role = 'SUPER_ADMIN';
+    }
+
+    return true;
+  },
+  async session ({session, user }: any){  //TODO: types here drove me crazy
+    session.user.role = user.role
+    return session
+  }
+  // Other callbacks
+},
   adapter: PrismaAdapter(prismadb),
   pages: {
     signIn: '/sign-in',
