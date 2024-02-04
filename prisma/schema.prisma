@@ -46,7 +46,7 @@ model User {
   role          Role?
   phone         String?
   dateOfBirth   DateTime?
-  department    Department? @relation("DepartmentMembers", fields: [departmentId], references: [id])
+  department    Department? @relation("DepartmentMembers", fields: [departmentId], references: [id], onDelete: SetNull)
   departmentId  Int?
 
   createdAt DateTime @default(now())
@@ -98,7 +98,7 @@ model Department {
   email       String?
   phone       String?
   members     User[]   @relation("DepartmentMembers") // One-to-many relation
-  managerId   String
+  managerId   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

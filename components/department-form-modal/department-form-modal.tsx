@@ -6,7 +6,7 @@ import { BuildingIcon } from "lucide-react";
 import { DepartmentForm } from "../department-form";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
-import { getEmployees } from "@/actions/users";
+import { getUsersWithoutDepartment } from "@/actions/users";
 
 
 
@@ -16,16 +16,16 @@ interface Props {
 
 const DepartmentFormModal: React.FC<Props> = (props) => {
   const departmentFormModal = useDepartmentFormModal();
-  const [employees, setEmployees] = useState<User[]>([])
+  const [users, setUsers] = useState<User[]>([])
 
-  const fetchEmployees = async () => {
-    const result = await getEmployees();
-    setEmployees(result);
+  const fetchUsers = async () => {
+    const result = await getUsersWithoutDepartment()
+    setUsers(result);
   }
 
   useEffect(() => {
-    fetchEmployees()
-  }, [employees])
+    fetchUsers()
+  }, [users])
 
 
   return (
@@ -37,7 +37,7 @@ const DepartmentFormModal: React.FC<Props> = (props) => {
         onClose={departmentFormModal.onClose}
         Icon={BuildingIcon}
       >
-        <DepartmentForm usersOptions={employees} />
+        <DepartmentForm usersOptions={users} />
       </Modal >
     </>
   )

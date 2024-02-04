@@ -13,6 +13,7 @@ import { Company } from "@prisma/client";
 import { update } from "@/actions/company";
 import { toast } from "@/components/ui/use-toast";
 import { Heading } from "@/components/heading";
+import { Separator } from "@/components/ui/separator";
 
 
 
@@ -100,6 +101,7 @@ const CompanyProfileForm: React.FC<Props> = ({ company, ...props }) => {
       <form onSubmit={onSubmit} >
         <CardContent>
           <Heading title="Profile" description="information about the company" />
+          <Separator className="mb-4" />
 
           <fieldset disabled={!isEditMode} className="flex flex-col space-y-4"  >
             <FormField
@@ -353,7 +355,7 @@ const CompanyProfileForm: React.FC<Props> = ({ company, ...props }) => {
           }
         </CardFooter>
       </form>
-    </Form>
+    </Form >
   );
 }
 

@@ -31,3 +31,22 @@ export const getEmployees = async () => {
     }
   });
 }
+
+export const getAllUsers = async () => {
+  return await prismadb.user.findMany({
+    where: {
+      NOT: {
+        role: Role.SUPER_ADMIN
+      }
+    }
+  });
+}
+
+
+export const getUsersWithoutDepartment = async () => {
+  return await prismadb.user.findMany({
+    where: {
+      department: null
+    }
+  });
+}

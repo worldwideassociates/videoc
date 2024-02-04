@@ -13,7 +13,7 @@ export const Default = Template.bind({});
 Default.args = {
   user: {
     id: 'sfdfsd',
-    firstName: 'Dellan',
+    name: 'Dellan',
     lastName: 'Much',
     role: 'Moderator',
   },

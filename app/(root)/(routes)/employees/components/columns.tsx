@@ -19,7 +19,7 @@ export type EmployeeColumn = {
 
 export const columns: ColumnDef<EmployeeColumn>[] = [
   {
-    accessorKey: "firstName",
+    accessorKey: "name",
     header: "First name",
     // cell: ({ row }) => (
     //   <Link href={`/employees/${row.original.id}`} className="hover:underline">

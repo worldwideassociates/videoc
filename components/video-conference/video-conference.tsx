@@ -17,9 +17,9 @@ import {
 
 type User = {
   id: string
-  firstName: string
+  name: string
   lastName: string
-  profileImageUrl?: string
+  image?: string
   role: string
 }
 
@@ -49,8 +49,8 @@ export default function VideoConference({ user, callId }: Props) {
   // const [client] = useState<StreamVideoClient>(() => {
   //   const streamUser: StreamUser = {
   //     id: user.id,
-  //     name: `${user.firstName} ${user.lastName}`,
-  //     image: user.profileImageUrl,
+  //     name: `${user.name} ${user.lastName}`,
+  //     image: user.image,
   //   }
   //   return new StreamVideoClient({
   //     apiKey,

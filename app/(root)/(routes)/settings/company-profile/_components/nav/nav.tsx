@@ -14,6 +14,14 @@ const routes = [
   {
     label: 'Departments',
     href: '/settings/departments',
+  },
+  {
+    label: 'Employees',
+    href: '/settings/employees',
+  },
+  {
+    label: 'License',
+    href: '/settings/license',
   }
 ]
 

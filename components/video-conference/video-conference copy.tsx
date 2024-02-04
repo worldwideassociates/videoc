@@ -17,9 +17,9 @@ import {
 
 type User = {
   id: string
-  firstName: string
+  name: string
   lastName: string
-  profileImageUrl?: string
+  image?: string
   role: string
 }
 
@@ -76,8 +76,8 @@ export default function VideoConference({ user, callId }: Props) {
   // TODO: optimize this, maybe useMemo
   const streamUser: StreamUser = {
     id: user.id,
-    name: user.firstName + ' ' + user.lastName,
-    image: user.profileImageUrl
+    name: user.name + ' ' + user.lastName,
+    image: user.image
   }
 
   useEffect(() => {

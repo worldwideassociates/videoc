@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useState } from 'react';
 import { useDepartmentFormModal } from '@/hooks/use-department-form-modal';
+import { UserSelect } from '../user-select';
 
 
 interface Props {
@@ -24,7 +25,11 @@ const formSchema = z.object({
   description: z.string().max(255, "Description is too long").optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
-  managerId: z.string(),
+  manager: z.object({
+    label: z.string(),
+    value: z.string(),
+    image: z.string(),
+  }),
   members: z.array(z.object({
     label: z.string(),
     value: z.string(),
@@ -42,8 +47,8 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
     defaultValues: {
       name: '',
       description: '',
-      managerId: '',
       members: [],
+      manager: undefined,
     },
   });
 
@@ -51,8 +56,12 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
     setLoading(true);
     const payload = {
       ...values,
-      members: values.members.map((member: any) => ({ id: member.value }))
+      members: values.members.map((member: any) => ({ id: member.value })),
+      managerId: values.manager.value
     } as any
+
+    // Hack
+    delete payload.manager
 
     const result = await create(payload);
 
@@ -133,24 +142,15 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
 
           <FormField
             control={form.control}
-            name="managerId"
+            name="manager"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Manager</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="text-gray-500"  >
-                      <SelectValue placeholder="Choose a department manager" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {usersOptions.map((user: User) => (
-                      <SelectItem key={user.id} value={user.id}>
-                        {user.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <UserSelect
+                  selected={field.value || []}
+                  onSelect={field.onChange}
+                  users={usersOptions}
+                />
                 <FormDescription className="font-light text-xs text-muted-foreground">
                   Select a manager to manage this department
                 </FormDescription>

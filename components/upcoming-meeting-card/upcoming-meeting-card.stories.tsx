@@ -18,38 +18,38 @@ Default.args = {
     startDate: '30-01-2024 12:00',
     moderator: {
       id: '1',
-      firstName: 'Dellan',
+      name: 'Dellan',
       lastName: 'Much',
       role: 'Moderator',
     },
     participants: [
       {
         id: '1',
-        firstName: 'Dellan',
+        name: 'Dellan',
         lastName: 'Much',
         role: 'Moderator',
-        profileImageUrl: 'https://github.com/shadcn.png'
+        image: 'https://github.com/shadcn.png'
       },
       {
         id: '2',
-        firstName: 'Giannis',
+        name: 'Giannis',
         lastName: 'Kozyris',
         role: 'Administrator',
       },
       {
         id: '3',
-        firstName: 'Giannis',
+        name: 'Giannis',
         lastName: 'Kozyris',
         role: 'Administrator',
-        profileImageUrl: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
+        image: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
       },
       {
 
         id: '4',
-        firstName: 'Giannis',
+        name: 'Giannis',
         lastName: 'Kozyris',
         role: 'Administrator',
-        profileImageUrl: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
+        image: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
       }
     ],
   },

@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
-  image?: string;
+  image?: string
   isOnline?: boolean;
   initials: string;
 }

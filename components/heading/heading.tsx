@@ -2,17 +2,26 @@ import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface HeadingProps {
   title: string;
-  description: string;
+  description?: string;
   CallToAction?: React.ComponentType;
+  Icon?: React.ComponentType | React.ElementType;
 }
 
-const Heading: React.FC<HeadingProps> = ({ title, description, CallToAction }) => {
+const Heading: React.FC<HeadingProps> = ({ title, description, CallToAction, Icon }) => {
   return (
-    <CardHeader className="px-0">
-      <div className="flex items-between align-center border-b border-gray-300 pb-5">
-        <div className="flex-1">
-          <CardTitle className="font-medium">{title}</CardTitle>
-          <CardDescription className="text-sm text-muted-foreground ">{description}</CardDescription>
+    <CardHeader className="p-0">
+      <div className="flex items-between align-center border-gray-300 pb-5">
+        <div className="flex flex-1">
+          {
+            Icon && <Icon className="mr-2" size={24} />
+          }
+          <div className="flex-1">
+            <CardTitle className="font-medium">{title}</CardTitle>
+            {
+              description && <CardDescription>{description}</CardDescription>
+            }
+          </div>
+
         </div>
         {
           CallToAction && <CallToAction />
