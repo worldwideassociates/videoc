@@ -14,11 +14,11 @@ Default.args = {
   usersOptions: [
     {
       id: '1',
-      name: 'User 1',
+      name: 'John Doe',
     } as User,
     {
       id: '2',
-      name: 'User 2',
+      name: 'Jane Doe',
     } as User,
     {
       id: '3',

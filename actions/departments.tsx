@@ -17,8 +17,11 @@ export const create = async (values: Department) => {
       }
     })
 
-    return { success: true };
+    return { success: true, message: "Department created successfully." };
   } catch (error: any) {
-    return { success: false, message: error.message };
+    if (error.code === 'P2002') {
+      return { success: false, message: 'Department with that name already exists.' };
+    }
+    return { success: false, message: 'Something went wrong.' };
   }
 }

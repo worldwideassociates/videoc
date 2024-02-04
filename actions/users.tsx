@@ -22,3 +22,12 @@ export const updateUser = async (email: string, values: User) => {
     return { success: false, message: error.message };
   }
 }
+
+
+export const getEmployees = async () => {
+  return await prismadb.user.findMany({
+    where: {
+      role: Role.EMPLOYEE
+    }
+  });
+}

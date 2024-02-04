@@ -3,30 +3,26 @@
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
 import { Department } from '@prisma/client';
+import { useDepartmentFormModal } from "@/hooks/use-department-form-modal";
 
 interface Props {
   data: Department[];
 }
 
-export const BillboardClient: React.FC<Props> = ({ data }) => {
-  const params = useParams();
-  const router = useRouter();
+export const DepartmentClient: React.FC<Props> = ({ data }) => {
+  const onOpen = useDepartmentFormModal((state) => state.onOpen);
+
   return (
     <>
-      <div className="flex items-center justify-between">
-        <Heading
-          title={`Billboards (${data.length})`}
-          description="Manage billboards for your store"
-        />
-        <Button
-          onClick={() => router.push(`/${params.storeId}/billboards/new`)}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add New
-        </Button>
-      </div>
+      <Heading
+        title={`Departments (${data.length})`}
+        description="Manage departments of the company"
+        CallToAction={() =>
+          <Button onClick={onOpen} className="rounded-full">
+            <Plus size={24} />
+          </Button>}
+      />
     </>
   );
 };

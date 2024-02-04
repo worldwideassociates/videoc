@@ -10,18 +10,20 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
+import { User } from "@prisma/client";
+import { CustomAvatar } from "../custom-avatar";
 
-type Option = Record<"value" | "label", string>;
+type Option = Record<"value" | "label" | "image", string | null>;
 
 
 interface Props {
-  options: Option[]
+  users: User[]
   selected: Option[]
   onSelect(options: Option[]): void
   placeholder?: string
 }
 
-export function MultiSelect({ selected, onSelect, options, ...props }: Props) {
+export default function MultiSelect({ selected, onSelect, users, ...props }: Props) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
@@ -48,7 +50,8 @@ export function MultiSelect({ selected, onSelect, options, ...props }: Props) {
     }
   }, []);
 
-  const selectables = options.filter(option => !selected.includes(option));
+  const selectables = users.map(user => ({ label: user.name, value: user.id, image: user.image }))
+    .filter(option => !selected.includes(option));
 
   return (
     <Command onKeyDown={handleKeyDown} className="overflow-visible bg-transparent">
@@ -58,8 +61,15 @@ export function MultiSelect({ selected, onSelect, options, ...props }: Props) {
         <div className="flex gap-1 flex-wrap">
           {selected.map((option) => {
             return (
-              <Badge key={option.value} variant="secondary">
-                {option.label}
+              <Badge key={option.value} variant='outline' className='min-w-[100px]'>
+                <div className="flex space-x-2 py-1 items-center">
+                  <CustomAvatar
+                    image={option.image || undefined}
+                    initials={option.label?.split(' ').map((n: string) => n[0]).join('') || ''}
+                    className="w-8 h-8"
+                  />
+                  <span className="text-gray-500">{option.label}</span>
+                </div>
                 <button
                   className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   onKeyDown={(e) => {

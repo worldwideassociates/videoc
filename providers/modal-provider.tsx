@@ -1,5 +1,6 @@
 "use client";
 
+import { DepartmentFormModal } from "@/components/department-form-modal";
 import { AccountDetailsModal } from "@/components/modals/account-details-modal";
 import { useState, useEffect } from "react";
 
@@ -17,6 +18,7 @@ export const ModalProvider = () => {
   return (
     <>
       <AccountDetailsModal />
+      <DepartmentFormModal />
     </>
   );
 };

@@ -13,6 +13,8 @@ export default async function CompanyProfilePage() {
     update: {},
   });
   return (
+    <div className="lg:max-w-2xl">
     <CompanyProfileForm company={company} />
+    </div>
   )
 }

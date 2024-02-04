@@ -1,72 +1,83 @@
-
+'use client'
 
 import { create } from '@/actions/departments';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { MultiSelect } from '@/components/ui/multi-select';
+import { UserMultiSelect as MultiSelect } from '@/components/user-multi-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
-import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { useState } from 'react';
+import { useDepartmentFormModal } from '@/hooks/use-department-form-modal';
 
 
 interface Props {
   usersOptions: User[];
 }
 
-
 const formSchema = z.object({
   name: z.string().min(3, "Name is required (minuimum of 3 characters)."),
   description: z.string().max(255, "Description is too long").optional(),
-  moderatorId: z.string(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  managerId: z.string(),
   members: z.array(z.object({
     label: z.string(),
     value: z.string(),
+    image: z.string(),
   })),
-
 })
-
 
 const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
   const { toast } = useToast()
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false)
+  const onClose = useDepartmentFormModal((state) => state.onClose);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       description: '',
-      moderatorId: '',
+      managerId: '',
       members: [],
     },
   });
 
+  const onSubmit = form.handleSubmit(async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    const payload = {
+      ...values,
+      members: values.members.map((member: any) => ({ id: member.value }))
+    } as any
 
+    const result = await create(payload);
 
-  const onSubmit = form.handleSubmit((values: z.infer<typeof formSchema>) => {
-    startTransition(async () => {
-      const payload = {
-        ...values,
-        members: values.members.map((member: any) => ({ id: member.value }))
-      } as any
+    if (result.success) {
+      form.reset();
+      toast({
+        title: "Success",
+        description: result.message,
+      })
 
-      const result = await create(payload);
-
+      onClose();
+      location.reload();
+    } else {
       toast({
         title: "Oops",
         description: result.message,
-      });
-    });
+      })
+    }
+    setLoading(false);
   });
 
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="">
-        <fieldset disabled={isPending} className='flex flex-col space-y-4'>
+        <fieldset disabled={loading} className='flex flex-col space-y-4'>
           <FormField
             control={form.control}
             name="name"
@@ -75,7 +86,7 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={isPending}
+                    disabled={loading}
                     placeholder="Department name"
                     {...field}
                   />
@@ -85,17 +96,51 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Department email</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Department email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Department phone</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Department phone"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
-            name="moderatorId"
+            name="managerId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Moderator</FormLabel>
+                <FormLabel>Manager</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="text-gray-500"  >
-                      <SelectValue placeholder="Choose a moderator" />
+                      <SelectValue placeholder="Choose a department manager" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -107,7 +152,7 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
                   </SelectContent>
                 </Select>
                 <FormDescription className="font-light text-xs text-muted-foreground">
-                  Select a moderator to manage this department
+                  Select a manager to manage this department
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -119,26 +164,20 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions }) => {
             name="members"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Moderator</FormLabel>
+                <FormLabel>Members</FormLabel>
                 <MultiSelect
                   selected={field.value || []}
                   onSelect={field.onChange}
-                  options={usersOptions?.map((user: User) => ({
-                    label: user.name as string,
-                    value: user.id,
-                  }))}
-                  placeholder="Choose members"
+                  users={usersOptions}
+                  placeholder="select members"
                 />
-                <FormDescription className="font-light text-xs text-muted-foreground">
-                  Select a moderator to manage this department
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </fieldset>
         <div className="mt-4">
-          <Button disabled={isPending}>
+          <Button disabled={loading}>
             {/* TODO: only show button to admin users */}
             Save
           </Button>
