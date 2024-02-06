@@ -36,18 +36,37 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?     @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  role          Role?
-  phone         String?
-  dateOfBirth   DateTime?
-  department    Department? @relation("DepartmentMembers", fields: [departmentId], references: [id], onDelete: SetNull)
-  departmentId  Int?
+
+  // Common fields
+  address      String?
+  city         String?
+  postalCode   String?
+  region       String?
+  country      String?
+  role         Role?
+  phone        String?
+  dateOfBirth  DateTime?
+  department   Department? @relation("DepartmentMembers", fields: [departmentId], references: [id], onDelete: SetNull)
+  departmentId String?
+  position     String?
+
+  // Customer fields
+  localTaxOffice String?
+  profession     String?
+  vatNumber      String?
+  websiteUrl     String?
+  logo           String?
+
+  // Employee fields
+
+  // Collaborator fields
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -66,10 +85,11 @@ enum Role {
   ADMIN
   EMPLOYEE
   SUPER_ADMIN
+  COLLABORATOR
 }
 
 model Company {
-  id                Int      @id @default(autoincrement())
+  id                String   @id @default(cuid())
   singleton         String   @unique @default("singleton")
   name              String?
   vatNumber         String?
@@ -80,7 +100,7 @@ model Company {
   postalCode        String?
   region            String?
   country           String?
-  webkitURL         String?
+  websiteUrl        String?
   accountingEmail   String?
   generalEmail      String?
   phone             String?
@@ -91,7 +111,7 @@ model Company {
 }
 
 model Department {
-  id   Int    @id @default(autoincrement())
+  id   String @id @default(cuid())
   name String @unique
 
   description String?
@@ -101,4 +121,13 @@ model Department {
   managerId   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model TaxOffice {
+  id      String @id @default(cuid())
+  name    String
+  address String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

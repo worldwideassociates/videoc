@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { createCalendar, getLocalTimeZone } from "@internationalized/date"
+import { CalendarDate, createCalendar, getLocalTimeZone } from "@internationalized/date"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 import {
@@ -37,6 +37,17 @@ interface DatePickerProps<T extends DateValue = DateValue>
 export function DatePicker({ children, ...props }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
   const [date, setDate] = React.useState<Date>()
+
+  const formatDate = (date: any) => {
+    if (!date) return null
+    return new CalendarDate(date.year, date.month, date.day)
+  }
+
+  props = {
+    ...props,
+    value: formatDate(props.value),
+  }
+
   const state = useDatePickerState({
     shouldCloseOnSelect: true,
     ...props,
@@ -99,6 +110,8 @@ interface DateFieldProps<T extends DateValue = DateValue>
   locale?: string
 }
 export function DateField(props: DateFieldProps) {
+  console.log('DateField', props);
+
   const { locale } = useLocale()
   const state = useDateFieldState({
     ...props,

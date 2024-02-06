@@ -12,16 +12,27 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
   const routes = [
     {
-      href: `/dashboard/employees`,
-      label: "Employees",
-      active: pathname === `/dashboard/employees`,
+      href: `/customers`,
+      label: "Customers",
+      active: pathname === `/customers`,
     },
     {
-      href: `/dashboard/customers`,
-      label: "Customers",
-      active: pathname === `/dashboard/customers`,
+      href: '/collaborators',
+      label: 'Collaborators',
+      active: pathname === `/collaborators`,
+    }, {
+      href: '/history',
+      label: 'History',
+      active: pathname === `/history`,
+
+    },
+    {
+      href: '/company/profile',
+      label: 'Company',
+      active: pathname === `/company/profile`,
+
     }
-  ];
+  ]
 
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>

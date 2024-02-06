@@ -1,0 +1,1 @@
+export { default as ProfileForm } from './profile-form' // Path: app/%28root%29/%28routes%29/company/_components/company-profile-form/company-profile-form.tsx

@@ -26,14 +26,13 @@ export const Modal: React.FC<ModalProps> = ({
   Icon
 }) => {
   const onChange = (open: boolean) => {
-    if (!open) {
-      onClose();
+    if (!open) {      onClose();
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onChange}>
-      <DialogContent>
+    <Dialog open={isOpen} onOpenChange={onChange}  >
+      <DialogContent >
         <DialogHeader>
           <DialogTitle className="text-2xl flex">
             {Icon && <Icon className="mr-2" size={24} />}
