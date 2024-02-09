@@ -3,28 +3,20 @@ import { ArrowRight, VideoIcon } from "lucide-react";
 import { UserCard } from "@/components/user-card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Invite, Meeting, User } from "@prisma/client";
 
 
-type MeetingType = {
-  id: string,
-  name: string,
-  description: string,
-  participants: any[] //TODO: change to user type
-  startDate: string,
-  moderator: any //TODO: change to user type
-
-}
-
-interface ActiveMeetingCardProps {
-  meeting: MeetingType
+interface Props {
+  meeting: Meeting & { invites: (Invite & { user: User })[] }
 }
 
 
 
-export default function ActiveMeetingCard({ meeting }: ActiveMeetingCardProps) {
+
+export default function ActiveMeetingCard({ meeting }: Props) {
 
   const onlineAttendees: any[] = [] //TODO: get online attendees
-  const isModerator = (participant: any) => participant.id === meeting.moderator.id //TODO: make sure this check is correct
+  const isModerator = (participant: any) => participant.id === meeting.hostId //TODO: make sure this check is correct
   const isOnline = (participant: any) => onlineAttendees.includes(participant.id) //TODO: make sure this check is correct
 
   return (
@@ -32,8 +24,8 @@ export default function ActiveMeetingCard({ meeting }: ActiveMeetingCardProps) {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <CardTitle>{meeting.name}</CardTitle>
-            <CardDescription className="mt-1">Started: {meeting.startDate}</CardDescription>
+            <CardTitle>{meeting.title}</CardTitle>
+            <CardDescription className="mt-1">Started: {meeting.startDateTime.toISOString()}</CardDescription>
           </div>
           <div className="flex space-x-2 items-center">
             <VideoIcon size={32} className="text-green-500" />
@@ -44,13 +36,13 @@ export default function ActiveMeetingCard({ meeting }: ActiveMeetingCardProps) {
       <Separator className="mb-4" />
       <div className="px-5">
         <div className="flex flex-col space-y-2">
-          {meeting.participants.map((participant, idx) => (
+          {meeting.invites.map((invite, idx) => (
             <UserCard
-              user={participant}
+              user={invite.user}
               key={`participants-${idx}`}
-              isModerator={isModerator(participant)}
-              isOnline={isOnline(participant)} />
-          ))}
+              isModerator={isModerator(invite)}
+              isOnline={isOnline(invite)} />
+          )).slice(0, 4)}
         </div>
       </div>
       <CardFooter className="flex justify-end pb-2 pr-2">

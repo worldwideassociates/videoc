@@ -1,7 +1,33 @@
 import { PrismaClient, Role } from "@prisma/client";
+import { StreamClient } from "@stream-io/node-sdk";
 import casual from "casual";
 
 const prisma = new PrismaClient();
+
+const apiKey = process.env.STREAM_API_KEY
+const secret = process.env.STREAM_API_SECRET
+
+
+const streamClient = new StreamClient(apiKey, secret);
+
+
+const createStreamUser = async (user) => {
+
+  const streamUser = {
+    id: user.id,
+    role: 'user', //TODO: figure out roles
+    // role: user.role!,
+    name: user.name,
+    image: user.image,
+  }
+
+  await streamClient.upsertUsers({
+    users: {
+      [streamUser.id]: streamUser
+    }
+  })
+}
+
 
 async function main() {
   const users = [];
@@ -20,6 +46,7 @@ async function main() {
         dateOfBirth: new Date(),
       },
     });
+    await createStreamUser(user);
     if (i < 5) users.push({ id: user.id });
   }
 

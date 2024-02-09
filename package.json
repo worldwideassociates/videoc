@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -- -p 3005",
+    "start": "next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "seed": "ts-node prisma/seed.mjs"
+    "seed": "ts-node prisma/seed.mjs",
+    "seed:dev": "ts-node prisma/dev-seed.mjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.1.0",

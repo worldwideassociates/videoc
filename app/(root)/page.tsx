@@ -1,12 +1,50 @@
+import { ActiveMeetingCard } from "@/components/active-meeting-card";
 import { StatsCard } from "@/components/stats-card";
 import { Button } from "@/components/ui/button";
 import { CardHeader } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { UpcomingMeetingCard } from "@/components/upcoming-meeting-card";
+import prismadb from "@/lib/prismadb";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+
+  const meetings = await prismadb.meeting.findMany({
+    where: {
+      startDateTime: {
+        gte: new Date()
+      }
+    },
+    orderBy: {
+      startDateTime: 'asc'
+    },
+    include: {
+      invites: {
+        include: {
+          user: true
+        }
+      }
+    }
+  })
+
+  const upcomingMeetings = meetings.filter((meeting) => {
+    const startDateTime = new Date(meeting.startDateTime)
+    const now = new Date()
+    const diff = startDateTime.getTime() - now.getTime()
+    return diff < 1000 * 60 * 60 * 24
+  })
+
+  const scheduledMeetings = meetings.filter((meeting) => {
+    const startDateTime = new Date(meeting.startDateTime)
+    const now = new Date()
+    const diff = startDateTime.getTime() - now.getTime()
+    return diff > 1000 * 60 * 60 * 24
+  }).slice(0, 10)
+
+
   return (
-    <div className="flex flex-col space-y-">
+    <div className="flex flex-col space-y-2">
       <div className="">
         <CardHeader className="px-0">
           <div className="flex space-x-2">
@@ -19,7 +57,10 @@ export default function DashboardPage() {
           </div>
         </CardHeader>
         <div className="flex space-x-2">
-          <StatsCard title="Total Minutes" description="1,234 min" footerText="+20% since yesterday" />
+          <StatsCard title="Total Meetings" description="1,234" footerText="+20% since yesterday" />
+          <StatsCard title="Total Colaborators" description="1,234" footerText="+20% since yesterday" />
+          <StatsCard title="Total Participants" description="135" footerText="+20% since yesterday" />
+          <StatsCard title="Total Customers" description="1430" footerText="+20% since yesterday" />
         </div>
       </div>
       <div className="">
@@ -38,8 +79,16 @@ export default function DashboardPage() {
             </Button> */}
           </div>
         </CardHeader>
-        <div className="flex space-x-2">
-        </div>
+        <ScrollArea className="w-full whitespace-nowrap">
+          <div className="flex w-max space-x-4 px-0 py-4">
+            {
+              upcomingMeetings.map((meeting) => (
+                <ActiveMeetingCard key={meeting.id} meeting={meeting} />
+              ))
+            }
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
       <div className="">
         <CardHeader className="px-0">
@@ -57,7 +106,12 @@ export default function DashboardPage() {
             </Button>
           </div>
         </CardHeader>
-        <div className="flex space-x-2">
+        <div className="flex flex-col  space-y-2">
+          {
+            scheduledMeetings.map((meeting) => (
+              <UpcomingMeetingCard key={meeting.id} meeting={meeting} />
+            ))
+          }
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ export default async function DashboardLayout({ children }: {
     <>
       <CheckAccountDetails user={user} />
       <Navbar />
-      <div className="container">
+      <div className="container mb-5">
         {children}
       </div>
     </>

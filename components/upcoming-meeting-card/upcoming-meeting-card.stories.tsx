@@ -22,7 +22,7 @@ Default.args = {
       lastName: 'Much',
       role: 'Moderator',
     },
-    participants: [
+    invites: [
       {
         id: '1',
         name: 'Dellan',
