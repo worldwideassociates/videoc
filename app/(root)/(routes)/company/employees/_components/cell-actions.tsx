@@ -14,6 +14,7 @@ import { EmployeeColumn } from "./columns";
 import Link from "next/link";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@prisma/client";
 
 interface CellActionsProps {
   data: EmployeeColumn;
@@ -26,10 +27,9 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
 
 
   const onDelete = () => {
-    setCurrentUser(data);
+    setCurrentUser(data as any); //TODO: fix this
     onOpen();
   }
-
 
   // const handleChangeStatus = (status: AffiliateStatus) => {
   //   startTransition(async () => {

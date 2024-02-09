@@ -47,26 +47,20 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions, department, manager }) 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     // TODO: fix types error
-    defaultValues: department ? {
-      name: department.name,
-      email: department.email,
-      phone: department.phone,
+    defaultValues: {
+      name: department?.name,
+      email: department?.email!,
+      phone: department?.phone!,
       manager: {
-        label: manager?.name,
+        label: manager?.name!,
         value: manager?.id,
-        image: manager?.image,
+        image: manager?.image!,
       },
-      members: department.members.map((member) => ({
-        label: member.name,
-        value: member.id,
-        image: member.image,
-      }))
-    } : {
-      name: '',
-      email: '',
-      phone: '',
-      manager: null,
-      members: []
+      members: department?.members.map((member) => ({
+        label: member.name!,
+        value: member.id!,
+        image: member.image!,
+      })) || []
     }
   });
 

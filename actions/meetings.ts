@@ -9,7 +9,7 @@ import { auth } from "@/app/api/auth/[...nextauth]/auth";
 
 
 
-export const create = async (values: Meeting) => {
+export const create = async (values: Meeting & { participants: { id: string }[] }) => {
 
   const session = await auth();
   const hostId = session?.user?.id!
@@ -70,15 +70,12 @@ export const create = async (values: Meeting) => {
   }
 }
 
-export const update = async (id: string, values: Meeting) => {
+export const update = async (id: string, values: Meeting & { participants: { id: string }[] }) => {
   try {
-    await prismadb.department.update({
+    await prismadb.meeting.update({
       where: { id },
       data: {
         ...values,
-        members: {
-          connect: values.members
-        }
       }
     })
 

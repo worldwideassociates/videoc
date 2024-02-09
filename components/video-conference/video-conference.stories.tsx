@@ -16,7 +16,7 @@ Default.args = {
     name: 'Dellan',
     lastName: 'Much',
     role: 'Moderator',
-  },
+  } as any,
   callId: 'EXVFlj20Bmex'
 };
 

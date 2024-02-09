@@ -200,10 +200,10 @@ const EmployeeForm: React.FC<Props> = ({ employee, departmentsOptions, readonly 
                 <FormLabel>Date of birth</FormLabel>
                 {/* TODO: Fix this type issue */}
                 <DatePicker
-                  value={field.value}
+                  value={field.value as any}
                   onChange={field.onChange}
                   label="Pick a date">
-                  <DateField value={field.value} />
+                  <DateField value={field.value as any} />
                 </DatePicker>
                 <FormMessage />
               </FormItem>

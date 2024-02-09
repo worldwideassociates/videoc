@@ -14,6 +14,7 @@ import { CollaboratorColumn } from "./columns";
 import Link from "next/link";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@prisma/client";
 
 interface CellActionsProps {
   data: CollaboratorColumn;
@@ -26,7 +27,7 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
 
 
   const onDelete = () => {
-    setCurrentuser(data);
+    setCurrentuser(data as User);
     onOpen();
   }
 

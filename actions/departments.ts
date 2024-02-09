@@ -1,12 +1,12 @@
 'use server'
 
 import prismadb from "@/lib/prismadb";
-import { Department } from "@prisma/client";
+import { Department, User } from "@prisma/client";
 
 
 
 
-export const create = async (values: Department) => {
+export const create = async (values: Department & { members: { id: string } }) => {
   try {
     await prismadb.department.create({
       data: {
@@ -28,7 +28,7 @@ export const create = async (values: Department) => {
   }
 }
 
-export const update = async (id: string, values: Department) => {
+export const update = async (id: string, values: Department & { members: { id: string } }) => {
   try {
     await prismadb.department.update({
       where: { id },

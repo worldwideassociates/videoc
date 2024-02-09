@@ -23,7 +23,7 @@ import {
 import { cn } from "@/lib/utils"
 
 import { Button } from "./button"
-import { Calendar } from "./calendar_copy"
+import { Calendar } from "./calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 
 /* -------------------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ export function DatePicker({ children, ...props }: DatePickerProps) {
           </PopoverTrigger>
         </div>
         <PopoverContent className="w-auto p-3">
-          <Calendar {...calendarProps} />
+          {/* <Calendar {...calendarProps} /> TODO */}
         </PopoverContent>
       </Popover>
     </div>

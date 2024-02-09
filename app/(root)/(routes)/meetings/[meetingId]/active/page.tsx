@@ -1,5 +1,6 @@
 import { auth } from '@/app/api/auth/[...nextauth]/auth';
 import VideoConference from '@/components/video-conference/video-conference';
+import { User } from '@prisma/client';
 import React, { FC } from 'react'
 
 interface pageProps {
@@ -16,7 +17,7 @@ const page: FC<pageProps> = async ({ params }: pageProps) => {
 
   return (
     <div>
-      <VideoConference callId={params.meetingId} user={session.user} />
+      <VideoConference callId={params.meetingId} user={session.user as User} />
     </div>
   )
 }

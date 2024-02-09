@@ -26,6 +26,7 @@ import { DateField, DatePicker } from "@/components/ui/datepicker";
 import { updateUser } from "@/actions/users";
 import { useSession } from "next-auth/react";
 import { User } from "@prisma/client";
+import { createCalendarDate } from "@/lib/utils";
 
 const currentYear = new Date().getFullYear();
 
@@ -51,7 +52,7 @@ export const AccountDetailsModal = () => {
     defaultValues: {
       name: '',
       phone: '',
-      dateOfBirth: undefined,
+      dateOfBirth: createCalendarDate(new Date()),
     },
   });
 
@@ -130,10 +131,12 @@ export const AccountDetailsModal = () => {
                     <FormLabel>Date of birth</FormLabel>
                     {/* TODO: Fix this type issue */}
                     <DatePicker
-                      date={field.value}
+                      // date={field.value as any}
                       onChange={field.onChange}
                       label="Pick a date">
-                      <DateField {...field} date={field.value} onChange={field.onChange} />
+                      <DateField {...field}
+                        value={field.value as any}
+                        onChange={field.onChange} />
                     </DatePicker>
                     <FormDescription>
                       Your date of birth is used to calculate your age.
