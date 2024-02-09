@@ -1,7 +1,9 @@
 'use server'
 
 import prismadb from "@/lib/prismadb";
+import streamClient from "@/lib/stream-server-client";
 import { Role, User } from "@prisma/client";
+import { UserObjectRequest } from "@stream-io/node-sdk";
 
 
 
@@ -81,12 +83,13 @@ export const upsert = async (values: User) => {
 
 const create = async (values: User) => {
   try {
-    await prismadb.user.create({
+    const user = await prismadb.user.create({
       data: {
         ...values
       }
     })
 
+    createStreamUser(user)
     return { success: true, message: "User created successfully." };
   } catch (error: any) {
     console.log(error);
@@ -117,4 +120,22 @@ const update = async (id: string, values: User) => {
     }
     return { success: false, message: 'Something went wrong.' };
   }
+}
+
+
+const createStreamUser = async (user: User) => {
+
+  const streamUser: UserObjectRequest = {
+    id: user.id,
+    role: 'user', //TODO: figure out roles
+    // role: user.role!,
+    name: user.name,
+    image: user.image,
+  }
+
+  await streamClient.upsertUsers({
+    users: {
+      [streamUser.id]: streamUser
+    }
+  })
 }

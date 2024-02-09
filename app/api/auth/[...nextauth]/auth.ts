@@ -26,27 +26,29 @@ export const {
     },
     ),
   ],
- callbacks: {
-  async signIn(params: { user: NextAuthUser | PrismaUser}) {
-    const { user } = params;
-    const superAdminExists = await prismadb.user.findFirst({
-      where: {
-        role: 'SUPER_ADMIN',
-      },
-    });
+  callbacks: {
+    async signIn(params: { user: NextAuthUser | PrismaUser }) {
+      const { user } = params;
+      const superAdminExists = await prismadb.user.findFirst({
+        where: {
+          role: 'SUPER_ADMIN',
+        },
+      });
 
-    if (!superAdminExists) {
-      (user as PrismaUser).role = 'SUPER_ADMIN';
+      if (!superAdminExists) {
+        (user as PrismaUser).role = 'SUPER_ADMIN';
+      }
+
+      return true;
+    },
+    async session({ session, user }: any) {  //TODO: types here drove me crazy
+      session.user.role = user.role
+      session.user.id = user.id
+      session.user.name = user.name
+      return session
     }
-
-    return true;
+    // Other callbacks
   },
-  async session ({session, user }: any){  //TODO: types here drove me crazy
-    session.user.role = user.role
-    return session
-  }
-  // Other callbacks
-},
   adapter: PrismaAdapter(prismadb),
   pages: {
     signIn: '/sign-in',

@@ -53,6 +53,9 @@ dependencies:
   '@radix-ui/react-toast':
     specifier: ^1.1.5
     version: 1.1.5(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
+  '@stream-io/node-sdk':
+    specifier: ^0.1.9
+    version: 0.1.9
   '@stream-io/video-react-sdk':
     specifier: ^0.4.21
     version: 0.4.21(@nivo/tooltip@0.80.0)(react-dom@18.2.0)(react@18.2.0)
@@ -5840,6 +5843,13 @@ packages:
       '@types/express': 4.17.21
       file-system-cache: 2.3.0
     dev: true
+
+  /@stream-io/node-sdk@0.1.9:
+    resolution: {integrity: sha512-nG6ES/yQJU/o/kisGNnV+pHnbp/QqGS+NkqIORd66y+23wW7vOViP7dbOPy/sNdKspXqcMmAOPTfS+h2Rb93zA==}
+    dependencies:
+      jsonwebtoken: 9.0.2
+      uuid: 9.0.1
+    dev: false
 
   /@stream-io/video-client@0.5.6:
     resolution: {integrity: sha512-Z9GD561zoMFAMCk9JBvJbNUdonCg1RSkkaoYN+d2fpMMMJVn8O/g2vLfqb5zaAJsthdv6sQCfczd3XYhy+pa4w==}
@@ -13497,7 +13507,6 @@ packages:
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
-    dev: true
 
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}

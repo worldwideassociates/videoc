@@ -5,7 +5,7 @@ declare namespace NodeJS {
     DATABASE_URL: string;
     NEXT_PUBLIC_BASE_URL: string;
     BASE_URL: string;
-    NEXT_PUBLIC_STREAM_API_KEY: string;
-    NEXT_PUBLIC_STREAM_API_TOKEN: string;
+    STREAM_API_KEY: string;
+    STREAM_API_SECRET: string;
   }
 }

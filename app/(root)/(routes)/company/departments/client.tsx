@@ -57,12 +57,13 @@ export const DepartmentClient: React.FC<Props> = ({ data }) => {
         title={`Departments (${data.length})`}
         description="Manage departments of the company"
         CallToAction={() =>
-          <Button asChild className="rounded-full">
+          <Button asChild variant="ghost" className="rounded-full">
             <Link href='/company/departments/new'>
               <Plus size={20} />
             </Link>
           </Button>}
       />
+
       <div className="flex flex-col space-y-2">
         {
           data.map((department) => (

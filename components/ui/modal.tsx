@@ -26,7 +26,8 @@ export const Modal: React.FC<ModalProps> = ({
   Icon
 }) => {
   const onChange = (open: boolean) => {
-    if (!open) {      onClose();
+    if (!open) {
+      onClose();
     }
   };
 

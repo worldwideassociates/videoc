@@ -70,6 +70,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  meetings  Invite[]
 }
 
 model VerificationToken {
@@ -130,4 +131,29 @@ model TaxOffice {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Meeting {
+  id                String   @id @default(cuid())
+  title             String
+  description       String?
+  startDateTime     DateTime
+  estimatedDuration String
+
+  hostId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  invites   Invite[]
+}
+
+model Invite {
+  meetingId String
+  userId    String
+  token     String
+
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@id([meetingId, userId])
 }

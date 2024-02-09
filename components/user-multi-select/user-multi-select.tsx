@@ -12,6 +12,7 @@ import {
 import { Command as CommandPrimitive } from "cmdk";
 import { User } from "@prisma/client";
 import { CustomAvatar } from "../custom-avatar";
+import { ScrollArea } from "../ui/scroll-area";
 
 type Option = Record<"value" | "label" | "image", string | null>;
 
@@ -102,7 +103,7 @@ export default function MultiSelect({ selected, onSelect, users, ...props }: Pro
       </div>
       <div className="relative mt-2">
         {open && selectables.length > 0 ?
-          <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+          <ScrollArea className=" max-h-72 -absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
             <CommandGroup className="h-full overflow-auto">
               {selectables.map((option) => {
                 return (
@@ -132,7 +133,7 @@ export default function MultiSelect({ selected, onSelect, users, ...props }: Pro
                 );
               })}
             </CommandGroup>
-          </div>
+          </ScrollArea>
           : null}
       </div>
     </Command >

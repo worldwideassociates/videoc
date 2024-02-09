@@ -68,7 +68,7 @@ export const EmployeeClient: React.FC<Props> = ({ data }) => {
           <div className="flex space-x-1">
             {/* TODO: More buttons as needed */}
             <Button variant="link" asChild className="rounded-full border-gray-600 p-4">
-              <Link href='/customers/new'>
+              <Link href='/company/employees/new'>
                 <Plus size={25} />
               </Link>
             </Button>

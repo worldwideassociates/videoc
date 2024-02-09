@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '../api/auth/[...nextauth]/auth';
 import { CheckAccountDetails } from "@/components/check-account-details";
 import { User } from "@prisma/client";
+import { CardHeader } from "@/components/ui/card";
 
 
 
@@ -19,7 +20,9 @@ export default async function DashboardLayout({ children }: {
     <>
       <CheckAccountDetails user={user} />
       <Navbar />
-      {children}
+      <div className="container">
+        {children}
+      </div>
     </>
   )
 
