@@ -3,7 +3,6 @@ import Right from '../_components/right'
 import { SignUpButton } from '../_components/sign-up-button';
 import { Header } from '../_components/header';
 import { SignInForm } from '../_components/sign-in-form';
-import { Divider } from '../_components/divider';
 import { TermsAndConditions } from '../_components/terms-and-conditions';
 
 export default function SignIn() {
@@ -17,7 +16,6 @@ export default function SignIn() {
           <Header title="Welcome back!" subTitle="Provide your credentials to continue." />
           <div className="grid gap-6">
             <SignInForm />
-            <Divider />
           </div>
           <TermsAndConditions />
         </div>
