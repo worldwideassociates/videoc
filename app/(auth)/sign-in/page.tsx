@@ -5,7 +5,6 @@ import { Header } from '../_components/header';
 import { SignInForm } from '../_components/sign-in-form';
 import { Divider } from '../_components/divider';
 import { TermsAndConditions } from '../_components/terms-and-conditions';
-import { GoogleButton } from '../_components/google-button';
 
 export default function SignIn() {
   return (
