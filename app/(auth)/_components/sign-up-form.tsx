@@ -37,7 +37,7 @@ export const SignUpForm = () => {
         'email',
         {
           email: values.email,
-          callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`,
+          callbackUrl: process.env.NEXT_PUBLIC_BASE_URL,
           redirect: false
         })
       toast({
