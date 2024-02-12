@@ -1,6 +1,7 @@
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { UserCard } from "@/components/user-card";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { Department, User } from "@prisma/client";
@@ -37,7 +38,7 @@ const DepartmentCard: React.FC<Props> = ({ department, setSelectedDepartment }) 
             <Building size={24} />
             <CardTitle className="font-medium">{department.name}</CardTitle>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 mt-3">
             <Button asChild variant='outline' className="rounded-full p-4 border-gray-600">
               <Link href={`/company/departments/${department.id}/edit`}>
                 <Edit2 size={10} />
@@ -49,7 +50,7 @@ const DepartmentCard: React.FC<Props> = ({ department, setSelectedDepartment }) 
           </div>
         </div>
       </CardHeader>
-      <CardContent className="px-0 mt-[-10px]">
+      <CardContent className="px-0 mt-[-10px] max-w-screen-lg">
         <div className="flex space-x-2 items-center my-2">
           <h1 className="text-gray-600">Department members ({department.members.length})</h1>
           {/* TODO: not priority */}
@@ -57,14 +58,16 @@ const DepartmentCard: React.FC<Props> = ({ department, setSelectedDepartment }) 
             <PlusCircle size={25} color="#aaa" />
           </Button> */}
         </div>
-        {/* Fix horizontal scroll overflow */}
-        <div className="flex space-x-3">
-          {
-            department.members.map((member,) => (
-              <UserCard key={`members-${member.id}`} user={member} />
-            ))
-          }
-        </div>
+        <ScrollArea className="w-full whitespace-nowrap">
+          <div className="flex w-max space-x-4 px-0 py-4">
+            {
+              department.members.map((member,) => (
+                <UserCard key={`members-${member.id}`} user={member} />
+              ))
+            }
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </CardContent>
     </Card>
   )

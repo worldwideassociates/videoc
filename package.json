@@ -12,7 +12,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "seed": "ts-node prisma/seed.mjs",
-    "seed:dev": "ts-node prisma/dev-seed.mjs"
+    "seed:dev": "ts-node prisma/dev-seed.mjs",
+    "create-super-admin": "ts-node prisma/create-super-admin.mjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.1.0",
@@ -34,6 +35,8 @@
     "@stream-io/node-sdk": "^0.1.9",
     "@stream-io/video-react-sdk": "^0.4.21",
     "@tanstack/react-table": "^8.11.7",
+    "@uploadthing/react": "^6.2.2",
+    "axios": "^1.6.7",
     "casual": "^1.6.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -52,6 +55,8 @@
     "react-stately": "^3.29.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.3.3",
+    "xlsx": "^0.18.5",
     "zod": "^3.22.4",
     "zustand": "^4.5.0"
   },

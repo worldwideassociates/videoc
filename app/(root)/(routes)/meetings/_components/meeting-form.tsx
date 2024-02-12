@@ -1,13 +1,13 @@
 'use client'
 
-import { create, update } from '@/actions/meetings';
+import { upsert } from '@/actions/meetings';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UserMultiSelect as MultiSelect } from '@/components/user-multi-select';
 import { useToast } from '@/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Meeting, User } from '@prisma/client';
+import { Meeting, Role, User } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useState } from 'react';
@@ -34,7 +34,8 @@ const TIME_OPTIONS = [
 
 interface Props {
   usersOptions: User[];
-  meeting?: Meeting & { participants: User[] } | null
+  meeting?: Meeting | null
+  participants?: User[]
   host?: User | null
 }
 
@@ -43,14 +44,36 @@ const formSchema = z.object({
   description: z.string().max(255, "Description is too long").optional(),
   startDateTime: z.date(),
   estimatedDuration: z.string().optional(),
-  participants: z.array(z.object({
+  employees: z.array(z.object({
+    label: z.string(),
+    value: z.string(),
+    image: z.string(),
+  })),
+  collaborators: z.array(z.object({
+    label: z.string(),
+    value: z.string(),
+    image: z.string(),
+  })),
+  customers: z.array(z.object({
     label: z.string(),
     value: z.string(),
     image: z.string(),
   })),
 })
 
-const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, host }) => {
+const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) => {
+
+  const employeesOptions = usersOptions.filter(user => user.role === Role.EMPLOYEE || user.role === Role.ADMIN)
+  const savedEmployees = participants?.filter(user => user.role === Role.EMPLOYEE || user.role === Role.ADMIN)
+
+
+  const collaboratorsOptions = usersOptions.filter(user => user.role === Role.COLLABORATOR)
+  const savedCollaborators = participants?.filter(user => user.role === Role.COLLABORATOR)
+
+  const customersOptions = usersOptions.filter(user => user.role === Role.CUSTOMER)
+  const savedCustomers = participants?.filter(user => user.role === Role.CUSTOMER)
+
+
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -61,15 +84,20 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, host }) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // TODO: fix types error
     defaultValues: {
       title: meeting?.title || '',
       description: meeting?.description || '',
       startDateTime: meeting?.startDateTime ? new Date(meeting.startDateTime) : undefined,
       estimatedDuration: meeting?.estimatedDuration || '30',
-      participants: meeting?.participants.map(
-        (user: User) =>
-          ({ label: user.name!, value: user.id!, image: user.image! })) || []
+      employees: savedEmployees?.map(
+        (user) =>
+          ({ label: user.name!, value: user.id!, image: user.image! })) || [],
+      collaborators: savedCollaborators?.map(
+        (user) =>
+          ({ label: user.name!, value: user.id!, image: user.image! })) || [],
+      customers: savedCustomers?.map(
+        (user) =>
+          ({ label: user.name!, value: user.id!, image: user.image! })) || [],
     }
   });
 
@@ -77,39 +105,40 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, host }) => {
   const values = form.getValues()
 
 
-  const onSubmit = form.handleSubmit((values: z.infer<typeof formSchema>) => {
+  const onSubmit = form.handleSubmit((_values: z.infer<typeof formSchema>) => {
     onOpen()
   });
 
   const handleConfirm = async () => {
     setLoading(true);
+    const employees = values.employees.map((employee) => ({ id: employee.value }))
+    const collaborator = values.collaborators.map((collaborator) => ({ id: collaborator.value }))
+    const customers = values.customers.map((customers) => ({ id: customers.value }))
+
     const payload = {
       ...values,
-      participants: values.participants.map((participant: any) => ({ id: participant.value })),
+      participants: employees.concat(collaborator, customers)
     } as any
 
-    // Hack
-    delete payload.host
+    const result = await upsert(payload, meeting?.id)
 
-
-    const result = meeting ? await update(meeting.id, payload) : await create(payload)
-
-    if (result.success) {
+    if (result?.success) {
       form.reset();
       toast({
         title: "Success",
-        description: result.message,
+        description: result?.message,
       })
-
       router.push('/')
 
     } else {
       toast({
         title: "Oops",
-        description: result.message,
+        description: result?.message,
       })
     }
+
     setLoading(false);
+    onClose()
   }
 
   return (
@@ -128,20 +157,69 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, host }) => {
             <p className='text-sm text-muted-foreground'>{values.description}</p>
           </div>
           <div className="flex flex-col space-y-2">
-            <h1 className="text-xs font-bold">Participants</h1>
-            <div className="flex flex-col space-y-2">
-              {
-                values.participants.map((user, index) => (
-                  <UserCard
-                    key={index}
-                    user={{
-                      name: user.label,
-                      image: user.image
-                    } as any}
-                  />
-                ))
-              }
-            </div>
+            {
+              values.employees.length > 0 && (
+                <div className="">
+                  <h1 className="text-xs font-bold">Employees</h1>
+                  <Separator className='my-2' />
+                  <div className="flex flex-col space-y-2">
+                    {
+                      values.employees.map((user, index) => (
+                        <UserCard
+                          key={index}
+                          user={{
+                            name: user.label,
+                            image: user.image
+                          } as any}
+                        />
+                      ))
+                    }
+                  </div>
+                </div>
+              )
+            }
+            {
+              values.collaborators.length > 0 && (
+                <div className="">
+                  <h1 className="text-xs font-bold">Collaborators</h1>
+                  <Separator className='my-2' />
+                  <div className="flex flex-col space-y-2">
+                    {
+                      values.collaborators.map((user, index) => (
+                        <UserCard
+                          key={index}
+                          user={{
+                            name: user.label,
+                            image: user.image
+                          } as any}
+                        />
+                      ))
+                    }
+                  </div>
+                </div>
+              )
+            }
+            {
+              values.customers.length > 0 && (
+                <div className="">
+                  <h1 className="text-xs font-bold">Customers</h1>
+                  <Separator className='my-2' />
+                  <div className="flex flex-col space-y-2">
+                    {
+                      values.customers.map((user, index) => (
+                        <UserCard
+                          key={index}
+                          user={{
+                            name: user.label,
+                            image: user.image
+                          } as any}
+                        />
+                      ))
+                    }
+                  </div>
+                </div>
+              )
+            }
           </div>
         </div>
         <div className="pt-6 space-x-2 flex items-center justify-end w-full">
@@ -242,20 +320,60 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, host }) => {
 
             <FormField
               control={form.control}
-              name="participants"
+              name="employees"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Invites</FormLabel>
+                  <FormLabel>Invite Employee</FormLabel>
                   <MultiSelect
                     selected={field.value || []}
                     onSelect={field.onChange}
-                    users={usersOptions}
-                    placeholder="select invites"
+                    users={employeesOptions}
+                    placeholder="select employees to invite"
                   />
                   <FormMessage />
                   <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
                     <InfoIcon size={16} />
-                    <span>Select members to invite to the meeting. an email notification will be sent to each individual</span>
+                    <span>Select employees to invite to the meeting. an email notification will be sent to each individual</span>
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="collaborators"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Invite Collaborators</FormLabel>
+                  <MultiSelect
+                    selected={field.value || []}
+                    onSelect={field.onChange}
+                    users={collaboratorsOptions}
+                    placeholder="select collaborators to invite"
+                  />
+                  <FormMessage />
+                  <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
+                    <InfoIcon size={16} />
+                    <span>Select collaborators to invite to the meeting. an email notification will be sent to each individual</span>
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="customers"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Invite Customers</FormLabel>
+                  <MultiSelect
+                    selected={field.value || []}
+                    onSelect={field.onChange}
+                    users={customersOptions}
+                    placeholder="select customers to invite"
+                  />
+                  <FormMessage />
+                  <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
+                    <InfoIcon size={16} />
+                    <span>Select customers to invite to the meeting. an email notification will be sent to each individual</span>
                   </FormDescription>
                 </FormItem>
               )}
@@ -263,7 +381,7 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, host }) => {
           </fieldset>
           <div className="mt-4">
             <Button disabled={loading}>
-              Schedule
+              {meeting ? "Update meeting" : "Schedule meeting"}
             </Button>
           </div>
         </form>

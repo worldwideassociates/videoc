@@ -1,19 +1,13 @@
 import NextAuth, { Session } from 'next-auth';
-import Google from 'next-auth/providers/google';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import prismadb from '@/lib/prismadb';
-import { User as NextAuthUser, Account as NextAuthAccount, Profile as NextAuthProfile } from 'next-auth';
-import { User as PrismaUser } from '@prisma/client';
-
-
 
 export const {
   handlers: { GET, POST },
   auth,
 } = NextAuth({
   providers: [
-    Google,
     EmailProvider({
       server: {
         host: process.env.SMTP_HOST,
@@ -23,25 +17,26 @@ export const {
           pass: process.env.SMTP_PASSWORD,
         },
       },
-    },
-    ),
+      credentials: {
+        async authorize(credentials: any) {
+          // Check if the user exists in the database
+          const user = await prismadb.user.findUnique({
+            where: { email: credentials.email }
+          });
+
+          if (user) {
+            // User exists, allow sign-in
+            return true;
+          } else {
+            // User does not exist, prevent sign-in
+            return false;
+          }
+        }
+      }
+    }),
   ],
   callbacks: {
-    async signIn(params: { user: NextAuthUser | PrismaUser }) {
-      const { user } = params;
-      const superAdminExists = await prismadb.user.findFirst({
-        where: {
-          role: 'SUPER_ADMIN',
-        },
-      });
-
-      if (!superAdminExists) {
-        (user as PrismaUser).role = 'SUPER_ADMIN';
-      }
-
-      return true;
-    },
-    async session({ session, user }: any) {  //TODO: types here drove me crazy
+    async session({ session, user }: any) {
       session.user.role = user.role
       session.user.id = user.id
       session.user.name = user.name

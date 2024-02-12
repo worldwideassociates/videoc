@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import prismadb from '@/lib/prismadb';
-import { CustomerForm } from '../_components/customer-form';
+import { CustomerForm } from '../../_components/customer-form';
 import { Heading } from '@/components/heading';
 import { normalize } from '@/lib/utils';
 import { User } from '@prisma/client';

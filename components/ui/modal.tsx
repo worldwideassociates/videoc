@@ -35,10 +35,20 @@ export const Modal: React.FC<ModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onChange}  >
       <DialogContent >
         <DialogHeader>
-          <DialogTitle className="text-2xl flex">
-            {Icon && <Icon className="mr-2" size={24} />}
-            <span>{title}</span></DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          <div className="flex items-center space-x-2">
+            <div className="">
+
+              {Icon && <Icon className="mr-2" size={30} />}
+            </div>
+            <div className="">
+              <DialogTitle className="text-2xl">
+                {title}
+              </DialogTitle>
+              <DialogDescription>{description}</DialogDescription>
+            </div>
+          </div>
+
+
         </DialogHeader>
         <div>{children}</div>
       </DialogContent>

@@ -19,7 +19,6 @@ export default function SignIn() {
           <div className="grid gap-6">
             <SignInForm />
             <Divider />
-            <GoogleButton />
           </div>
           <TermsAndConditions />
         </div>

@@ -12,14 +12,19 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
   const routes = [
     {
+      href: `/`,
+      label: "Dashboard",
+      active: pathname === `/`,
+    },
+    {
       href: `/customers`,
       label: "Customers",
-      active: pathname === `/customers`,
+      active: pathname.includes(`/customers`),
     },
     {
       href: '/collaborators',
       label: 'Collaborators',
-      active: pathname === `/collaborators`,
+      active: pathname.includes(`/collaborators`),
     }, {
       href: '/history',
       label: 'History',
@@ -29,7 +34,7 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     {
       href: '/company/profile',
       label: 'Company',
-      active: pathname === `/company/profile`,
+      active: pathname.includes(`/company`),
 
     },
     {

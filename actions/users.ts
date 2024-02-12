@@ -78,6 +78,15 @@ export const upsert = async (values: User) => {
 }
 
 
+export const getUser = async (id: string) => {
+  return await prismadb.user.findFirst({
+    where: {
+      id
+    }
+  })
+}
+
+
 /** Private methods **/
 
 
@@ -139,3 +148,5 @@ const createStreamUser = async (user: User) => {
     }
   })
 }
+
+

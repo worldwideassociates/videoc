@@ -1,14 +1,13 @@
-import { ActiveMeetingCard } from "@/components/active-meeting-card";
 import { StatsCard } from "@/components/stats-card";
-import { Button } from "@/components/ui/button";
 import { CardHeader } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { UpcomingMeetingCard } from "@/components/upcoming-meeting-card";
 import prismadb from "@/lib/prismadb";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { DashboarClient } from "./_components/client";
+import { auth } from "../api/auth/[...nextauth]/auth";
 
 export default async function DashboardPage() {
+
+  const session = await auth()
 
   const meetings = await prismadb.meeting.findMany({
     where: {
@@ -28,11 +27,16 @@ export default async function DashboardPage() {
     }
   })
 
-  const upcomingMeetings = meetings.filter((meeting) => {
+  const todaysMeetings = meetings.filter((meeting) => {
     const startDateTime = new Date(meeting.startDateTime)
     const now = new Date()
     const diff = startDateTime.getTime() - now.getTime()
-    return diff < 1000 * 60 * 60 * 24
+    const isNotToday = diff < 1000 * 60 * 60 * 24
+
+    const notInvited = !meeting.invites.find((invite) => invite.user.id === session?.user?.id)
+
+    const notHost = meeting.hostId !== session?.user?.id
+    return isNotToday && notInvited && notHost
   })
 
   const scheduledMeetings = meetings.filter((meeting) => {
@@ -41,6 +45,8 @@ export default async function DashboardPage() {
     const diff = startDateTime.getTime() - now.getTime()
     return diff > 1000 * 60 * 60 * 24
   }).slice(0, 10)
+
+
 
 
   return (
@@ -56,64 +62,17 @@ export default async function DashboardPage() {
             </div>
           </div>
         </CardHeader>
-        <div className="flex space-x-2">
-          <StatsCard title="Total Meetings" description="1,234" footerText="+20% since yesterday" />
-          <StatsCard title="Total Colaborators" description="1,234" footerText="+20% since yesterday" />
-          <StatsCard title="Total Participants" description="135" footerText="+20% since yesterday" />
-          <StatsCard title="Total Customers" description="1430" footerText="+20% since yesterday" />
-        </div>
-      </div>
-      <div className="">
-        <CardHeader className="px-0">
-          <div className="flex space-x-2 items-center">
-            <div className="">
-              <h2 className="text-xl font-bold tracking-tight">Upcoming meetings</h2>
-              <p className="text-muted-foreground">
-                Meetings scheduled for today.
-              </p>
-            </div>
-            {/* <Button variant="outline" asChild className="rounded-full">
-              <Link href='/rooms/new'>
-                <Plus size={24} />
-              </Link>
-            </Button> */}
-          </div>
-        </CardHeader>
         <ScrollArea className="w-full whitespace-nowrap">
           <div className="flex w-max space-x-4 px-0 py-4">
-            {
-              upcomingMeetings.map((meeting) => (
-                <ActiveMeetingCard key={meeting.id} meeting={meeting} />
-              ))
-            }
+            <StatsCard title="Total Meetings" description="1,234" footerText="+20% since yesterday" />
+            <StatsCard title="Total Colaborators" description="1,234" footerText="+20% since yesterday" />
+            <StatsCard title="Total Participants" description="135" footerText="+20% since yesterday" />
+            <StatsCard title="Total Customers" description="1430" footerText="+20% since yesterday" />
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>
-      <div className="">
-        <CardHeader className="px-0">
-          <div className="flex space-x-2 items-center">
-            <div className="">
-              <h2 className="text-xl font-bold tracking-tight">Scheduled Meetings</h2>
-              <p className="text-muted-foreground">
-                All meetings scheduled for the next 7 days.
-              </p>
-            </div>
-            <Button variant="outline" asChild className="rounded-full">
-              <Link href='/meetings/schedule'>
-                <Plus size={24} />
-              </Link>
-            </Button>
-          </div>
-        </CardHeader>
-        <div className="flex flex-col  space-y-2">
-          {
-            scheduledMeetings.map((meeting) => (
-              <UpcomingMeetingCard key={meeting.id} meeting={meeting} />
-            ))
-          }
-        </div>
-      </div>
+      <DashboarClient todaysMeetings={todaysMeetings} scheduledMeetings={scheduledMeetings} />
     </div>
   )
 }
