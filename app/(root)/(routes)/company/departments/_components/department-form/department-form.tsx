@@ -31,7 +31,7 @@ const formSchema = z.object({
     label: z.string(),
     value: z.string(),
     image: z.string(),
-  }),
+  }).optional(),
   members: z.array(z.object({
     label: z.string(),
     value: z.string(),
@@ -51,11 +51,11 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions, department, manager }) 
       name: department?.name,
       email: department?.email!,
       phone: department?.phone!,
-      manager: {
+      manager: manager ? {
         label: manager?.name!,
-        value: manager?.id,
+        value: manager?.id!,
         image: manager?.image!,
-      },
+      } : undefined,
       members: department?.members.map((member) => ({
         label: member.name!,
         value: member.id!,
@@ -69,7 +69,7 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions, department, manager }) 
     const payload = {
       ...values,
       members: values.members.map((member: any) => ({ id: member.value })),
-      managerId: values.manager.value
+      managerId: values.manager?.value
     } as any
 
     // Hack
@@ -158,8 +158,9 @@ const DepartmentForm: React.FC<Props> = ({ usersOptions, department, manager }) 
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Manager</FormLabel>
+                {/* TODO fix these hacks */}
                 <UserSelect
-                  selected={field.value || []}
+                  selected={field.value as any || []}
                   onSelect={field.onChange}
                   users={usersOptions}
                 />

@@ -43,7 +43,7 @@ export function DateTimePicker({ date, setDate }: Props) {
           selected={date}
           onSelect={setDate}
           initialFocus
-          disabled={(date) => date < new Date()}
+          disabled={(date) => date <= new Date()}
         />
         <div className="p-3 border-t border-border">
           <TimePicker setDate={setDate} date={date} />

@@ -2,7 +2,7 @@
 
 import { MainNav } from "@/components/main-nav";
 import { NavItem } from "@/components/nav-item";
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import CustomAvatar from './custom-avatar/custom-avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
@@ -19,6 +19,11 @@ type Route = {
 
 
 const routes = [
+  {
+    label: 'Profile',
+    Icon: User,
+    href: '/profile'
+  },
   {
     label: 'Log Out',
     Icon: LogOutIcon,

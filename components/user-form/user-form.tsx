@@ -19,7 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn, createCalendarDate } from "@/lib/utils";
 import { Command, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { CheckIcon, SortAscIcon } from "lucide-react";
-import { UploadButton, UpwloadButton } from "@/lib/utils/uploadthing";
+import { UploadButton } from "@/lib/utils/uploadthing";
 
 
 

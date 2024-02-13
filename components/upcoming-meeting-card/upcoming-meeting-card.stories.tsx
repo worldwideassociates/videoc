@@ -11,47 +11,6 @@ const Template: StoryFn<typeof UpcomingMeetingCard> = (args) => <UpcomingMeeting
 
 export const Default = Template.bind({});
 Default.args = {
-  meeting: {
-    id: '1',
-    name: 'Sales Meeting',
-    description: 'Meeting Description',
-    startDate: '30-01-2024 12:00',
-    moderator: {
-      id: '1',
-      name: 'Dellan',
-      lastName: 'Much',
-      role: 'Moderator',
-    },
-    invites: [
-      {
-        id: '1',
-        name: 'Dellan',
-        lastName: 'Much',
-        role: 'Moderator',
-        image: 'https://github.com/shadcn.png'
-      },
-      {
-        id: '2',
-        name: 'Giannis',
-        lastName: 'Kozyris',
-        role: 'Administrator',
-      },
-      {
-        id: '3',
-        name: 'Giannis',
-        lastName: 'Kozyris',
-        role: 'Administrator',
-        image: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
-      },
-      {
-
-        id: '4',
-        name: 'Giannis',
-        lastName: 'Kozyris',
-        role: 'Administrator',
-        image: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
-      }
-    ],
-  },
+  meeting: {} as any,
 };
 
