@@ -15,11 +15,11 @@ import { useRouter } from 'next/navigation';
 import { CalendarIcon, InfoIcon } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DateTimePicker } from '@/components/ui/date-time-picker';
 import { useModal } from '@/hooks/use-modal';
 import { Modal } from '@/components/ui/modal';
 import { UserCard } from '@/components/user-card';
 import { Separator } from '@/components/ui/separator';
+import { DatePicker } from '@/components/ui/date-picker';
 
 
 
@@ -42,7 +42,8 @@ interface Props {
 const formSchema = z.object({
   title: z.string().min(3, "Name is required (minuimum of 3 characters)."),
   description: z.string().max(255, "Description is too long").optional(),
-  startDateTime: z.date(),
+  startDate: z.date(),
+  startTime: z.array(z.number()),
   estimatedDuration: z.string().optional(),
   employees: z.array(z.object({
     label: z.string(),
@@ -87,7 +88,8 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
     defaultValues: {
       title: meeting?.title || '',
       description: meeting?.description || '',
-      startDateTime: meeting?.startDateTime ? new Date(meeting.startDateTime) : undefined,
+      startDate: meeting?.startDateTime ? new Date(meeting.startDateTime) : undefined,
+      startTime: meeting?.startDateTime ? [meeting.startDateTime.getHours(), meeting.startDateTime.getMinutes()] : undefined,
       estimatedDuration: meeting?.estimatedDuration || '30',
       employees: savedEmployees?.map(
         (user) =>
@@ -115,8 +117,13 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
     const collaborator = values.collaborators.map((collaborator) => ({ id: collaborator.value }))
     const customers = values.customers.map((customers) => ({ id: customers.value }))
 
+    const startDateTime = new Date(values.startDate);
+    startDateTime.setHours(values.startTime[0]);
+    startDateTime.setMinutes(values.startTime[1]);
+
     const payload = {
       ...values,
+      startDateTime,
       participants: employees.concat(collaborator, customers)
     } as any
 
@@ -139,6 +146,28 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
 
     setLoading(false);
     onClose()
+  }
+
+
+  const timesOptions = () => {
+    const currentTime = new Date();
+    const timeOptions = [];
+
+    for (let i = currentTime.getHours(); i < 24; i++) {
+      for (let j = 0; j < 60; j += 30) {
+        const time = `${i.toString().padStart(2, '0')}:${j.toString().padStart(2, '0')}`;
+        timeOptions.push({
+          label: time,
+          value: `${i}, ${j}`
+        });
+      }
+    }
+
+    timeOptions.push({
+      label: "24:00",
+      value: "24, 0"
+    });
+    return timeOptions;
   }
 
   return (
@@ -271,25 +300,64 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="startDateTime"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-col space-y-2">
-                    <FormLabel>Start date and time</FormLabel>
-                    <DateTimePicker
-                      date={field.value}
-                      setDate={field.onChange}
-                    />
-                  </div>
-                  <FormDescription className="font-light text-xs text-muted-foreground">
-                    When is the meeting scheduled to start?
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex space-x-2">
+
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-col space-y-2">
+                      <FormLabel>Date</FormLabel>
+                      <DatePicker
+                        value={field.value}
+                        onChange={field.onChange} />
+                    </div>
+                    <FormDescription className="font-light text-xs text-muted-foreground">
+                      When is the meeting scheduled for?
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="startTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-col space-y-2">
+                      <FormLabel>Time</FormLabel>
+                      <Select
+                        onValueChange={(a) => field.onChange(a.split(',').map((a: string) => parseInt(a)))}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pick time" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {
+                            timesOptions().map((option) => (
+                              <SelectItem key={option.label} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))
+                          }
+                        </SelectContent>
+
+                      </Select>
+                    </div>
+                    <FormDescription className="font-light text-xs text-muted-foreground">
+                      what time?
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+
+            </div>
 
             <FormField
               control={form.control}
