@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   CallControls,
   SpeakerLayout,
@@ -27,7 +27,7 @@ const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!
 
 const CallUiLayout = () => {
   return (
-    <StreamTheme>
+    <StreamTheme className="light">
       <SpeakerLayout participantsBarPosition='bottom' />
       <CallControls />
     </StreamTheme>
