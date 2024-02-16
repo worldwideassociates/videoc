@@ -4,7 +4,7 @@ import { normalize } from '@/lib/utils';
 import { User } from '@prisma/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Userform } from '@/components/user-form';
-import { auth } from '@/app/api/auth/[...nextauth]/auth';
+import { auth } from '@/app/[lang]/api/auth/[...nextauth]/auth';
 
 interface pageProps {
 

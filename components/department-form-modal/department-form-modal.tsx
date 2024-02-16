@@ -3,7 +3,7 @@
 import { useDepartmentFormModal } from "@/hooks/use-department-form-modal";
 import { Modal } from "@/components/ui/modal";
 import { BuildingIcon } from "lucide-react";
-import { DepartmentForm } from "../../app/(root)/(routes)/company/departments/_components/department-form";
+import { DepartmentForm } from "../../app/[lang]/(root)/(routes)/company/departments/_components/department-form";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
 import { getUsersWithoutDepartment } from "@/actions/users";

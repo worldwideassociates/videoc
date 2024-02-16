@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import React, { FC } from 'react'
 import MeetingForm from '../_components/meeting-form';
 import prismadb from '@/lib/prismadb';
-import { auth } from '@/app/api/auth/[...nextauth]/auth';
+import { auth } from '@/app/[lang]/api/auth/[...nextauth]/auth';
 import { User } from '@prisma/client';
 import { Info } from 'lucide-react';
 

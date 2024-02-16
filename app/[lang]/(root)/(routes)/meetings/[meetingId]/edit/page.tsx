@@ -1,4 +1,4 @@
-import { auth } from '@/app/api/auth/[...nextauth]/auth'
+import { auth } from '@/app/[lang]/api/auth/[...nextauth]/auth'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import prismadb from '@/lib/prismadb'
 import { User } from '@prisma/client'
