@@ -10,12 +10,12 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { DateField, DatePicker } from '@/components/ui/datepicker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { upsert } from '@/actions/users';
 import { DateValue } from 'react-aria';
 import { CalendarDate, toCalendarDate } from '@internationalized/date';
 import { createCalendarDate } from '@/lib/utils';
+import { DatePicker } from '@/components/ui/date-picker';
 
 
 interface Props {
@@ -34,11 +34,7 @@ const formSchema = z.object({
   departmentId: z.string().optional(),
   position: z.string().optional(),
   image: z.string().optional(),
-  dateOfBirth: z.object({
-    year: z.number().min(1900, "Invalid year").max(currentYear, "Invalid year"),
-    month: z.number().min(1, "Invalid month").max(12, "Invalid month"),
-    day: z.number().min(1, "Invalid day").max(31, "Invalid day"),
-  }, { required_error: 'Invalid date of birth' }).optional()
+  dateOfBirth: z.date().optional()
 })
 
 const EmployeeForm: React.FC<Props> = ({ employee, departmentsOptions, readonly = false }) => {
@@ -68,7 +64,7 @@ const EmployeeForm: React.FC<Props> = ({ employee, departmentsOptions, readonly 
     const payload = {
       ...employee,
       ...values,
-      dateOfBirth: values.dateOfBirth ? new Date(values.dateOfBirth.year, values.dateOfBirth.month - 1, values.dateOfBirth.day) : null,
+      dateOfBirth: values.dateOfBirth ?? undefined,
       role: Role.EMPLOYEE
     } as any
 
@@ -198,13 +194,7 @@ const EmployeeForm: React.FC<Props> = ({ employee, departmentsOptions, readonly 
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Date of birth</FormLabel>
-                {/* TODO: Fix this type issue */}
-                <DatePicker
-                  value={field.value as any}
-                  onChange={field.onChange}
-                  label="Pick a date">
-                  <DateField value={field.value as any} />
-                </DatePicker>
+                <DatePicker value={field.value} onChange={field.onChange} />
                 <FormMessage />
               </FormItem>
             )}
