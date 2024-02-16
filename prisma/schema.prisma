@@ -38,12 +38,42 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String    @unique
+  email2        String?
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  role          Role?
+
+  // Common fields
+  address      String?
+  city         String?
+  postalCode   String?
+  region       String?
+  country      String?
+  role         Role?
+  phone        String?
+  phone2       String?
+  fax          String?
+  dateOfBirth  DateTime?
+  department   Department? @relation("DepartmentMembers", fields: [departmentId], references: [id], onDelete: SetNull)
+  departmentId String?
+  position     String?
+
+  // Customer fields
+  localTaxOffice String?
+  profession     String?
+  vatNumber      String?
+  websiteUrl     String?
+  logo           String?
+
+  // Employee fields
+
+  // Collaborator fields
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  meetings  Invite[]
 }
 
 model VerificationToken {
@@ -58,4 +88,96 @@ enum Role {
   CUSTOMER
   ADMIN
   EMPLOYEE
+  SUPER_ADMIN
+  COLLABORATOR
+}
+
+model Company {
+  id                String   @id @default(cuid())
+  singleton         String   @unique @default("singleton")
+  name              String?
+  vatNumber         String?
+  localTaxOffice    String?
+  companyProfession String?
+  address           String?
+  city              String?
+  postalCode        String?
+  region            String?
+  country           String?
+  websiteUrl        String?
+  accountingEmail   String?
+  generalEmail      String?
+  phone             String?
+  alternativePhone  String?
+  companyLogo       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Department {
+  id   String @id @default(cuid())
+  name String @unique
+
+  description String?
+  email       String?
+  phone       String?
+  members     User[]   @relation("DepartmentMembers") // One-to-many relation
+  managerId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TaxOffice {
+  id      String @id @default(cuid())
+  name    String
+  address String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Meeting {
+  id                String         @id @default(cuid())
+  title             String
+  description       String?
+  startDateTime     DateTime
+  estimatedDuration String
+  status            MEETING_STATUS @default(PLANNED)
+
+  hostId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  invites   Invite[]
+}
+
+model Invite {
+  meetingId String
+  userId    String
+  token     String
+
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@id([meetingId, userId])
+}
+
+model Upload {
+  id        String        @id @default(cuid())
+  type      Role
+  url       String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  status    UPLOAD_STATUS @default(PROCESSING)
+}
+
+enum UPLOAD_STATUS {
+  PROCESSING
+  PROCESSED
+}
+
+enum MEETING_STATUS {
+  PLANNED
+  CANCELED
+  RESCHEDULED
 }

@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useToast } from "@/components/ui/use-toast"
 import { signIn } from 'next-auth/react'
+import { SubmitButton } from './submit-button'
 
 
 const formSchema = z.object({
@@ -37,7 +37,7 @@ export const SignInForm = () => {
         'email',
         {
           email: values.email,
-          callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`,
+          callbackUrl: process.env.NEXT_PUBLIC_BASE_URL,
           redirect: false
         })
       toast({
@@ -75,7 +75,7 @@ export const SignInForm = () => {
                 )}
               />
             </div>
-            <Button disabled={loading}>{loading ? "..." : "Sign in with Email"}</Button>
+            <SubmitButton loading={loading} label='Sign in' />
           </div>
         </div>
       </form>

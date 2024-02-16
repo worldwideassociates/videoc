@@ -1,0 +1,1 @@
+export { default as UserMultiSelect } from './user-multi-select';

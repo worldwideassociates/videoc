@@ -74,3 +74,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Stream io styles */
+
+/* add this snippet in your globals.css file */
+
+.rdp-vhidden {
+  @apply hidden;
+}
+

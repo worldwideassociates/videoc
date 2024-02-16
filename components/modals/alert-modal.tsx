@@ -1,0 +1,49 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
+
+interface AlertModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  loading: boolean;
+  title?: string;
+  description?: string;
+}
+
+export const AlertModal: React.FC<AlertModalProps> = ({
+  onClose,
+  isOpen,
+  onConfirm,
+  loading,
+  title,
+  description,
+}) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
+
+  return (
+    <Modal
+      title={title ?? "Are you sure?"}
+      description={description ?? "This action cannot be undone."}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <div className="pt-6 space-x-2 flex items-center justify-end w-full">
+        <Button variant="outline" disabled={loading} onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="destructive" disabled={loading} onClick={onConfirm}>
+          Continue
+        </Button>
+      </div>
+    </Modal>
+  );
+};

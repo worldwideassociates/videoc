@@ -32,7 +32,7 @@ app.prepare().then(() => {
     try {
       // Handle requests
       handle(req, res, parsedUrl);
-      writeLog(`[${new Date().toISOString()}] Request: ${req.url}`); // Log the request
+      writeLog(`[${new Date().toISOString()}] Request: ${req.url}; body: ${req.body}`); // Log the request
     } catch (error) {
       // Log errors
       logError(error);
