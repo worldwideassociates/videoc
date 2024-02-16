@@ -9,8 +9,8 @@ import {
   StreamVideo,
   StreamVideoClient,
 } from "@stream-io/video-react-sdk"
-import { useSearchParams } from "next/navigation"
-import { User } from "@prisma/client";
+import { useRouter, useSearchParams } from "next/navigation"
+import { Meeting, User } from "@prisma/client";
 
 
 import '@stream-io/video-react-sdk/dist/css/styles.css';
@@ -20,28 +20,29 @@ import { Button } from "../ui/button";
 
 interface Props {
   user: User,
-  callId: string
+  callId: string,
+  meeting: Meeting
 }
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!
 
 const CallUiLayout = () => {
+
+
   return (
     <StreamTheme className="light">
       <SpeakerLayout participantsBarPosition='bottom' />
-      <CallControls />
+      <CallControls onLeave={() => window.location.reload()} />
     </StreamTheme>
   );
 }
 
 
-export default function VideoConference({ user, callId }: Props) {
+export default function VideoConference({ user, callId, meeting }: Props) {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')!
   const [joined, setJoined] = useState(false)
   const [joining, setJoining] = useState(false)
-
-  console.log('token', token);
 
 
   const [client] = useState<StreamVideoClient>(() => {
@@ -87,9 +88,16 @@ export default function VideoConference({ user, callId }: Props) {
   } else {
     return (
       <div className="flex justify-center items-center min-h-[650px]">
-        <Button disabled={joining} variant='outline' size='lg' onClick={joinCall}>
-          {joining ? 'Joining...' : 'Join call'}
-        </Button>
+        <div className="flex flex-col space-y-8">
+
+          <div className="">
+            <h2 className="text-2xl font-bold tracking-tight text-center">{meeting.title}</h2>
+            <p className="text-muted-foreground tesxt-center">{meeting.description}</p>
+          </div>
+          <Button disabled={joining} variant='outline' size='lg' onClick={joinCall}>
+            {joining ? 'Joining...' : 'Join call'}
+          </Button>
+        </div>
       </div>
     )
   }
