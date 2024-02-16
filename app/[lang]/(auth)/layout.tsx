@@ -1,6 +1,6 @@
 
 import { redirect } from 'next/navigation'
-import { auth } from '../api/auth/[...nextauth]/auth';
+import { auth } from '../../api/auth/[...nextauth]/auth';
 
 
 interface Props {

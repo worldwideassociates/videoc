@@ -7,9 +7,8 @@ import { useEffect } from 'react'
 
 const SignOut = () => {
 
-
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/sign-in' })
+    await signOut({ callbackUrl: '/' })
   }
 
   useEffect(() => {

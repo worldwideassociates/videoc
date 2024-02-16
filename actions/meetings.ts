@@ -4,7 +4,7 @@ import prismadb from "@/lib/prismadb";
 import { MEETING_STATUS, Meeting, User } from "@prisma/client";
 import streamClient from "@/lib/stream-server-client";
 import { sendInvites } from "@/lib/send-invites";
-import { auth } from "@/app/[lang]/api/auth/[...nextauth]/auth";
+import { auth } from "@/app/api/auth/[...nextauth]/auth";
 
 
 

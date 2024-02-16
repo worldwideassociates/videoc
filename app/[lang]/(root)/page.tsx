@@ -3,7 +3,7 @@ import { CardHeader } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import prismadb from "@/lib/prismadb";
 import { DashboarClient } from "./_components/client";
-import { auth } from "../api/auth/[...nextauth]/auth";
+import { auth } from "../../api/auth/[...nextauth]/auth";
 
 export default async function DashboardPage() {
 
