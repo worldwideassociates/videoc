@@ -31,19 +31,23 @@ export default async function DashboardPage() {
     const startDateTime = new Date(meeting.startDateTime)
     const now = new Date()
     const diff = startDateTime.getTime() - now.getTime()
-    const isNotToday = diff < 1000 * 60 * 60 * 24
+    const isToday = diff < 1000 * 60 * 60 * 24
 
-    const notInvited = !meeting.invites.find((invite) => invite.user.id === session?.user?.id)
+    const isInvited = meeting.invites.find((invite) => invite.userId === session?.user?.id)!!
 
-    const notHost = meeting.hostId !== session?.user?.id
-    return isNotToday && notInvited && notHost
+    return isInvited || isToday
   })
 
   const scheduledMeetings = meetings.filter((meeting) => {
     const startDateTime = new Date(meeting.startDateTime)
     const now = new Date()
     const diff = startDateTime.getTime() - now.getTime()
-    return diff > 1000 * 60 * 60 * 24
+
+    const notToday = diff > 1000 * 60 * 60 * 24
+    const isInvited = meeting.invites.find((invite) => invite.userId === session?.user?.id)!!
+    const isHost = meeting.hostId === session?.user?.id
+
+    return notToday && (isInvited || isHost)
   }).slice(0, 10)
 
 
