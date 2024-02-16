@@ -39,6 +39,7 @@ export default function VideoConference({ user, callId }: Props) {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')!
   const [joined, setJoined] = useState(false)
+  const [joining, setJoining] = useState(false)
 
   console.log('token', token);
 
@@ -63,12 +64,14 @@ export default function VideoConference({ user, callId }: Props) {
 
   const joinCall = async () => {
     try {
+      setJoining(true);
       await call.join({ create: true });
       setJoined(true);
     } catch (error: any) {
       console.log('error', error);
+    } finally {
+      setJoining(false);
     }
-
   }
 
 
@@ -84,7 +87,9 @@ export default function VideoConference({ user, callId }: Props) {
   } else {
     return (
       <div className="flex justify-center items-center min-h-[650px]">
-        <Button variant='outline' size='lg' onClick={joinCall}>Join Call</Button>
+        <Button disabled={joining} variant='outline' size='lg' onClick={joinCall}>
+          {joining ? 'Joining...' : 'Join call'}
+        </Button>
       </div>
     )
   }
