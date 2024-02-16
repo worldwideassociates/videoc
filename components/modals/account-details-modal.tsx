@@ -22,22 +22,19 @@ import { Button } from "@/components/ui/button";
 import { useAccountDetailsModal } from "@/hooks/use-account-details-modal";
 
 
-import { DateField, DatePicker } from "@/components/ui/datepicker";
+// import { DateField, DatePicker } from "@/components/ui/datepicker";
 import { updateUser } from "@/actions/users";
 import { useSession } from "next-auth/react";
 import { User } from "@prisma/client";
 import { createCalendarDate } from "@/lib/utils";
+import { DatePicker } from "../ui/date-picker";
 
 const currentYear = new Date().getFullYear();
 
 const formSchema = z.object({
   name: z.string().min(3, "Full name is required (minuimum of 3 characters)."),
   phone: z.string().min(10, "Invalid phone number."),
-  dateOfBirth: z.object({
-    year: z.number().min(1900, "Invalid year").max(currentYear, "Invalid year"),
-    month: z.number().min(1, "Invalid month").max(12, "Invalid month"),
-    day: z.number().min(1, "Invalid day").max(31, "Invalid day"),
-  }, { required_error: 'Invalid date of birth' })
+  dateOfBirth: z.date().optional()
 });
 
 export const AccountDetailsModal = () => {
@@ -52,7 +49,7 @@ export const AccountDetailsModal = () => {
     defaultValues: {
       name: '',
       phone: '',
-      dateOfBirth: createCalendarDate(new Date()),
+      dateOfBirth: new Date()
     },
   });
 
@@ -61,12 +58,8 @@ export const AccountDetailsModal = () => {
     startTransition(async () => {
       const email = session?.user?.email!
 
-      const payload = {
-        ...values,
-        dateOfBirth: new Date(values.dateOfBirth.year, values.dateOfBirth.month - 1, values.dateOfBirth.day)
-      }
 
-      const result = await updateUser(email, payload as User);
+      const result = await updateUser(email, values as User);
 
       if (result.success) return window.location.reload();
 
@@ -129,15 +122,7 @@ export const AccountDetailsModal = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Date of birth</FormLabel>
-                    {/* TODO: Fix this type issue */}
-                    <DatePicker
-                      // date={field.value as any}
-                      onChange={field.onChange}
-                      label="Pick a date">
-                      <DateField {...field}
-                        value={field.value as any}
-                        onChange={field.onChange} />
-                    </DatePicker>
+                    <DatePicker value={field.value} onChange={field.onChange} />
                     <FormDescription>
                       Your date of birth is used to calculate your age.
                     </FormDescription>

@@ -39,21 +39,22 @@ export const importer = async ({ url, type }: { url: string, type: Role }) => {
    */
   const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 'A', defval: '' });
 
+  console.log(jsonData[3])
+
   const users = jsonData.map((row: any) => ({
-    name: row['A'],
+    profession: row['A'],
     role: type,
-    localTaxOffice: row['B'],
-    profession: row['C'],
-    vatNumber: row['D'],
-    address: row['E'],
-    postalCode: row['F'],
-    city: row['G'],
-    country: row['H'],
-    phone: row['J'],
-    email: row['K'] || row['L'],
-    email2: row['L'],
-    fax: row['M'],
-    websiteUrl: row['N']
+    name: row['B'],
+    vatNumber: row['C'],
+    address: row['D'],
+    localTaxOffice: row['E'],
+    country: row['F'],
+    postalCode: row['G'],
+    phone: row['H'],
+    phone2: row['I'],
+    fax: row['J'],
+    websiteUrl: row['K'],
+    email: row['L'],
   }))
 
 

@@ -1,7 +1,10 @@
 "use client";
 
+
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { ColumnDef } from "@tanstack/react-table";
 import CellActions from "./cell-actions";
+import { Button } from "@/components/ui/button";
 
 
 export type CustomerColumn = {
@@ -21,7 +24,19 @@ export const columns: ColumnDef<CustomerColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    // header: ({ column }) => {
+    //   return (
+    //     <Button
+    //       variant="ghost"
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //     >
+    //       Email
+    //       <ArrowUpDown className="ml-2 h-4 w-4" />
+    //     </Button>
+    //   )
+    // },
   },
+
   {
     accessorKey: "profession",
     header: "Profession",

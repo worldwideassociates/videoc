@@ -24,7 +24,6 @@ const CustomerLayout: React.FC<Props> = ({ children }) => {
       ></div>
 
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <CustomerNav />
 
         <div className="flex-1">
           {children}

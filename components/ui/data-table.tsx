@@ -5,10 +5,21 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  VisibilityState,
   useReactTable,
   ColumnFiltersState,
   getFilteredRowModel,
+  getPaginationRowModel,
+  SortingState,
+  getSortedRowModel,
 } from "@tanstack/react-table"
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 import {
   Table,
@@ -19,6 +30,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
+import { TableFilter } from './table-filter'
+import { Button } from './button'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -29,12 +42,15 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  searchKey
 }: DataTableProps<TData, TValue>) {
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
+  const [sorting, setSorting] = useState<SortingState>([])
+
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>({})
 
   const table = useReactTable({
     data,
@@ -42,24 +58,67 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
       columnFilters,
+      columnVisibility,
+      sorting,
+
     }
   })
+
+
+  const [searchColumn, setSearchColumn] = useState(columns[0] as any)
 
 
 
   return (
     <>
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter..."
-          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn(searchKey)?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <TableFilter
+          setSearchColumn={setSearchColumn}
+          columns={columns}
+        >
+          <Input
+            placeholder={`Filtering by "${searchColumn.header.toLowerCase()}"...`}
+            value={(table.getColumn(searchColumn.accessorKey)?.getFilterValue() as string) ?? ""}
+            onChange={(event) => {
+              table.getColumn(searchColumn.accessorKey)?.setFilterValue(event.target.value)
+            }}
+            className="w-[300px] border-none"
+          />
+        </TableFilter>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columns
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter(
+                (column) => column.getCanHide()
+              )
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="rounded-md border">
@@ -105,6 +164,24 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
     </>
   )
