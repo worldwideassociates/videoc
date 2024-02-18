@@ -5,12 +5,16 @@ import { User } from '@prisma/client'
 import React, { FC } from 'react'
 import MeetingForm from '../../_components/meeting-form'
 import { Info } from 'lucide-react'
+import { LocaleProvider } from '@/providers/locale-provider'
+import { getDictionary } from '@/lib/dictionary'
+import { Locale } from '@/i18n.config'
 
 interface pageProps {
-  params: { meetingId: string }
+  params: { meetingId: string, lang: Locale }
 }
 
 const page: FC<pageProps> = async ({ params }) => {
+  const { meetings: t } = await getDictionary(params.lang) as any;
 
   const session = await auth();
   const currentUserId = session?.user?.id!
@@ -45,22 +49,26 @@ const page: FC<pageProps> = async ({ params }) => {
   const participants = invites.map(invite => invite.user)
 
   return (
+
     <div className="flex justify-center items-center min-h-screen py-10">
       <Card className='w-screen-md'>
         <CardHeader>
           <CardTitle>
-            Update meeting
+            {t.form.update.title}
           </CardTitle>
           <CardDescription className='flex space-x-1'>
             <Info size={24} className="text-gray-400" />
-            <span className="text-gray-400">When you update the start date and time, or invites, email notifications will be sent to the respective invites</span>
+            <span className="text-gray-400">
+              {t.form.update.subTitle}
+            </span>
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <MeetingForm usersOptions={users} participants={participants} meeting={meeting} />
+          <MeetingForm usersOptions={users} participants={participants} meeting={meeting} t={t} />
         </CardContent>
       </Card>
     </div>
+
   )
 }
 

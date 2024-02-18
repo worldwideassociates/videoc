@@ -18,8 +18,11 @@ const formSchema = z.object({
 })
 
 
+interface Props {
+  t: any
+}
 
-export const SignInForm = () => {
+export const SignInForm = ({ t }: Props) => {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
 
@@ -66,16 +69,16 @@ export const SignInForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="sr-only">Email</FormLabel>
+                    <FormLabel className="sr-only">{t.label.email}</FormLabel>
                     <FormControl>
-                      <Input type='email' disabled={loading} placeholder='name@example.com' {...field} />
+                      <Input type='email' disabled={loading} placeholder={t.placeholder.email} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <SubmitButton loading={loading} label='Sign in' />
+            <SubmitButton loading={loading} label={t.button} />
           </div>
         </div>
       </form>

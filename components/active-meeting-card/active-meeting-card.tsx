@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Invite, Meeting, User } from "@prisma/client";
 import { use, useEffect, useState } from "react";
 import { getUser } from "@/actions/users";
+import { LocaleContext } from "@/providers/locale-provider";
 
 
 interface Props {
@@ -19,6 +20,8 @@ interface Props {
 
 export default function ActiveMeetingCard({ meeting }: Props) {
   const [moderator, setModerator] = useState<User | null>()
+
+  const { dictionary: t } = use(LocaleContext)
 
   const fetchModerator = async () => {
     const moderator = await getUser(meeting.hostId)
@@ -41,8 +44,9 @@ export default function ActiveMeetingCard({ meeting }: Props) {
           <div className="flex flex-col">
             <CardTitle>{meeting.title}</CardTitle>
             <CardDescription className="mt-1">
-              {meeting.startDateTime <= new Date() ? "Started: " : "Starts: "}
-              {meeting.startDateTime.toLocaleTimeString()}</CardDescription>
+              {meeting.startDateTime <= new Date() ? t.upcomingMeetings.startLabelPast : t.upcomingMeetings.startLabel}
+              {meeting.startDateTime.toLocaleTimeString()}
+            </CardDescription>
           </div>
           <div className="flex space-x-2 items-center">
             <VideoIcon size={32} className="text-green-500" />
@@ -66,7 +70,7 @@ export default function ActiveMeetingCard({ meeting }: Props) {
         </div>
       </div>
       <CardFooter className="flex justify-end pb-2 pr-2">
-        <Button variant="link">Join
+        <Button variant="link">{t.upcomingMeetings.joinButton}
           <ArrowRight size={18} className="ml-2 text-gray-400" />
         </Button>
       </CardFooter>

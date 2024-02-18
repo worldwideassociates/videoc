@@ -2,10 +2,20 @@ import { StatsCard } from "@/components/stats-card";
 import { CardHeader } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import prismadb from "@/lib/prismadb";
-import { DashboarClient } from "./_components/client";
+import { DashboardClient } from "./_components/client";
 import { auth } from "../../api/auth/[...nextauth]/auth";
+import { Locale } from "@/i18n.config";
+import { getDictionary } from "@/lib/dictionary";
 
-export default async function DashboardPage() {
+
+
+interface Props {
+  params: { lang: Locale }
+}
+
+export default async function DashboardPage({ params }: Props) {
+
+  const { dashboard } = await getDictionary(params.lang) as any;
 
   const session = await auth()
 
@@ -59,9 +69,9 @@ export default async function DashboardPage() {
         <CardHeader className="px-0">
           <div className="flex space-x-2">
             <div className="">
-              <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
+              <h2 className="text-2xl font-bold tracking-tight">{dashboard.title}</h2>
               <p className="text-muted-foreground">
-                Welcome to your dashboard.
+                {dashboard.subTitle}
               </p>
             </div>
           </div>
@@ -76,7 +86,7 @@ export default async function DashboardPage() {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>
-      <DashboarClient todaysMeetings={todaysMeetings} scheduledMeetings={scheduledMeetings} />
+      <DashboardClient todaysMeetings={todaysMeetings} scheduledMeetings={scheduledMeetings} t={dashboard} locale={params.lang} />
     </div>
   )
 }

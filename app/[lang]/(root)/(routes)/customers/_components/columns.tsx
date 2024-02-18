@@ -20,41 +20,43 @@ export type CustomerColumn = {
   address: string | null
 };
 
-export const columns: ColumnDef<CustomerColumn>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-    // header: ({ column }) => {
-    //   return (
-    //     <Button
-    //       variant="ghost"
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-    //     >
-    //       Email
-    //       <ArrowUpDown className="ml-2 h-4 w-4" />
-    //     </Button>
-    //   )
-    // },
-  },
+export const getColumns = (t: Record<string, any>): ColumnDef<CustomerColumn>[] => {
+  return ([
+    {
+      accessorKey: "name",
+      header: t.form.fields.name.label,
+      // header: ({ column }) => {
+      //   return (
+      //     <Button
+      //       variant="ghost"
+      //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      //     >
+      //       Email
+      //       <ArrowUpDown className="ml-2 h-4 w-4" />
+      //     </Button>
+      //   )
+      // },
+    },
 
-  {
-    accessorKey: "profession",
-    header: "Profession",
-  },
-  {
-    accessorKey: "vatNumber",
-    header: "VAT Number",
-  },
-  {
-    header: "Local Tax Office",
-    accessorKey: "localTaxOffice",
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <CellActions data={row.original} />,
-  },
-];
+    {
+      accessorKey: "profession",
+      header: t.form.fields.profession.label,
+    },
+    {
+      accessorKey: "vatNumber",
+      header: t.form.fields.vatNumber.label,
+    },
+    {
+      accessorKey: "localTaxOffice",
+      header: t.form.fields.localTaxOffice.label,
+    },
+    {
+      accessorKey: "address",
+      header: t.form.fields.address.label,
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => <CellActions data={row.original} />,
+    },
+  ])
+}

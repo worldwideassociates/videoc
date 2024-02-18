@@ -15,6 +15,8 @@ import Link from "next/link";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@prisma/client";
+import { LocaleContext } from "@/providers/locale-provider";
+import { use } from "react";
 
 interface CellActionsProps {
   data: CustomerColumn;
@@ -44,6 +46,9 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   // };
 
 
+  const { dictionary: t } = use(LocaleContext)
+
+
 
   return (
     <>
@@ -55,22 +60,22 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t.table.actions.title}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
             <Link href={`/customers/${data.id}`}>
               <EyeIcon className="h-4 w-4 mr-2" />
-              View
+              {t.table.actions.view}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={`/customers/${data.id}/edit`}>
               <Edit className="h-4 w-4 mr-2" />
-              Edit
+              {t.table.actions.edit}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={onDelete}>
             <Trash className="h-4 w-4 mr-2" />
-            Delete
+            {t.table.actions.delete}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

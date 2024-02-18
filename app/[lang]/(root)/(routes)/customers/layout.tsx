@@ -1,21 +1,26 @@
+import { Locale } from "@/i18n.config";
 import { CustomerNav } from "./_components/nav";
+import { getDictionary } from "@/lib/dictionary";
 
 
 interface Props {
   children: React.ReactNode
+  params: { lang: Locale }
 }
 
 
 
-const CustomerLayout: React.FC<Props> = ({ children }) => {
+const CustomerLayout: React.FC<Props> = async ({ children, params }) => {
+
+  const { customers: t } = await getDictionary(params.lang) as any;
+
+
 
   return (
     <div className="hidden space-y-6 p-10 py-5 md:block">
       <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">Customer Information</h2>
-        <p className="text-muted-foreground">
-          Manage your customer information here.
-        </p>
+        <h2 className="text-2xl font-bold tracking-tight">{t.header.title}</h2>
+        <p className="text-muted-foreground">{t.header.subTitle}</p>
       </div>
       <div
         data-orientation="horizontal"

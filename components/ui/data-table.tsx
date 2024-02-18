@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { use, useState } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -32,6 +32,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { TableFilter } from './table-filter'
 import { Button } from './button'
+import { LocaleContext } from '@/providers/locale-provider'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -72,7 +73,7 @@ export function DataTable<TData, TValue>({
 
 
   const [searchColumn, setSearchColumn] = useState(columns[0] as any)
-
+  const { dictionary: t } = use(LocaleContext)
 
 
   return (
@@ -83,7 +84,7 @@ export function DataTable<TData, TValue>({
           columns={columns}
         >
           <Input
-            placeholder={`Filtering by "${searchColumn.header.toLowerCase()}"...`}
+            placeholder={`${t.table.search} "${searchColumn.header.toLowerCase()}"...`}
             value={(table.getColumn(searchColumn.accessorKey)?.getFilterValue() as string) ?? ""}
             onChange={(event) => {
               table.getColumn(searchColumn.accessorKey)?.setFilterValue(event.target.value)
@@ -94,7 +95,7 @@ export function DataTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns
+              {t.table.columnsSettings}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -172,7 +173,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          {t.table.previousPage}
         </Button>
         <Button
           variant="outline"
@@ -180,7 +181,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          {t.table.nextPage}
         </Button>
       </div>
     </>

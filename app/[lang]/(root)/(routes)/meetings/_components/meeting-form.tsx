@@ -36,7 +36,8 @@ interface Props {
   usersOptions: User[];
   meeting?: Meeting | null
   participants?: User[]
-  host?: User | null
+  host?: User | null,
+  t: Record<string, any>
 }
 
 const formSchema = z.object({
@@ -62,7 +63,7 @@ const formSchema = z.object({
   })),
 })
 
-const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) => {
+const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants, t }) => {
 
   const employeesOptions = usersOptions.filter(user => user.role === Role.EMPLOYEE || user.role === Role.ADMIN)
   const savedEmployees = participants?.filter(user => user.role === Role.EMPLOYEE || user.role === Role.ADMIN)
@@ -268,7 +269,7 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Agenda</FormLabel>
+                  <FormLabel>{t.form.fields.title.label}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
@@ -276,7 +277,9 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="font-light text-xs text-muted-foreground">Whats the agenda of the meeting?</FormDescription>
+                  <FormDescription className="font-light text-xs text-muted-foreground">
+                    {t.form.fields.title.helpText}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -287,10 +290,10 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>{t.form.fields.description.label}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="What will be covered in the meeting?"
+                      placeholder={t.form.fields.description.placeholder}
                       className="resize-none"
                       {...field}
                     />
@@ -308,13 +311,15 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex flex-col space-y-2">
-                      <FormLabel>Date</FormLabel>
+                      <FormLabel>{t.form.fields.date.label}</FormLabel>
                       <DatePicker
                         value={field.value}
-                        onChange={field.onChange} />
+                        onChange={field.onChange}
+                        placeholder={t.form.fields.date.placeholder}
+                      />
                     </div>
                     <FormDescription className="font-light text-xs text-muted-foreground">
-                      When is the meeting scheduled for?
+                      {t.form.fields.date.helpText}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -326,20 +331,21 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex flex-col space-y-2">
-                      <FormLabel>Time</FormLabel>
+                      <FormLabel>{t.form.fields.time.label}</FormLabel>
                       <Select
                         onValueChange={(a) => field.onChange(a.split(',').map((a: string) => parseInt(a)))}
                         defaultValue={field.value?.toString()}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Pick time" />
+                            <SelectValue
+                              className='text-gray-600' placeholder={t.form.fields.time.placeholder} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           {
                             timesOptions().map((option) => (
-                              <SelectItem key={option.label} value={option.value}>
+                              <SelectItem className='text-muted-foreground' key={option.label} value={option.value}>
                                 {option.label}
                               </SelectItem>
                             ))
@@ -349,7 +355,7 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
                       </Select>
                     </div>
                     <FormDescription className="font-light text-xs text-muted-foreground">
-                      what time?
+                      {t.form.fields.time.helpText}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -364,11 +370,11 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
               name="estimatedDuration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Estimated duration</FormLabel>
+                  <FormLabel>{t.form.fields.estimatedDuration.label}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value?.toString()}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
+                        <SelectValue placeholder={t.form.fields.estimatedDuration.placeholder} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -391,17 +397,19 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
               name="employees"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Invite Employee</FormLabel>
+                  <FormLabel>{t.form.fields.inviteEmployees.label}</FormLabel>
                   <MultiSelect
                     selected={field.value || []}
                     onSelect={field.onChange}
                     users={employeesOptions}
-                    placeholder="select employees to invite"
+                    placeholder={t.form.fields.inviteEmployees.placeholder}
                   />
                   <FormMessage />
                   <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
                     <InfoIcon size={16} />
-                    <span>Select employees to invite to the meeting. an email notification will be sent to each individual</span>
+                    <span>
+                      {t.form.fields.inviteEmployees.helpText}
+                    </span>
                   </FormDescription>
                 </FormItem>
               )}
@@ -411,17 +419,21 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
               name="collaborators"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Invite Collaborators</FormLabel>
+                  <FormLabel>
+                    {t.form.fields.inviteCollaborators.label}
+                  </FormLabel>
                   <MultiSelect
                     selected={field.value || []}
                     onSelect={field.onChange}
                     users={collaboratorsOptions}
-                    placeholder="select collaborators to invite"
+                    placeholder={t.form.fields.inviteCollaborators.placeholder}
                   />
                   <FormMessage />
                   <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
                     <InfoIcon size={16} />
-                    <span>Select collaborators to invite to the meeting. an email notification will be sent to each individual</span>
+                    <span>
+                      {t.form.fields.inviteCollaborators.helpText}
+                    </span>
                   </FormDescription>
                 </FormItem>
               )}
@@ -431,17 +443,21 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
               name="customers"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Invite Customers</FormLabel>
+                  <FormLabel>
+                    {t.form.fields.inviteCustomers.label}
+                  </FormLabel>
                   <MultiSelect
                     selected={field.value || []}
                     onSelect={field.onChange}
                     users={customersOptions}
-                    placeholder="select customers to invite"
+                    placeholder={t.form.fields.inviteCustomers.placeholder}
                   />
                   <FormMessage />
                   <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
                     <InfoIcon size={16} />
-                    <span>Select customers to invite to the meeting. an email notification will be sent to each individual</span>
+                    <span>
+                      {t.form.fields.inviteCustomers.helpText}
+                    </span>
                   </FormDescription>
                 </FormItem>
               )}
@@ -449,7 +465,7 @@ const MeetingForm: React.FC<Props> = ({ usersOptions, meeting, participants }) =
           </fieldset>
           <div className="mt-4">
             <Button disabled={loading}>
-              {meeting ? "Update meeting" : "Schedule meeting"}
+              {meeting ? t.form.update.button : t.form.create.button}
             </Button>
           </div>
         </form>

@@ -1,0 +1,164 @@
+{
+  "auth": {
+    "title": "Welcome back!",
+    "subTitle": "Provide your credentials to access your account",
+    "signInForm": {
+      "placeholder": {
+        "email": "name@example.com"
+      },
+      "button": "Sign in",
+      "label": {
+        "email": "Email"
+      },
+      "tns": {
+        "label": "By clicking continue, you agree to our",
+        "termsLink": "Terms of Service",
+        "privacyLink": "Privacy Policy"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subTitle": "Welcome to your dashboard",
+    "upcomingMeetings": {
+      "title": "Upcoming Meetings",
+      "subTitle": "Your meeting schedule for today",
+      "startLabel": "Starts at ",
+      "startLabelPast": "Started at ",
+      "joinButton": "Join"
+    },
+    "scheduledMeetings": {
+      "title": "Scheduled Meetings",
+      "subTitle": "All meetings scheduled for the next 7 days"
+    },
+    "alertModal": {
+      "title": "Are you sure?",
+      "description": "You're about to cancel this meeting. This action cannot be undone.",
+      "cancelButton": "Cancel",
+      "confirmButton": "Yes, cancel"
+    }
+  },
+   "meetings": {
+    "form": {
+      "update": {
+        "title": "Update Meeting",
+        "subTitle": "When you update the start date and time, or invites, email notifications will be sent to the respective invites.",
+        "button": "Update meeting"
+      },
+      "create": {
+        "title": "Create Meeting",
+        "subTitle": "Create a new meeting and invite your team members",
+        "button": "Create meeting"
+      },
+      "fields": {
+        "title": {
+          "label": "Agenda",
+          "placeholder": "Meeting subject",
+          "helperText": "This will be the agenda of the meeting"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "What will be discussed?"
+        },
+        "date": {
+          "label": "Date",
+          "placeholder": "Pick a date",
+          "helperText": "When the meeting will take place?"
+        },
+        "time": {
+          "label": "Time",
+          "placeholder": "Pick a time",
+          "helperText": "What time"
+        },
+        "estimatedDuration": {
+          "label": "Estimated duration",
+          "placeholder": "How long will the meeting last?"
+        },
+        "inviteEmployees": {
+          "label": "Invite employees",
+          "placeholder": "Search for employees",
+          "helpText": "Select employees to invite to the meeting and send them an email notification to each of them"
+        },
+        "inviteCollaborators": {
+          "label": "Invite collaborators",
+          "placeholder": "Search for collaborators",
+          "helpText": "Select collaborators to invite to the meeting and send them an email notification to each of them"
+        },
+        "inviteCustomers": {
+          "label": "Invite customers",
+          "placeholder": "Search for customers",
+          "helpText": "Select customers to invite to the meeting and send them an email notification to each of them"
+        }
+      }
+    }
+   },
+   "customers": {
+    "header": {
+      "title": "Customer Information",
+      "subTitle": "Manage your customer information here"
+    },
+    "title": "Customers",
+    "addButton": "Add customer",
+    "form": {
+      "create": {
+        "title": "Create Customer",
+        "subTitle": "Add a new customer to your list",
+        "button": "Create customer"
+      },
+      "update": {
+        "title": "Update Customer",
+        "subTitle": "Update customer details",
+        "button": "Update customer"
+      },
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Customer name"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Customer email"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Customer phone"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Customer address"
+        },
+        "vatNumber": {
+          "label": "VAT Number",
+          "placeholder": "Customer VAT number"
+        },
+        "profession": {
+          "label": "Profession",
+          "placeholder": "Customer profession"
+        },
+        "localTaxOffice": {
+          "label": "Local Tax Office",
+          "placeholder": "Customer local tax office"
+        }
+      }
+    },
+    "alertModal": {
+      "title": "Are you sure?",
+      "description": "You're about to cancel this meeting. This action cannot be undone.",
+      "cancelButton": "Cancel",
+      "confirmButton": "Yes, cancel"
+    },
+    "table": {
+    "columnsSettings": "Columns",
+    "search": "Filter by",
+    "selectFilterColumn": "Select filter column",
+    "nextPage": "Next",
+    "previousPage": "Previous",
+    "actions": {
+      "title": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View"
+    }
+    }
+   }
+}

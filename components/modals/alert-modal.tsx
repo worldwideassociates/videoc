@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import { LocaleContext } from "@/providers/locale-provider";
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   description,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const { dictionary: t } = use(LocaleContext);
 
   useEffect(() => {
     setIsMounted(true);
@@ -38,10 +40,10 @@ export const AlertModal: React.FC<AlertModalProps> = ({
     >
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
         <Button variant="outline" disabled={loading} onClick={onClose}>
-          Cancel
+          {t.alertModal.cancelButton}
         </Button>
         <Button variant="destructive" disabled={loading} onClick={onConfirm}>
-          Continue
+          {t.alertModal.confirmButton}
         </Button>
       </div>
     </Modal>

@@ -5,14 +5,17 @@ import prismadb from '@/lib/prismadb';
 import { auth } from '@/app/api/auth/[...nextauth]/auth';
 import { User } from '@prisma/client';
 import { Info } from 'lucide-react';
+import { getDictionary } from '@/lib/dictionary';
+import { Locale } from '@/i18n.config';
 
 interface pageProps {
-
+  params: { lang: Locale }
 }
 
-const page: FC<pageProps> = async ({ }) => {
+const page: FC<pageProps> = async ({ params }) => {
   const session = await auth();
   const currentUserId = session?.user?.id!
+  const { meetings: t } = await getDictionary(params.lang) as any;
 
   let users: User[] = []
 
@@ -28,7 +31,7 @@ const page: FC<pageProps> = async ({ }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen py-10">
-      <Card className='max-w-xl w-full'>
+      <Card className='w-screen-md'>
         <CardHeader>
           <CardTitle>
             Schedule a meeting
@@ -39,7 +42,7 @@ const page: FC<pageProps> = async ({ }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <MeetingForm usersOptions={users} />
+          <MeetingForm usersOptions={users} t={t} />
         </CardContent>
       </Card>
     </div>

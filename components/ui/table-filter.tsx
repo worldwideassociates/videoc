@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { LocaleContext } from "@/providers/locale-provider"
 
 const labels = [
   "feature",
@@ -35,6 +36,7 @@ export function TableFilter({
   columns: any[]
 }) {
 
+  const { dictionary: t } = React.use(LocaleContext)
   const [open, setOpen] = React.useState(false)
 
   return (
@@ -49,7 +51,7 @@ export function TableFilter({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[200px]">
-          <DropdownMenuLabel>Select filter column</DropdownMenuLabel>
+          <DropdownMenuLabel>{t.table.selectFilterColumn}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             {

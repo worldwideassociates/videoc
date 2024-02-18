@@ -14,17 +14,21 @@ import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { cancelMeeting } from "@/actions/meetings";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { LocaleProvider } from "@/providers/locale-provider";
+import { Locale } from "@/i18n.config";
 
 interface IMeeting extends Meeting {
-  invites: (Invite & { user: User })[]
+  invites: (Invite & { user: User })[],
 }
 
 interface clientProps {
   todaysMeetings: IMeeting[]
   scheduledMeetings: IMeeting[]
+  t: Record<string, any>
+  locale: Locale
 }
 
-export const DashboarClient: FC<clientProps> = ({ todaysMeetings, scheduledMeetings }) => {
+export const DashboardClient: FC<clientProps> = ({ todaysMeetings, scheduledMeetings, t, locale }) => {
   const [cancelling, setCancelling] = useState(false)
   const [meetingToCancel, setMeetingToCancel] = useState<Meeting | null>(null)
   const { toast } = useToast()
@@ -33,6 +37,7 @@ export const DashboarClient: FC<clientProps> = ({ todaysMeetings, scheduledMeeti
   const isOpen = useAlertModal(state => state.isOpen)
   const onClose = useAlertModal(state => state.onClose)
   const onOpen = useAlertModal(state => state.onOpen)
+
 
 
   const handleCanelMeeting = async () => {
@@ -71,22 +76,22 @@ export const DashboarClient: FC<clientProps> = ({ todaysMeetings, scheduledMeeti
   }
 
   return (
-    <>
+    <LocaleProvider defaultLocale={locale} dictionary={t}>
       <AlertModal
         isOpen={isOpen}
         onClose={onCancel}
         onConfirm={onConfirm}
         loading={cancelling}
-        title="Are you sure?"
-        description="You are about to cancel this meeting. This action cannot be undone."
+        title={t.alertModal.title}
+        description={t.alertModal.description}
       />
       <div className="">
         <CardHeader className="px-0 pb-0">
           <div className="flex space-x-2 items-center">
             <div className="">
-              <h2 className="text-xl font-bold tracking-tight">Upcoming meetings</h2>
+              <h2 className="text-xl font-bold tracking-tight">{t.upcomingMeetings.title}</h2>
               <p className="text-muted-foreground">
-                Your meetings scheduled for today.
+                {t.upcomingMeetings.subTitle}
               </p>
             </div>
             {/* <Button variant="outline" asChild className="rounded-full">
@@ -111,9 +116,9 @@ export const DashboarClient: FC<clientProps> = ({ todaysMeetings, scheduledMeeti
         <CardHeader className="px-0">
           <div className="flex space-x-2 items-center">
             <div className="">
-              <h2 className="text-xl font-bold tracking-tight">Scheduled Meetings</h2>
+              <h2 className="text-xl font-bold tracking-tight">{t.scheduledMeetings.title}</h2>
               <p className="text-muted-foreground">
-                All meetings scheduled for the next 7 days.
+                {t.scheduledMeetings.subTitle}
               </p>
             </div>
             <Button variant="outline" asChild className="rounded-full">
@@ -131,6 +136,6 @@ export const DashboarClient: FC<clientProps> = ({ todaysMeetings, scheduledMeeti
           }
         </div>
       </div>
-    </>
+    </LocaleProvider>
   )
 }
