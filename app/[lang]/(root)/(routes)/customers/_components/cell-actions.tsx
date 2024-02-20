@@ -62,7 +62,7 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t.table.actions.title}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/customers/${data.id}`}>
+            <Link href={`/customers/${data.id}/details`}>
               <EyeIcon className="h-4 w-4 mr-2" />
               {t.table.actions.view}
             </Link>

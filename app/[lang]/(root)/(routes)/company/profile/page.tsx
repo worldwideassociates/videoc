@@ -1,10 +1,18 @@
 import prismadb from "@/lib/prismadb";
 import { ProfileForm } from "./_components/profile-form";
 import { Card, CardContent } from "@/components/ui/card";
+import { Locale } from "@/i18n.config";
+import { getDictionary } from "@/lib/dictionary";
 
 
+interface Props {
+  params: { lang: Locale }
+}
 
-export default async function CompanyProfilePage() {
+export default async function CompanyProfilePage({ params }: Props) {
+
+  const { companyProfile: t } = await getDictionary(params.lang);
+
   const company = await prismadb.company.upsert({
     where: { singleton: "singleton" },
     create: {
@@ -16,7 +24,7 @@ export default async function CompanyProfilePage() {
   return (
     <Card>
       <CardContent className="mt-10">
-        <ProfileForm company={company} />
+        <ProfileForm company={company} t={t} />
       </CardContent>
     </Card>
   )

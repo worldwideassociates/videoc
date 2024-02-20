@@ -4,12 +4,18 @@ import { CustomerForm } from '../../_components/customer-form';
 import { Heading } from '@/components/heading';
 import { normalize } from '@/lib/utils';
 import { User } from '@prisma/client';
+import { getDictionary } from '@/lib/dictionary';
+import { Locale } from '@/i18n.config';
 
 interface pageProps {
-  params: { customerId: string }
+  params: { customerId: string, lang: Locale }
 }
 
 const Page: FC<pageProps> = async ({ params }) => {
+
+
+  const { customers: t } = await getDictionary(params.lang) as any;
+
   const customer = await prismadb.user.findFirst({
     where: {
       id: params.customerId
@@ -29,8 +35,12 @@ const Page: FC<pageProps> = async ({ params }) => {
 
   return (
     <div className="max-w-xl">
-      <Heading title="Customers" />
-      <CustomerForm localTaxOfficesOptions={options} customer={normalizedCustomer} readonly={true} />
+      <Heading title={t.details.title} />
+      <CustomerForm
+        localTaxOfficesOptions={options}
+        customer={normalizedCustomer}
+        readonly={true}
+        t={t} />
     </div>
   )
 }

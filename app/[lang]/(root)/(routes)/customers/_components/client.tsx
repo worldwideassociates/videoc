@@ -74,7 +74,7 @@ export const CustomerClient: React.FC<Props> = ({ data, t }) => {
           </div>
         </CardHeader>
         <CardContent>
-          <DataTable searchKey="name" columns={getColumns
+          <DataTable columns={getColumns
             (t)} data={data} />
         </CardContent>
       </Card>

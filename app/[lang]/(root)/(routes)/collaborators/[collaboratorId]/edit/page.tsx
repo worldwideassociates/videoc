@@ -4,13 +4,16 @@ import { CollaboratorForm } from '../../_components/collaborator-form';
 import { normalize } from '@/lib/utils';
 import { User } from '@prisma/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Locale } from '@/i18n.config';
+import { getDictionary } from '@/lib/dictionary';
 
 interface pageProps {
-  params: { customerId: string }
+  params: { customerId: string, lang: Locale }
 }
 
 const Page: FC<pageProps> = async ({ params }) => {
 
+  const { collaborators: t } = await getDictionary(params.lang) as any;
 
   const collaborator = await prismadb.user.findFirst({
     where: {
@@ -37,7 +40,7 @@ const Page: FC<pageProps> = async ({ params }) => {
           <CardTitle className="mx-5">Edit collaborator</CardTitle>
         </CardHeader>
         <CardContent>
-          <CollaboratorForm localTaxOfficesOptions={options} collaborator={normalizedCollaborator} />
+          <CollaboratorForm t={t} localTaxOfficesOptions={options} collaborator={normalizedCollaborator} />
         </CardContent>
       </Card>
     </div>

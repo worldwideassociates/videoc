@@ -1,15 +1,20 @@
 import React, { FC } from 'react'
 import prismadb from '@/lib/prismadb';
-import { CollaboratorForm } from '../_components/collaborator-form';
+import { CollaboratorForm } from '../../_components/collaborator-form';
 import { Heading } from '@/components/heading';
 import { normalize } from '@/lib/utils';
 import { User } from '@prisma/client';
+import { Locale } from '@/i18n.config';
+import { getDictionary } from '@/lib/dictionary';
 
 interface pageProps {
-  params: { collaboratorId: string }
+  params: { collaboratorId: string, lang: Locale }
 }
 
 const Page: FC<pageProps> = async ({ params }) => {
+
+  const { collaborators: t } = await getDictionary(params.lang) as any;
+
   const collaborator = await prismadb.user.findFirst({
     where: {
       id: params.collaboratorId
@@ -29,8 +34,8 @@ const Page: FC<pageProps> = async ({ params }) => {
 
   return (
     <div className="max-w-xl">
-      <Heading title="Customers" />
-      <CollaboratorForm localTaxOfficesOptions={options} collaborator={normalizedCollaborator} readonly={true} />
+      <Heading title={t.details.title} />
+      <CollaboratorForm t={t} localTaxOfficesOptions={options} collaborator={normalizedCollaborator} readonly={true} />
     </div>
   )
 }

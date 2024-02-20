@@ -14,6 +14,17 @@
         "label": "By clicking continue, you agree to our",
         "termsLink": "Terms of Service",
         "privacyLink": "Privacy Policy"
+      },
+      "magicLink": {
+        "subject": "Your magic link",
+        "description": "You have requested a magic link to sign in to your account. Click the button above to sign in.",
+        "link": "Click here to sign in"
+      },
+      "toast": {
+        "success": {
+          "title": "You're almost in",
+          "description": "a sign in link was sent to your mail box"
+        }
       }
     }
   },
@@ -36,9 +47,27 @@
       "description": "You're about to cancel this meeting. This action cannot be undone.",
       "cancelButton": "Cancel",
       "confirmButton": "Yes, cancel"
+    },
+    "statsCards": {
+      "meetings": {
+        "title": "Total Meetings",
+        "subTitle": "Total meetings scheduled"
+      },
+      "employees": {
+        "title": "Total Employees",
+        "subTitle": "Total employees in the company"
+      },
+      "customers": {
+        "title": "Total Customers",
+        "subTitle": "Total customers in the company"
+      },
+      "collaborators": {
+        "title": "Total Collaborators",
+        "subTitle": "Total collaborators in the company"
+      }
     }
   },
-   "meetings": {
+  "meetings": {
     "form": {
       "update": {
         "title": "Update Meeting",
@@ -91,8 +120,8 @@
         }
       }
     }
-   },
-   "customers": {
+  },
+  "customers": {
     "header": {
       "title": "Customer Information",
       "subTitle": "Manage your customer information here"
@@ -101,7 +130,7 @@
     "addButton": "Add customer",
     "form": {
       "create": {
-        "title": "Create Customer",
+        "title": "New Customer",
         "subTitle": "Add a new customer to your list",
         "button": "Create customer"
       },
@@ -117,7 +146,7 @@
         },
         "email": {
           "label": "Email",
-          "placeholder": "Customer email"
+          "placeholder": "contact@example.com"
         },
         "phone": {
           "label": "Phone",
@@ -127,9 +156,34 @@
           "label": "Address",
           "placeholder": "Customer address"
         },
+        "city": {
+          "label": "City",
+          "placeholder": "Customer city"
+        },
+        "region": {
+          "label": "Region",
+          "placeholder": "Customer region"
+        },
+        "postalCode": {
+          "label": "Postal Code",
+          "placeholder": "Customer postal code"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Customer country"
+        },
+        "websiteUrl": {
+          "label": "Website URL",
+          "placeholder": "https://www.example.com"
+        },
+        "logo": {
+          "label": "Logo",
+          "placeholder": "Customer logo"
+        },
         "vatNumber": {
           "label": "VAT Number",
-          "placeholder": "Customer VAT number"
+          "placeholder": "Customer VAT number",
+          "helpText": "VAT number for invoicing and compliances purposes"
         },
         "profession": {
           "label": "Profession",
@@ -137,28 +191,387 @@
         },
         "localTaxOffice": {
           "label": "Local Tax Office",
-          "placeholder": "Customer local tax office"
+          "placeholder": "Select local tax office"
         }
+      },
+      "buttons": {
+        "create": "Create customer",
+        "update": "Update customer"
       }
     },
     "alertModal": {
       "title": "Are you sure?",
-      "description": "You're about to cancel this meeting. This action cannot be undone.",
+      "description": "You're about to delete this customer?. This action cannot be undone.",
       "cancelButton": "Cancel",
       "confirmButton": "Yes, cancel"
     },
     "table": {
-    "columnsSettings": "Columns",
-    "search": "Filter by",
-    "selectFilterColumn": "Select filter column",
-    "nextPage": "Next",
-    "previousPage": "Previous",
-    "actions": {
-      "title": "Actions",
-      "edit": "Edit",
-      "delete": "Delete",
-      "view": "View"
+      "columnsSettings": "Columns",
+      "search": "Filter by",
+      "selectFilterColumn": "Select filter column",
+      "nextPage": "Next",
+      "previousPage": "Previous",
+      "actions": {
+        "title": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "view": "View"
+      }
+    },
+    "details": {
+      "title": "Customer"
     }
+  },
+  "collaborators": {
+    "header": {
+      "title": "Collaborator Information",
+      "subTitle": "Manage your collaborator information here"
+    },
+    "title": "Collaborators",
+    "addButton": "Add collaborator",
+    "form": {
+      "create": {
+        "title": "New Collaborator",
+        "subTitle": "Add a new collaborator to your list",
+        "button": "Create collaborator"
+      },
+      "update": {
+        "title": "Update Collaborator",
+        "subTitle": "Update collaborator details",
+        "button": "Update collaborator"
+      },
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Collaborator name"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "contact@example.com"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Collaborator phone"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Collaborator address"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Collaborator city"
+        },
+        "region": {
+          "label": "Region",
+          "placeholder": "Collaborator region"
+        },
+        "postalCode": {
+          "label": "Postal Code",
+          "placeholder": "Collaborator postal code"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Collaborator country"
+        },
+        "websiteUrl": {
+          "label": "Website URL",
+          "placeholder": "https://www.example.com"
+        },
+        "logo": {
+          "label": "Logo",
+          "placeholder": "Collaborator logo"
+        },
+        "vatNumber": {
+          "label": "VAT Number",
+          "placeholder": "Collaborator VAT number",
+          "helpText": "VAT number for invoicing and compliances purposes"
+        },
+        "profession": {
+          "label": "Profession",
+          "placeholder": "Collaborator profession"
+        },
+        "localTaxOffice": {
+          "label": "Local Tax Office",
+          "placeholder": "Select local tax office"
+        }
+      },
+      "buttons": {
+        "create": "Create collaborator",
+        "update": "Update  collaborator"
+      }
+    },
+    "table": {
+      "columnsSettings": "Columns",
+      "search": "Filter by",
+      "selectFilterColumn": "Select filter column",
+      "nextPage": "Next",
+      "previousPage": "Previous",
+      "actions": {
+        "title": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "view": "View"
+      }
+    },
+    "alertModal": {
+      "title": "Are you sure?",
+      "description": "You're about to delete this collaborator. This action cannot be undone.",
+      "cancelButton": "Cancel",
+      "confirmButton": "Yes, cancel"
+    },
+    "details": {
+      "title": "Collaborator"
     }
-   }
+  },
+  "companyProfile": {
+    "header": {
+      "title": "Company Information",
+      "subTitle": "Details about the company and more"
+    },
+    "form": {
+      "header": {
+        "title": "Company Profile",
+        "subTitle": "Manage your company profile information here"
+      },
+      "update": {
+        "title": "Update Company Profile",
+        "subTitle": "Update company profile details",
+        "button": "Update company profile"
+      },
+      "fields": {
+        "name": {
+          "label": "Company Name",
+          "placeholder": "company name"
+        },
+        "email": {
+          "label": "Company Email",
+          "placeholder": "company email"
+        },
+        "vatNumber": {
+          "label": "VAT Number",
+          "placeholder": "company VAT number",
+          "helpText": "VAT number for invoicing and compliances purposes"
+        },
+        "localTaxOffice": {
+          "label": "Local Tax Office",
+          "placeholder": "Select local tax office",
+          "helpText": "Tax office where the business files its taxes"
+        },
+        "companyProfession": {
+          "label": "Profession",
+          "placeholder": "company profession"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "company address"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "company city"
+        },
+        "region": {
+          "label": "Region",
+          "placeholder": "company region"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "company country"
+        },
+        "websiteUrl": {
+          "label": "Website URL",
+          "placeholder": "https://www.example.com",
+          "helpText": "Company website URL"
+        },
+        "accountingEmail": {
+          "label": "Accounting Email",
+          "placeholder": "accounting email",
+          "helpText": "Email for accounting department"
+        },
+        "generalEmail": {
+          "label": "General Email",
+          "placeholder": "general email",
+          "helpText": "General email for the company"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "company phone"
+        },
+        "alternativePhone": {
+          "label": "Alternative Phone",
+          "placeholder": "alternative phone"
+        },
+        "companyLogo": {
+          "label": "Logo",
+          "placeholder": "company logo"
+        }
+      },
+      "buttons": {
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    }
+  },
+  "departments": {
+    "alertModal": {
+      "title": "Are you sure?",
+      "description": "You're about to delete this department. This action cannot be undone.",
+      "cancelButton": "Cancel",
+      "confirmButton": "Yes, cancel"
+    },
+    "form": {
+      "header": {
+        "create": "New Department"
+      },
+      "create": {
+        "title": "New Department",
+        "subTitle": "Add a new department to your list",
+        "button": "Create department"
+      },
+      "update": {
+        "title": "Update Department",
+        "subTitle": "Update department details",
+        "button": "Update department"
+      },
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Department name",
+          "helpText": "department names must be unique"
+        },
+        "email": {
+          "label": "Department Email",
+          "placeholder": "department email"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "department phone"
+        },
+        "manager": {
+          "label": "Manager",
+          "placeholder": "Select manager"
+        },
+        "members": {
+          "label": "Members",
+          "placeholder": "Select members",
+          "helpText": "If you cant find the user you are looking for, make sure they are not already a member of another department"
+        }
+      },
+
+      "buttons": {
+        "create": "create",
+        "update": "update"
+      }
+    }
+  },
+  "employees": {
+    "header": {
+      "title": "Employee Information",
+      "subTitle": "Manage your employee information here"
+    },
+    "title": "Employees",
+    "addButton": "Add employee",
+    "form": {
+      "create": {
+        "title": "New Employee",
+        "subTitle": "Add a new employee to your list",
+        "button": "Create employee"
+      },
+      "update": {
+        "title": "Update Employee",
+        "subTitle": "Update employee details",
+        "button": "Update employee"
+      },
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Employee name"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Employee name"
+        },
+        "position": {
+          "label": "Position",
+          "placeholder": "Employee position"
+        },
+        "department": {
+          "label": "Department",
+          "placeholder": "Select a department"
+        },
+        "vatNumber": {
+          "label": "VAT Number",
+          "placeholder": "Employee VAT number",
+          "helpText": "VAT number for invoicing and compliances purposes"
+        },
+        "localTaxOffice": {
+          "label": "Local Tax Office",
+          "placeholder": "Select local tax office"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Employee phone"
+        },
+        "dateOfBirth": {
+          "label": "Date of Birth",
+          "placeholder": "date of birth"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Employee address"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Employee city"
+        },
+        "region": {
+          "label": "Region",
+          "placeholder": "Employee region"
+        },
+        "postalCode": {
+          "label": "Postal Code",
+          "placeholder": "Employee postal code"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Employee country"
+        }
+      },
+      "buttons": {
+        "create": "Create employee",
+        "update": "Update employee"
+      }
+    },
+    "table": {
+      "columnsSettings": "Columns",
+      "search": "Filter by",
+      "selectFilterColumn": "Select filter column",
+      "nextPage": "Next",
+      "previousPage": "Previous",
+      "actions": {
+        "title": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "view": "View"
+      }
+    },
+    "alertModal": {
+      "title": "Are you sure?",
+      "description": "You're about to delete an employee. This action cannot be undone.",
+      "cancelButton": "Cancel",
+      "confirmButton": "Yes, cancel"
+    }
+  },
+  "email": {
+    "inviteMessage": {
+      "subject": "You have been invited to a meeting",
+      "body": "You have been invited to a meeting. for:",
+      "button": "View meeting"
+    },
+    "rescheduleMessage": {
+      "subject": "Meeting rescheduled",
+      "body": "The meeting has been rescheduled to:",
+      "button": "View meeting"
+    }
+  }
 }

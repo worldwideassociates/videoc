@@ -5,6 +5,8 @@ import { MEETING_STATUS, Meeting, User } from "@prisma/client";
 import streamClient from "@/lib/stream-server-client";
 import { sendInvites } from "@/lib/send-invites";
 import { auth } from "@/app/api/auth/[...nextauth]/auth";
+import { Locale } from "@/i18n.config";
+import { getDictionary } from "@/lib/dictionary";
 
 
 
@@ -89,7 +91,10 @@ const update = async (id: string, values: Meeting & { participants: { id: string
       })
 
       // send meeting link to participants
-      const message = `You have been invited to the meeting "${meeting.title}" on ${values.startDateTime.toLocaleString()}.`
+
+      const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
+      const { email: t } = await getDictionary(locale) as any
+      const message = `${t.inviteMessage} "${meeting.title}": ${values.startDateTime.toLocaleString()}.`
       sendInvites(participantMeetings, message)
 
       // Add new users to stream call
@@ -121,7 +126,10 @@ const update = async (id: string, values: Meeting & { participants: { id: string
       const userIds = values.participants.map((p: any) => p.id)
       const oldParticipants = invites.filter((i: any) => userIds.includes(i.userId)).map((i: any) => ({ participant: i.user, meeting, token: i.token }))
 
-      const message = `The meeting "${meeting.title}" has been rescheduled to ${values.startDateTime.toLocaleString()}.`
+
+      const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
+      const { email: t } = await getDictionary(locale) as any
+      const message = `"${meeting.title}":  ${t.rescheduledMessage.body} ${values.startDateTime.toLocaleString()}.`
 
       sendInvites(oldParticipants, message)
     }
@@ -180,7 +188,9 @@ const create = async (values: Meeting & { participants: User[] }) => {
     })
 
     // send meeting link to participants
-    const message = `You have been invited to the meeting "${meeting.title}" on ${values.startDateTime.toLocaleTimeString()}.`
+    const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
+    const { email: t } = await getDictionary(locale) as any
+    const message = `${t.inviteMessage.body} "${meeting.title}": ${values.startDateTime.toLocaleTimeString()}.`
     sendInvites([{ participant: host!, meeting, token }, ...participantMeetings], message)
 
     return { success: true, message: "Meeting scheduled successfully." };

@@ -8,17 +8,19 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { DataTable } from "@/components/ui/data-table";
-import { CollaboratorColumn, columns } from "./columns";
+import { CollaboratorColumn, getColumns } from "./columns";
 import { User } from "@prisma/client";
 import { deleteUser } from "@/actions/users";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LocaleProvider } from "@/providers/locale-provider";
 
 interface Props {
   data: CollaboratorColumn[];
+  t: Record<string, any>;
 }
 
-export const CollaboratorClient: React.FC<Props> = ({ data }) => {
+export const CollaboratorClient: React.FC<Props> = ({ data, t }) => {
   const [deleting, setDeleting] = useState(false)
 
   const { toast } = useToast()
@@ -50,7 +52,7 @@ export const CollaboratorClient: React.FC<Props> = ({ data }) => {
   }
 
   return (
-    <>
+    <LocaleProvider dictionary={t} >
       <AlertModal loading={deleting} isOpen={isOpen} onClose={onClose} onConfirm={onDelete} />
       <Card>
         <CardHeader className="flex space-x-3 flex-row items-center justify-between">
@@ -73,9 +75,9 @@ export const CollaboratorClient: React.FC<Props> = ({ data }) => {
           </div>
         </CardHeader>
         <CardContent>
-          <DataTable searchKey="name" columns={columns} data={data} />
+          <DataTable columns={getColumns(t)} data={data} />
         </CardContent>
       </Card>
-    </>
+    </LocaleProvider>
   );
 };

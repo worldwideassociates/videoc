@@ -35,7 +35,6 @@ const formSchema = z.object({
   websiteUrl: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
-  logo: z.string().optional(),
 })
 
 
@@ -46,9 +45,10 @@ interface Props {
   customer?: User | null
   readonly?: boolean
   localTaxOfficesOptions: { label: string, value: string }[]
+  t: Record<string, any>
 }
 
-const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, readonly = false }) => {
+const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, t, readonly = false }) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false);
 
@@ -67,7 +67,6 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
       websiteUrl: customer?.websiteUrl ?? '',
       email: customer?.email ?? '',
       phone: customer?.phone ?? '',
-      logo: customer?.logo ?? '',
     },
   });
 
@@ -109,11 +108,13 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-medium">Name</FormLabel>
+                  <FormLabel className="text-medium">
+                    {t.form.fields.name.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Add customer name"
+                      placeholder={t.form.fields.name.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -121,30 +122,36 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="vatNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">VAT Number</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.vatNumber.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="VAT number"
+                      placeholder={t.form.fields.vatNumber.placeholder}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="font-light text-xs text-muted-foreground">VAT number for invoicing and compliances purposes</FormDescription>
+                  <FormDescription className="font-light text-xs text-muted-foreground">
+                    {t.form.fields.vatNumber.helpText}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* ToDO: use select component */}
             <FormField
               control={form.control}
               name="localTaxOffice"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Local Tax office</FormLabel>
+                  <FormLabel>
+                    {t.form.fields.localTaxOffice.label}
+                  </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -160,14 +167,14 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
                             ? localTaxOfficesOptions.find(
                               (language) => language.value === field.value
                             )?.label
-                            : "Select Local Tax Office"}
+                            : t.form.fields.localTaxOffice.placeholder}
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-[600px] p-0">
                       <Command>
                         <CommandInput
-                          placeholder="Search local tax office..."
+                          placeholder={t.form.fields.localTaxOffice.placeholder}
                           className="h-9"
                         />
                         <CommandGroup>
@@ -203,10 +210,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="profession"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Company Profession</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.profession.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Company profession"
+                      placeholder={t.form.fields.profession.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -219,10 +228,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Address</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.address.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Customer's address"
+                      placeholder={t.form.fields.address.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -235,10 +246,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">City</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.city.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="City"
+                      placeholder={t.form.fields.city.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -251,10 +264,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="region"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Region</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.region.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Region"
+                      placeholder={t.form.fields.region.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -267,10 +282,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Country</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.country.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Country"
+                      placeholder={t.form.fields.country.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -283,10 +300,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="websiteUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Website URL</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.websiteUrl.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="https://www.example.com"
+                      placeholder={t.form.fields.websiteUrl.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -300,10 +319,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Email</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.email.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="contact@example.com"
+                      placeholder={t.form.fields.email.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -316,26 +337,12 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Phone number</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.phone.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Phone number"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="logo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-meduim">Company Logo</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://www.example.com/logo.png"
+                      placeholder={t.form.fields.phone.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -350,7 +357,7 @@ const CustomerForm: React.FC<Props> = ({ customer, localTaxOfficesOptions, reado
           {
             !readonly && (
               <Button disabled={loading}>
-                Save
+                {customer ? t.form.buttons.update : t.form.buttons.create}
               </Button>
             )
           }

@@ -15,21 +15,23 @@ import Link from "next/link";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@prisma/client";
+import { use } from "react";
+import { LocaleContext } from "@/providers/locale-provider";
 
 interface CellActionsProps {
   data: EmployeeColumn;
 }
 
 const CellActions: React.FC<CellActionsProps> = ({ data }) => {
-
   const onOpen = useAlertModal((state) => state.onOpen);
   const setCurrentUser = useCurrentUser((state) => state.setCurrentUser);
 
+  const { dictionary: t } = use(LocaleContext);
 
   const onDelete = () => {
     setCurrentUser(data as any); //TODO: fix this
     onOpen();
-  }
+  };
 
   // const handleChangeStatus = (status: AffiliateStatus) => {
   //   startTransition(async () => {
@@ -56,18 +58,18 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
           <DropdownMenuItem asChild>
             <Link href={`/company/employees/${data.id}`}>
               <EyeIcon className="h-4 w-4 mr-2" />
-              View
+              {t.table.actions.view}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={`/company/employees/${data.id}/edit`}>
               <Edit className="h-4 w-4 mr-2" />
-              Edit
+              {t.table.actions.edit}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={onDelete}>
             <Trash className="h-4 w-4 mr-2" />
-            Delete
+            {t.table.actions.delete}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

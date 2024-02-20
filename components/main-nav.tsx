@@ -36,12 +36,6 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       label: 'Company',
       active: pathname.includes(`/company`),
 
-    },
-    {
-      href: '/meetings',
-      label: 'Meetings',
-      active: pathname === `/meetings`,
-
     }
   ]
 

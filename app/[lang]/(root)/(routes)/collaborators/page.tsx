@@ -2,16 +2,20 @@ import { Role } from "@prisma/client"
 import { CollaboratorClient } from "./_components/client"
 import prismadb from "@/lib/prismadb"
 import { CollaboratorColumn } from "./_components/columns"
+import { Locale } from "@/i18n.config"
+import { getDictionary } from "@/lib/dictionary"
 
 
 
 
 interface Props {
-
+  params: { lang: Locale }
 }
 
 
-const CollaboratorPage: React.FC<Props> = async () => {
+const CollaboratorPage: React.FC<Props> = async ({ params }) => {
+
+  const { collaborators: t } = await getDictionary(params.lang) as any;
 
   const collaborators = await prismadb.user.findMany({
     where: {
@@ -29,7 +33,7 @@ const CollaboratorPage: React.FC<Props> = async () => {
   }))
 
   return (
-    <CollaboratorClient data={formattedCollaborators} />
+    <CollaboratorClient data={formattedCollaborators} t={t} />
   )
 }
 

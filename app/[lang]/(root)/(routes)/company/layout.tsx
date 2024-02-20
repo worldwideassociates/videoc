@@ -1,20 +1,27 @@
+import { Locale } from "@/i18n.config";
 import { SettingsNav } from "./profile/_components/nav";
+import { getDictionary } from "@/lib/dictionary";
 
 
 interface Props {
   children: React.ReactNode
+  params: { lang: Locale }
 }
 
 
 
-const SettingsLayout: React.FC<Props> = ({ children }) => {
+const SettingsLayout: React.FC<Props> = async ({ children, params }) => {
+
+  const { companyProfile: t } = await getDictionary(params.lang) as any
 
   return (
     <div className="hidden space-y-6 p-10 py-5 md:block">
       <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">Company Information</h2>
+        <h2 className="text-2xl font-bold tracking-tight">
+          {t.header.title}
+        </h2>
         <p className="text-muted-foreground">
-          Details about the company, departments, and more
+          {t.header.subTitle}
         </p>
       </div>
       <div

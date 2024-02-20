@@ -1,11 +1,19 @@
-'use client';
+"use client";
 
 import * as z from "zod";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,8 +22,6 @@ import { update } from "@/actions/company";
 import { toast } from "@/components/ui/use-toast";
 import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
-
-
 
 const formSchema = z.object({
   name: z.string().optional(),
@@ -33,87 +39,87 @@ const formSchema = z.object({
   phone: z.string().optional(),
   alternativePhone: z.string().optional(),
   companyLogo: z.string().optional(),
-})
-
-
-
-
+});
 
 interface Props {
-  company: Company
+  company: Company;
+  t: Record<string, any>;
 }
 
-const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
-
-  const [isEditMode, setIsEditMode] = useState(false)
+const ProfileForm: React.FC<Props> = ({ company, t }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: company.name ?? '',
-      vatNumber: company.vatNumber ?? '',
-      localTaxOffice: company.localTaxOffice ?? '',
-      companyProfession: company.companyProfession ?? '',
-      address: company.address ?? '',
-      city: company.city ?? '',
-      postalCode: company.postalCode ?? '',
-      region: company.region ?? '',
-      country: company.country ?? '',
-      websiteUrl: company.websiteUrl ?? '',
-      accountingEmail: company.accountingEmail ?? '',
-      generalEmail: company.generalEmail ?? '',
-      phone: company.phone ?? '',
-      alternativePhone: company.alternativePhone ?? '',
-      companyLogo: company.companyLogo ?? '',
+      name: company.name ?? "",
+      vatNumber: company.vatNumber ?? "",
+      localTaxOffice: company.localTaxOffice ?? "",
+      companyProfession: company.companyProfession ?? "",
+      address: company.address ?? "",
+      city: company.city ?? "",
+      postalCode: company.postalCode ?? "",
+      region: company.region ?? "",
+      country: company.country ?? "",
+      websiteUrl: company.websiteUrl ?? "",
+      accountingEmail: company.accountingEmail ?? "",
+      generalEmail: company.generalEmail ?? "",
+      phone: company.phone ?? "",
+      alternativePhone: company.alternativePhone ?? "",
+      companyLogo: company.companyLogo ?? "",
     },
   });
 
   const onSubmit = form.handleSubmit((values: z.infer<typeof formSchema>) => {
-
     // return console.log(values)
     startTransition(async () => {
       const result = await update(values as Company);
       if (result.success) {
-        setIsEditMode(false)
+        setIsEditMode(false);
         toast({
           title: "Success",
           description: "Company profile updated successfully",
-        })
+        });
       } else {
         toast({
           title: "Oops",
           description: result.message,
         });
       }
-    })
+    });
   });
 
   const toggleEditMode = () => {
-    setIsEditMode(editMode => {
+    setIsEditMode((editMode) => {
       //TODO: reset form to the original values
-      return !editMode
-    })
-  }
+      return !editMode;
+    });
+  };
 
   return (
-    <Form {...form} >
-      <form onSubmit={onSubmit} >
-        <Heading title="Profile" description="information about the company" />
+    <Form {...form}>
+      <form onSubmit={onSubmit}>
         <CardContent>
+          <Heading
+            title={t.form.header.title}
+            description={t.form.header.subTitle}
+          />
           <Separator className="mb-4" />
 
-          <fieldset disabled={!isEditMode} className="flex flex-col space-y-4"  >
+          <fieldset disabled={!isEditMode} className="flex flex-col space-y-4">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-medium">Company Name</FormLabel>
+                  <FormLabel className="text-medium">
+                    {t.form.fields.name.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      placeholder="add company name"
+                      placeholder={t.form.fields.name.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -126,14 +132,18 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="vatNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">VAT Number</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.vatNumber.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="VAT number"
+                      placeholder={t.form.fields.vatNumber.placeholder}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="font-light text-xs text-muted-foreground">VAT number for invoicing and compliances purposes</FormDescription>
+                  <FormDescription className="font-light text-xs text-muted-foreground">
+                    {t.form.fields.vatNumber.helpText}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -144,14 +154,18 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="localTaxOffice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Local tax office</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.localTaxOffice.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Local tax office"
+                      placeholder={t.form.fields.localTaxOffice.placeholder}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="font-light text-xs text-muted-foreground">Tax office where the business files its taxes</FormDescription>
+                  <FormDescription className="font-light text-xs text-muted-foreground">
+                    {t.form.fields.localTaxOffice.helpText}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -161,10 +175,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="companyProfession"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Company Profession</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.companyProfession.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Company profession"
+                      placeholder={t.form.fields.companyProfession.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -177,10 +193,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Address</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.address.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Company's address"
+                      placeholder={t.form.fields.address.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -193,10 +211,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">City</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.city.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="City"
+                      placeholder={t.form.fields.city.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -209,10 +229,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="region"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Region</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.region.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Region"
+                      placeholder={t.form.fields.region.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -225,10 +247,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Country</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.country.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Country"
+                      placeholder={t.form.fields.country.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -241,14 +265,18 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="websiteUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Website URL</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.websiteUrl.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="https://www.example.com"
+                      placeholder={t.form.fields.websiteUrl.placeholder}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="font-light text-xs text-muted-foreground">Company's landing page URL</FormDescription>
+                  <FormDescription className="font-light text-xs text-muted-foreground">
+                    {t.form.fields.websiteUrl.helpText}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -258,15 +286,17 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="accountingEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Accounting Email</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.accountingEmail.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="accounting@example.com"
+                      placeholder={t.form.fields.accountingEmail.placeholder}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="font-light text-xs text-muted-foreground">
-                    An email to contact the accounting department
+                    {t.form.fields.accountingEmail.helpText}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -277,15 +307,17 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="generalEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">General Email</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.generalEmail.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="accounting@example.com"
+                      placeholder={t.form.fields.generalEmail.placeholder}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="font-light text-xs text-muted-foreground">
-                    An email to contact company for general inquiries
+                    {t.form.fields.generalEmail.helpText}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -296,10 +328,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Phone number</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.phone.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Phone number"
+                      placeholder={t.form.fields.phone.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -312,10 +346,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="alternativePhone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Alternative number</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.alternativePhone.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Alternative phone number"
+                      placeholder={t.form.fields.alternativePhone.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -328,10 +364,12 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
               name="companyLogo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">Company Logo</FormLabel>
+                  <FormLabel className="text-meduim">
+                    {t.form.fields.companyLogo.label}
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="https://www.example.com/logo.png"
+                      placeholder={t.form.fields.companyLogo.placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -339,26 +377,27 @@ const ProfileForm: React.FC<Props> = ({ company, ...props }) => {
                 </FormItem>
               )}
             />
-
           </fieldset>
         </CardContent>
         <CardFooter className="flex justify-end space-x-4">
-          <Button type="button" onClick={toggleEditMode} variant="outline" disabled={isPending}>
-            {isEditMode ? 'Cancel' : 'Edit'}
+          <Button
+            type="button"
+            onClick={toggleEditMode}
+            variant="outline"
+            disabled={isPending}
+          >
+            {isEditMode ? t.form.buttons.cancel : t.form.buttons.edit}
           </Button>
-          {
-            isEditMode && (
-              <Button disabled={isPending}>
-                {/* TODO: only show button to admin users */}
-                Save
-              </Button>
-            )
-          }
+          {isEditMode && (
+            <Button disabled={isPending}>
+              {/* TODO: only show button to admin users */}
+              t.form.buttons.save
+            </Button>
+          )}
         </CardFooter>
       </form>
-    </Form >
+    </Form>
   );
-}
-
+};
 
 export default ProfileForm;
