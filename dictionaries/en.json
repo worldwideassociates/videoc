@@ -566,7 +566,7 @@
     "inviteMessage": {
       "subject": "You have been invited to a meeting",
       "body": "You have been invited to a meeting. for:",
-      "button": "View meeting"
+      "link": "Join meeting"
     },
     "rescheduleMessage": {
       "subject": "Meeting rescheduled",
