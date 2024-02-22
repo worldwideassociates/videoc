@@ -26,7 +26,7 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   const onOpen = useAlertModal((state) => state.onOpen);
   const setCurrentuser = useCurrentUser((state) => state.setCurrentUser);
 
-  const { dictionary: t } = use(LocaleContext);
+  const { dictionary: t, locale } = use(LocaleContext);
 
   const onDelete = () => {
     setCurrentuser(data as User);
@@ -45,13 +45,13 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/collaborators/${data.id}/details`}>
+            <Link href={`/${locale}/collaborators/${data.id}/details`}>
               <EyeIcon className="h-4 w-4 mr-2" />
               {t.table.actions.view}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/collaborators/${data.id}/edit`}>
+            <Link href={`/${locale}/collaborators/${data.id}/edit`}>
               <Edit className="h-4 w-4 mr-2" />
               {t.table.actions.edit}
             </Link>

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { use, useState } from 'react'
+import { use, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -12,14 +12,14 @@ import {
   getPaginationRowModel,
   SortingState,
   getSortedRowModel,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 import {
   Table,
@@ -28,29 +28,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
-import { TableFilter } from './table-filter'
-import { Button } from './button'
-import { LocaleContext } from '@/providers/locale-provider'
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { TableFilter } from "./table-filter";
+import { Button } from "./button";
+import { LocaleContext } from "@/providers/locale-provider";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  )
-  const [sorting, setSorting] = useState<SortingState>([])
-
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table = useReactTable({
     data,
@@ -66,27 +62,29 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
       sorting,
+    },
+  });
 
-    }
-  })
-
-
-  const [searchColumn, setSearchColumn] = useState(columns[0] as any)
-  const { dictionary: t } = use(LocaleContext)
-
+  const [searchColumn, setSearchColumn] = useState(columns[0] as any);
+  const { dictionary: t } = use(LocaleContext);
 
   return (
     <>
       <div className="flex items-center py-4">
-        <TableFilter
-          setSearchColumn={setSearchColumn}
-          columns={columns}
-        >
+        <TableFilter setSearchColumn={setSearchColumn} columns={columns}>
           <Input
-            placeholder={`${t.table.search} "${searchColumn.header.toLowerCase()}"...`}
-            value={(table.getColumn(searchColumn.accessorKey)?.getFilterValue() as string) ?? ""}
+            placeholder={`${
+              t.table.search
+            } "${searchColumn.header.toLowerCase()}"...`}
+            value={
+              (table
+                .getColumn(searchColumn.accessorKey)
+                ?.getFilterValue() as string) ?? ""
+            }
             onChange={(event) => {
-              table.getColumn(searchColumn.accessorKey)?.setFilterValue(event.target.value)
+              table
+                .getColumn(searchColumn.accessorKey)
+                ?.setFilterValue(event.target.value);
             }}
             className="w-[300px] border-none"
           />
@@ -100,9 +98,7 @@ export function DataTable<TData, TValue>({
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
-              .filter(
-                (column) => column.getCanHide()
-              )
+              .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
                   <DropdownMenuCheckboxItem
@@ -113,9 +109,9 @@ export function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {column.columnDef.header as any}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -132,11 +128,11 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -150,14 +146,20 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -184,5 +186,5 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
     </>
-  )
+  );
 }

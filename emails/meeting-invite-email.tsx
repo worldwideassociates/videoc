@@ -48,10 +48,10 @@ export const MeetingInviteEmail = ({
             alt="WWA"
             style={logo}
           />
-          <Heading style={heading}>{t.invitedMessage.subject}</Heading>
+          <Heading style={heading}>{t.inviteMessage.subject}</Heading>
           <Section style={buttonContainer}>
             <Button style={button} href={meetingUrl}>
-              {t.invitedMessage.link}
+              {t.inviteMessage.link}
             </Button>
           </Section>
           <Text style={paragraph}>{meeting.title}</Text>

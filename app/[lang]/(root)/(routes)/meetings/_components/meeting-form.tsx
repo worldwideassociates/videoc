@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Meeting, Role, User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CalendarIcon, InfoIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,6 +34,7 @@ import { Modal } from "@/components/ui/modal";
 import { UserCard } from "@/components/user-card";
 import { Separator } from "@/components/ui/separator";
 import { DatePicker } from "@/components/ui/date-picker";
+import { LocaleContext } from "@/providers/locale-provider";
 
 const TIME_OPTIONS = [
   { label: "15 minutes", value: "15" },
@@ -112,6 +113,8 @@ const MeetingForm: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const { locale } = use(LocaleContext);
+
   const isOpen = useModal((state) => state.isOpen);
   const onOpen = useModal((state) => state.onOpen);
   const onClose = useModal((state) => state.onClose);
@@ -185,7 +188,7 @@ const MeetingForm: React.FC<Props> = ({
         title: "Success",
         description: result?.message,
       });
-      router.push("/");
+      router.push(`/${locale}`);
     } else {
       toast({
         title: "Oops",
@@ -224,11 +227,9 @@ const MeetingForm: React.FC<Props> = ({
     <>
       <Modal
         isOpen={isOpen}
-        title={meeting ? "Update meeting" : " Confirm schedule"}
+        title={meeting ? t.form.update.title : t.form.create.title}
         description={
-          meeting
-            ? "Update the meeting details"
-            : "You are about to schedule a meeting and send invites to participants. Do you want to proceed?"
+          meeting ? t.form.update.confirmMessage : t.form.create.confirmMessage
         }
         Icon={CalendarIcon}
         onClose={onClose}
@@ -244,7 +245,9 @@ const MeetingForm: React.FC<Props> = ({
           <div className="flex flex-col space-y-2">
             {values.employees.length > 0 && (
               <div className="">
-                <h1 className="text-xs font-bold">Employees</h1>
+                <h1 className="text-xs font-bold">
+                  {t.form.fields.inviteEmployees.label}
+                </h1>
                 <Separator className="my-2" />
                 <div className="flex flex-col space-y-2">
                   {values.employees.map((user, index) => (
@@ -263,7 +266,9 @@ const MeetingForm: React.FC<Props> = ({
             )}
             {values.collaborators.length > 0 && (
               <div className="">
-                <h1 className="text-xs font-bold">Collaborators</h1>
+                <h1 className="text-xs font-bold">
+                  {t.form.fields.inviteCollaborators.label}
+                </h1>
                 <Separator className="my-2" />
                 <div className="flex flex-col space-y-2">
                   {values.collaborators.map((user, index) => (
@@ -282,10 +287,33 @@ const MeetingForm: React.FC<Props> = ({
             )}
             {values.customers.length > 0 && (
               <div className="">
-                <h1 className="text-xs font-bold">Customers</h1>
+                <h1 className="text-xs font-bold">
+                  {t.form.fields.inviteCustomers.label}
+                </h1>
                 <Separator className="my-2" />
                 <div className="flex flex-col space-y-2">
                   {values.customers.map((user, index) => (
+                    <UserCard
+                      key={index}
+                      user={
+                        {
+                          name: user.label,
+                          image: user.image,
+                        } as any
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            {values.employees.length > 0 && (
+              <div className="">
+                <h1 className="text-xs font-bold">
+                  {t.form.fields.inviteEmployees.label}
+                </h1>
+                <Separator className="my-2" />
+                <div className="flex flex-col space-y-2">
+                  {values.employees.map((user, index) => (
                     <UserCard
                       key={index}
                       user={
@@ -303,10 +331,10 @@ const MeetingForm: React.FC<Props> = ({
         </div>
         <div className="pt-6 space-x-2 flex items-center justify-end w-full">
           <Button variant="outline" disabled={loading} onClick={onClose}>
-            Cancel
+            {t.form.buttons.cancel}
           </Button>
           <Button disabled={loading} onClick={handleConfirm}>
-            Continue
+            {t.form.buttons.confirm}
           </Button>
         </div>
       </Modal>
@@ -322,7 +350,7 @@ const MeetingForm: React.FC<Props> = ({
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Meeting subject"
+                      placeholder={t.form.fields.title.placeholder}
                       {...field}
                     />
                   </FormControl>

@@ -18,11 +18,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Department, User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { InfoIcon } from "lucide-react";
 import { UserSelect } from "@/components/user-select";
 import { CardTitle } from "@/components/ui/card";
+import { LocaleContext } from "@/providers/locale-provider";
 
 interface Props {
   usersOptions: User[];
@@ -61,6 +62,8 @@ const DepartmentForm: React.FC<Props> = ({
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const { locale } = use(LocaleContext);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -108,7 +111,7 @@ const DepartmentForm: React.FC<Props> = ({
           description: result.message,
         });
 
-        router.push("/company/departments");
+        router.push(`/${locale}/company/departments`);
       } else {
         toast({
           title: "Oops",

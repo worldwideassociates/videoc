@@ -8,13 +8,13 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 
 import { Invite, Meeting, User } from "@prisma/client";
-import React, { FC, useState } from "react";
+import React, { FC, use, useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { cancelMeeting } from "@/actions/meetings";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { LocaleProvider } from "@/providers/locale-provider";
+import { LocaleContext, LocaleProvider } from "@/providers/locale-provider";
 import { Locale } from "@/i18n.config";
 
 interface IMeeting extends Meeting {
@@ -58,7 +58,7 @@ export const DashboardClient: FC<clientProps> = ({
       });
     }
     onCancel();
-    router.push("/");
+    router.push(`/${locale}`);
   };
 
   const prepareDeleting = (meeting: Meeting) => {
@@ -108,7 +108,11 @@ export const DashboardClient: FC<clientProps> = ({
         <ScrollArea className="w-full whitespace-nowrap">
           <div className="flex w-max space-x-4 px-0 py-4">
             {todaysMeetings.map((meeting) => (
-              <ActiveMeetingCard key={meeting.id} meeting={meeting} />
+              <ActiveMeetingCard
+                key={meeting.id}
+                meeting={meeting}
+                handleCancelMeeting={prepareDeleting}
+              />
             ))}
           </div>
           <ScrollBar orientation="horizontal" />
@@ -126,7 +130,7 @@ export const DashboardClient: FC<clientProps> = ({
               </p>
             </div>
             <Button variant="outline" asChild className="rounded-full">
-              <Link href="/meetings/new">
+              <Link href={`/${locale}/meetings/new`}>
                 <Plus size={24} />
               </Link>
             </Button>

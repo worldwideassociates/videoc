@@ -72,12 +72,14 @@
       "update": {
         "title": "Update Meeting",
         "subTitle": "When you update the start date and time, or invites, email notifications will be sent to the respective invites.",
-        "button": "Update meeting"
+        "button": "Update meeting",
+        "confirmMessage": "Update the meeting details"
       },
       "create": {
         "title": "Create Meeting",
         "subTitle": "Create a new meeting and invite your team members",
-        "button": "Create meeting"
+        "button": "Create meeting",
+        "confirmMessage": "You are about to schedule a meeting and send invites to participants. Do you want to proceed?"
       },
       "fields": {
         "title": {
@@ -118,6 +120,10 @@
           "placeholder": "Search for customers",
           "helpText": "Select customers to invite to the meeting and send them an email notification to each of them"
         }
+      },
+      "buttons": {
+        "confirm": "Continue",
+        "cancel": "Cancel"
       }
     }
   },
@@ -328,6 +334,13 @@
       "title": "Company Information",
       "subTitle": "Details about the company and more"
     },
+    "nav": {
+      "companyProfile": "Company Profile",
+      "departments": "Departments",
+      "employees": "Employees",
+      "license": "License"
+    },
+    "title": "Company",
     "form": {
       "header": {
         "title": "Company Profile",
@@ -413,6 +426,10 @@
     }
   },
   "departments": {
+    "header": {
+      "title": "Departments",
+      "subTitle": "Manage departments of your company"
+    },
     "alertModal": {
       "title": "Are you sure?",
       "description": "You're about to delete this department. This action cannot be undone.",
@@ -573,5 +590,16 @@
       "body": "The meeting has been rescheduled to:",
       "button": "View meeting"
     }
+  },
+  "license": {
+    "title": "License"
+  },
+  "mainNav": {
+    "dashboard": "Dashboard",
+    "meetings": "Meetings",
+    "customers": "Customers",
+    "collaborators": "Collaborators",
+    "companyProfile": "Company",
+    "history": "History"
   }
 }

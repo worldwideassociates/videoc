@@ -23,16 +23,13 @@ interface CellActionsProps {
 }
 
 const CellActions: React.FC<CellActionsProps> = ({ data }) => {
-
   const onOpen = useAlertModal((state) => state.onOpen);
   const setCurrentuser = useCurrentUser((state) => state.setCurrentUser);
-
 
   const onDelete = () => {
     setCurrentuser(data as User);
     onOpen();
-  }
-
+  };
 
   // const handleChangeStatus = (status: AffiliateStatus) => {
   //   startTransition(async () => {
@@ -45,10 +42,8 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   //   });
   // };
 
-
-  const { dictionary: t } = use(LocaleContext)
-
-
+  const { dictionary: t } = use(LocaleContext);
+  const { locale } = use(LocaleContext);
 
   return (
     <>
@@ -62,13 +57,13 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t.table.actions.title}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/customers/${data.id}/details`}>
+            <Link href={`/${locale}/customers/${data.id}/details`}>
               <EyeIcon className="h-4 w-4 mr-2" />
               {t.table.actions.view}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/customers/${data.id}/edit`}>
+            <Link href={`/${locale}/customers/${data.id}/edit`}>
               <Edit className="h-4 w-4 mr-2" />
               {t.table.actions.edit}
             </Link>

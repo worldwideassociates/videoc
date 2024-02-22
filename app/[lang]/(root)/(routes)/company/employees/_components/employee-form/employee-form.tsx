@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Role, User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -29,6 +29,7 @@ import { DateValue } from "react-aria";
 import { CalendarDate, toCalendarDate } from "@internationalized/date";
 import { createCalendarDate } from "@/lib/utils";
 import { DatePicker } from "@/components/ui/date-picker";
+import { LocaleContext } from "@/providers/locale-provider";
 
 interface Props {
   employee?: User | null;
@@ -58,6 +59,8 @@ const EmployeeForm: React.FC<Props> = ({
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const { locale } = use(LocaleContext);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -99,7 +102,7 @@ const EmployeeForm: React.FC<Props> = ({
           description: result.message,
         });
 
-        router.push("/company/employees");
+        router.push(`${locale}/company/employees`);
       } else {
         toast({
           title: "Oops",

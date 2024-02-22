@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { DataTable } from "@/components/ui/data-table";
@@ -14,7 +14,7 @@ import { User } from "@prisma/client";
 import { deleteUser } from "@/actions/users";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LocaleProvider } from "@/providers/locale-provider";
+import { LocaleContext, LocaleProvider } from "@/providers/locale-provider";
 
 interface Props {
   data: EmployeeColumn[];
@@ -24,6 +24,8 @@ interface Props {
 export const EmployeeClient: React.FC<Props> = ({ data, t }) => {
   const [deleting, setDeleting] = useState(false);
   const [selectedEmmployee, setSelectedEmployee] = useState<User | null>(null);
+
+  const { locale } = use(LocaleContext);
 
   const { toast } = useToast();
 
@@ -66,7 +68,7 @@ export const EmployeeClient: React.FC<Props> = ({ data, t }) => {
         <CardHeader className="flex space-x-3 flex-row items-center justify-between">
           <div className="">
             <CardTitle className="text-3xl">
-              Employees ({data.length})
+              {t.title} ({data.length})
             </CardTitle>
           </div>
           <div className="flex space-x-1">
@@ -76,7 +78,7 @@ export const EmployeeClient: React.FC<Props> = ({ data, t }) => {
               asChild
               className="rounded-full border-gray-600 p-4"
             >
-              <Link href="/company/employees/new">
+              <Link href={`${locale}/company/employees/new`}>
                 <Plus size={25} />
               </Link>
             </Button>

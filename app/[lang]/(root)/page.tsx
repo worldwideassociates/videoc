@@ -6,7 +6,7 @@ import { DashboardClient } from "./_components/client";
 import { auth } from "../../api/auth/[...nextauth]/auth";
 import { Locale } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
-import { Role } from "@prisma/client";
+import { MEETING_STATUS, Role } from "@prisma/client";
 
 interface Props {
   params: { lang: Locale };
@@ -58,7 +58,7 @@ export default async function DashboardPage({ params }: Props) {
       (invite) => invite.userId === session?.user?.id
     )!!;
 
-    return isInvited || isToday;
+    return (isInvited || isToday) && meeting.status !== MEETING_STATUS.CANCELED;
   });
 
   const scheduledMeetings = meetings

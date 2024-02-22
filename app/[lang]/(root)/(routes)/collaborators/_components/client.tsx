@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ImportIcon, Plus } from "lucide-react";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { DataTable } from "@/components/ui/data-table";
@@ -13,7 +13,7 @@ import { User } from "@prisma/client";
 import { deleteUser } from "@/actions/users";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LocaleProvider } from "@/providers/locale-provider";
+import { LocaleContext, LocaleProvider } from "@/providers/locale-provider";
 
 interface Props {
   data: CollaboratorColumn[];
@@ -21,54 +21,68 @@ interface Props {
 }
 
 export const CollaboratorClient: React.FC<Props> = ({ data, t }) => {
-  const [deleting, setDeleting] = useState(false)
+  const { locale } = use(LocaleContext);
 
-  const { toast } = useToast()
+  const [deleting, setDeleting] = useState(false);
+
+  const { toast } = useToast();
 
   const isOpen = useAlertModal((state) => state.isOpen);
   const onClose = useAlertModal((state) => state.onClose);
   const currentCollaborator = useCurrentUser((state) => state.currentUser);
 
   const onDelete = async () => {
-    setDeleting(true)
+    setDeleting(true);
 
-    const result = await deleteUser(currentCollaborator.id)
+    const result = await deleteUser(currentCollaborator.id);
     if (result.success) {
       toast({
-        title: 'Success',
+        title: "Success",
         description: result.message,
-      })
+      });
     } else {
       toast({
-        title: 'Oops',
+        title: "Oops",
         description: result.message,
-      })
+      });
     }
 
-    setDeleting(false)
-    onClose()
-    location.reload()
-
-  }
+    setDeleting(false);
+    onClose();
+    location.reload();
+  };
 
   return (
-    <LocaleProvider dictionary={t} >
-      <AlertModal loading={deleting} isOpen={isOpen} onClose={onClose} onConfirm={onDelete} />
+    <LocaleProvider dictionary={t}>
+      <AlertModal
+        loading={deleting}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={onDelete}
+      />
       <Card>
         <CardHeader className="flex space-x-3 flex-row items-center justify-between">
           <div className="">
-
-            <CardTitle className="text-3xl">Collaborators ({data.length})</CardTitle>
-
+            <CardTitle className="text-3xl">
+              {t.title} ({data.length})
+            </CardTitle>
           </div>
           <div className="flex space-x-1">
-            <Button variant="link" asChild className="rounded-full border-gray-600 p-4">
-              <Link href='/collaborators/import'>
+            <Button
+              variant="link"
+              asChild
+              className="rounded-full border-gray-600 p-4"
+            >
+              <Link href={`/${locale}/collaborators/import`}>
                 <ImportIcon size={25} />
               </Link>
             </Button>
-            <Button variant="link" asChild className="rounded-full border-gray-600 p-4">
-              <Link href='/collaborators/new'>
+            <Button
+              variant="link"
+              asChild
+              className="rounded-full border-gray-600 p-4"
+            >
+              <Link href={`/${locale}/collaborators/new`}>
                 <Plus size={25} />
               </Link>
             </Button>

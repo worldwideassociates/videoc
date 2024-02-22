@@ -1,13 +1,21 @@
-'use client';
+"use client";
 
 import * as z from "zod";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Company, Role, User } from "@prisma/client";
 import { toast } from "@/components/ui/use-toast";
@@ -15,12 +23,20 @@ import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
 import { upsert } from "@/actions/users";
 import { useRouter } from "next/navigation";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Command, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import {
+  Command,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
 import { CheckIcon } from "lucide-react";
-
-
+import { LocaleContext } from "@/providers/locale-provider";
 
 const formSchema = z.object({
   name: z.string().optional(),
@@ -36,75 +52,82 @@ const formSchema = z.object({
   email: z.string().optional(),
   phone: z.string().optional(),
   logo: z.string().optional(),
-})
-
-
-
-
+});
 
 interface Props {
-  collaborator?: User | null
-  readonly?: boolean
-  localTaxOfficesOptions: { label: string, value: string }[]
-  t: Record<string, any>
+  collaborator?: User | null;
+  readonly?: boolean;
+  localTaxOfficesOptions: { label: string; value: string }[];
+  t: Record<string, any>;
 }
 
-const CollaboratorForm: React.FC<Props> = ({ collaborator, localTaxOfficesOptions, readonly = false, t }) => {
-  const router = useRouter()
+const CollaboratorForm: React.FC<Props> = ({
+  collaborator,
+  localTaxOfficesOptions,
+  readonly = false,
+  t,
+}) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const { locale } = use(LocaleContext);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: collaborator?.name ?? '',
-      vatNumber: collaborator?.vatNumber ?? '',
-      localTaxOffice: collaborator?.localTaxOffice ?? '',
-      profession: collaborator?.profession ?? '',
-      address: collaborator?.address ?? '',
-      city: collaborator?.city ?? '',
-      postalCode: collaborator?.postalCode ?? '',
-      region: collaborator?.region ?? '',
-      country: collaborator?.country ?? '',
-      websiteUrl: collaborator?.websiteUrl ?? '',
-      email: collaborator?.email ?? '',
-      phone: collaborator?.phone ?? '',
-      logo: collaborator?.logo ?? '',
+      name: collaborator?.name ?? "",
+      vatNumber: collaborator?.vatNumber ?? "",
+      localTaxOffice: collaborator?.localTaxOffice ?? "",
+      profession: collaborator?.profession ?? "",
+      address: collaborator?.address ?? "",
+      city: collaborator?.city ?? "",
+      postalCode: collaborator?.postalCode ?? "",
+      region: collaborator?.region ?? "",
+      country: collaborator?.country ?? "",
+      websiteUrl: collaborator?.websiteUrl ?? "",
+      email: collaborator?.email ?? "",
+      phone: collaborator?.phone ?? "",
+      logo: collaborator?.logo ?? "",
     },
   });
 
-  const onSubmit = form.handleSubmit(async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = form.handleSubmit(
+    async (values: z.infer<typeof formSchema>) => {
+      setLoading(true);
 
-    setLoading(true);
+      const payload = {
+        ...collaborator,
+        ...values,
+        role: Role.COLLABORATOR,
+      } as any;
 
-    const payload = {
-      ...collaborator,
-      ...values,
-      role: Role.COLLABORATOR
-    } as any
-
-    const result = await upsert(payload);
-    if (result.success) {
-      toast({
-        title: "Success",
-        description: result.message,
-      })
-      router.push('/collaborators');
-    } else {
-      toast({
-        title: "Oops",
-        description: result.message,
-      });
+      const result = await upsert(payload);
+      if (result.success) {
+        toast({
+          title: "Success",
+          description: result.message,
+        });
+        router.push(`/${locale}/collaborators`);
+      } else {
+        toast({
+          title: "Oops",
+          description: result.message,
+        });
+      }
+      setLoading(false);
     }
-    setLoading(false);
-  });
+  );
 
   return (
-    <Form {...form} >
-      <form onSubmit={onSubmit} >
+    <Form {...form}>
+      <form onSubmit={onSubmit}>
         <CardContent>
           <Separator className="mb-4" />
 
-          <fieldset disabled={loading || readonly} className="flex flex-col space-y-4"  >
+          <fieldset
+            disabled={loading || readonly}
+            className="flex flex-col space-y-4"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -151,9 +174,7 @@ const CollaboratorForm: React.FC<Props> = ({ collaborator, localTaxOfficesOption
               name="localTaxOffice"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>
-                    {t.form.fields.localTaxOffice.label}
-                  </FormLabel>
+                  <FormLabel>{t.form.fields.localTaxOffice.label}</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -167,8 +188,8 @@ const CollaboratorForm: React.FC<Props> = ({ collaborator, localTaxOfficesOption
                         >
                           {field.value
                             ? localTaxOfficesOptions.find(
-                              (language) => language.value === field.value
-                            )?.label
+                                (language) => language.value === field.value
+                              )?.label
                             : t.form.fields.localTaxOffice.placeholder}
                         </Button>
                       </FormControl>
@@ -185,7 +206,7 @@ const CollaboratorForm: React.FC<Props> = ({ collaborator, localTaxOfficesOption
                               value={option.label}
                               key={option.value}
                               onSelect={() => {
-                                form.setValue("localTaxOffice", option.value)
+                                form.setValue("localTaxOffice", option.value);
                               }}
                             >
                               {option.label}
@@ -311,7 +332,9 @@ const CollaboratorForm: React.FC<Props> = ({ collaborator, localTaxOfficesOption
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="font-light text-xs text-muted-foreground">Company's landing page URL</FormDescription>
+                  <FormDescription className="font-light text-xs text-muted-foreground">
+                    Company's landing page URL
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -352,22 +375,18 @@ const CollaboratorForm: React.FC<Props> = ({ collaborator, localTaxOfficesOption
                 </FormItem>
               )}
             />
-
           </fieldset>
         </CardContent>
         <CardFooter className="flex justify-end space-x-4">
-          {
-            !readonly && (
-              <Button disabled={loading}>
-                {collaborator ? t.form.buttons.update : t.form.buttons.create}
-              </Button>
-            )
-          }
+          {!readonly && (
+            <Button disabled={loading}>
+              {collaborator ? t.form.buttons.update : t.form.buttons.create}
+            </Button>
+          )}
         </CardFooter>
       </form>
-    </Form >
+    </Form>
   );
-}
-
+};
 
 export default CollaboratorForm;

@@ -1,8 +1,11 @@
 "use client";
 
+import { Locale } from "@/i18n.config";
 import { cn } from "@/lib/utils";
+import { LocaleContext } from "@/providers/locale-provider";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { use } from "react";
 
 export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   className,
@@ -12,39 +15,40 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
   const routes = [
     {
-      href: `/`,
-      label: "Dashboard",
       active: pathname === `/`,
+      label: (t: Record<string, any>) => t.mainNav.dashboard,
+      href: (locale: Locale) => `/${locale}`,
     },
     {
-      href: `/customers`,
-      label: "Customers",
+      label: (t: Record<string, any>) => t.mainNav.customers,
+      href: (locale: Locale) => `/${locale}/customers`,
       active: pathname.includes(`/customers`),
     },
     {
-      href: '/collaborators',
-      label: 'Collaborators',
+      label: (t: Record<string, any>) => t.mainNav.collaborators,
+      href: (locale: Locale) => `/${locale}/collaborators`,
       active: pathname.includes(`/collaborators`),
-    }, {
-      href: '/history',
-      label: 'History',
-      active: pathname === `/history`,
-
     },
     {
-      href: '/company/profile',
-      label: 'Company',
+      label: (t: Record<string, any>) => t.mainNav.history,
+      href: (locale: Locale) => `/${locale}/history`,
+      active: pathname === `/history`,
+    },
+    {
+      label: (t: Record<string, any>) => t.mainNav.companyProfile,
+      href: (locale: Locale) => `/${locale}/company/profile`,
       active: pathname.includes(`/company`),
+    },
+  ];
 
-    }
-  ]
+  const { locale, dictionary: t } = use(LocaleContext);
 
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       {routes.map((route) => (
         <Link
-          key={route.href}
-          href={route.href}
+          key={route.href(locale)}
+          href={route.href(locale)}
           className={cn(
             "text-sm font-medium transition-colors hover:text-primary",
             route.active
@@ -52,7 +56,7 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
               : "text-muted-foreground"
           )}
         >
-          {route.label}
+          {route.label(t)}
         </Link>
       ))}
     </nav>

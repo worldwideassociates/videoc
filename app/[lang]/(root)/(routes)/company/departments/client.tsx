@@ -7,11 +7,11 @@ import { Department, User } from "@prisma/client";
 import { DepartmentCard } from "./_components/department-card";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
-import { useState } from "react";
+import { use, useState } from "react";
 import { deleteDepartment } from "@/actions/departments";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
-import { LocaleProvider } from "@/providers/locale-provider";
+import { LocaleContext, LocaleProvider } from "@/providers/locale-provider";
 
 interface Props {
   data: (Department & { members: User[] })[];
@@ -22,6 +22,8 @@ export const DepartmentClient: React.FC<Props> = ({ data, t }) => {
   const [deleting, setDeleting] = useState(false);
   const [selectedDepartment, setSelectedDepartment] =
     useState<Department | null>(null);
+
+  const { locale } = use(LocaleContext);
 
   const { toast } = useToast();
 
@@ -59,11 +61,11 @@ export const DepartmentClient: React.FC<Props> = ({ data, t }) => {
         onConfirm={onDelete}
       />
       <Heading
-        title={`Departments (${data.length})`}
-        description="Manage departments of the company"
+        title={`${t.header.title} (${data.length})`}
+        description={t.header.subTitle}
         CallToAction={() => (
           <Button asChild variant="ghost" className="rounded-full">
-            <Link href="/company/departments/new">
+            <Link href={`${locale}/company/departments/new`}>
               <Plus size={20} />
             </Link>
           </Button>
