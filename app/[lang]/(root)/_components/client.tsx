@@ -61,7 +61,7 @@ export const DashboardClient: FC<clientProps> = ({
     router.push(`/${locale}`);
   };
 
-  const prepareDeleting = (meeting: Meeting) => {
+  const prepareCanceling = (meeting: Meeting) => {
     setMeetingToCancel(meeting);
     onOpen();
   };
@@ -111,7 +111,7 @@ export const DashboardClient: FC<clientProps> = ({
               <ActiveMeetingCard
                 key={meeting.id}
                 meeting={meeting}
-                handleCancelMeeting={prepareDeleting}
+                handleCancelMeeting={prepareCanceling}
               />
             ))}
           </div>
@@ -141,7 +141,7 @@ export const DashboardClient: FC<clientProps> = ({
             <UpcomingMeetingCard
               key={meeting.id}
               meeting={meeting}
-              handleCancelMeeting={prepareDeleting}
+              handleCancelMeeting={prepareCanceling}
             />
           ))}
         </div>

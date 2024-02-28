@@ -125,6 +125,33 @@
         "confirm": "Continue",
         "cancel": "Cancel"
       }
+    },
+
+    "history": {
+      "title": "Meeting History",
+      "subTitle": "All meetings scheduled in the past",
+      "alertModal": {
+        "title": "Are you sure?",
+        "description": "You're about to delete this meeting. This action cannot be undone.",
+        "cancelButton": "Cancel",
+        "confirmButton": "Yes, cancel"
+      },
+      "table": {
+        "columnsSettings": "Columns",
+        "search": "Filter by",
+        "selectFilterColumn": "Select filter column",
+        "nextPage": "Next",
+        "previousPage": "Previous",
+        "actions": {
+          "title": "Actions",
+          "edit": "Edit",
+          "delete": "Delete",
+          "view": "View"
+        }
+      },
+      "details": {
+        "title": "Meeting"
+      }
     }
   },
   "customers": {

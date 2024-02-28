@@ -146,15 +146,17 @@ model Meeting {
 
   hostId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  invites   Invite[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  invites    Invite[]
+  recordings Recording[]
 }
 
 model Invite {
   meetingId String
   userId    String
   token     String
+  isHost    Boolean @default(false)
 
   meeting Meeting @relation(fields: [meetingId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
@@ -169,6 +171,16 @@ model Upload {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   status    UPLOAD_STATUS @default(PROCESSING)
+}
+
+model Recording {
+  id        String   @id @default(cuid())
+  url       String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meetingId String
+  meeting   Meeting @relation(fields: [meetingId], references: [id])
 }
 
 enum UPLOAD_STATUS {

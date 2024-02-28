@@ -13,8 +13,7 @@ import { UserCard } from "@/components/user-card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Invite, Meeting, User } from "@prisma/client";
-import { use, useEffect, useState } from "react";
-import { getUser } from "@/actions/users";
+import { use } from "react";
 import { LocaleContext } from "@/providers/locale-provider";
 import Link from "next/link";
 
@@ -27,18 +26,7 @@ export default function ActiveMeetingCard({
   meeting,
   handleCancelMeeting,
 }: Props) {
-  const [moderator, setModerator] = useState<User | null>();
-
-  const { dictionary: t } = use(LocaleContext);
-
-  const fetchModerator = async () => {
-    const moderator = await getUser(meeting.hostId);
-    setModerator(moderator);
-  };
-
-  useEffect(() => {
-    fetchModerator();
-  }, [meeting.hostId]);
+  const { dictionary: t, locale } = use(LocaleContext);
 
   const onlineAttendees: any[] = []; //TODO: get online attendees
   const isModerator = (invite: any) => invite.userId === meeting.hostId;
@@ -50,7 +38,7 @@ export default function ActiveMeetingCard({
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <CardTitle>{meeting.title}</CardTitle>
+            <CardTitle>{meeting.title.slice(0, 18)}</CardTitle>
             <CardDescription className="mt-1">
               {meeting.startDateTime <= new Date()
                 ? t.upcomingMeetings.startLabelPast
@@ -76,13 +64,6 @@ export default function ActiveMeetingCard({
       <Separator className="mb-4" />
       <CardContent className="px-5 flex-grow">
         <div className="flex flex-col space-y-2">
-          {moderator && (
-            <UserCard
-              user={moderator}
-              isModerator
-              isOnline={isOnline(moderator)}
-            />
-          )}
           {meeting.invites
             .map((invite, idx) => (
               <UserCard
@@ -96,9 +77,11 @@ export default function ActiveMeetingCard({
         </div>
       </CardContent>
       <CardFooter className="flex justify-end pb-2 pr-2">
-        <Button variant="link">
-          {t.upcomingMeetings.joinButton}
-          <ArrowRight size={18} className="ml-2 text-gray-400" />
+        <Button asChild variant="link">
+          <Link href={`/${locale}/meetings/${meeting.id}/active`}>
+            {t.upcomingMeetings.joinButton}
+            <ArrowRight size={18} className="ml-2 text-gray-400" />
+          </Link>
         </Button>
       </CardFooter>
     </Card>

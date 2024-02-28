@@ -306,27 +306,6 @@ const MeetingForm: React.FC<Props> = ({
                 </div>
               </div>
             )}
-            {values.employees.length > 0 && (
-              <div className="">
-                <h1 className="text-xs font-bold">
-                  {t.form.fields.inviteEmployees.label}
-                </h1>
-                <Separator className="my-2" />
-                <div className="flex flex-col space-y-2">
-                  {values.employees.map((user, index) => (
-                    <UserCard
-                      key={index}
-                      user={
-                        {
-                          name: user.label,
-                          image: user.image,
-                        } as any
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
         <div className="pt-6 space-x-2 flex items-center justify-end w-full">

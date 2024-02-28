@@ -23,10 +23,13 @@ export default async function DashboardLayout({
   const dictionary = (await getDictionary(params.lang)) as any;
 
   return (
-    <>
+    <div className="">
       {/* <CheckAccountDetails user={user} /> */}
       <Navbar t={dictionary} />
-      <div className="container mb-5">{children}</div>
-    </>
+      <div className="container mb-5 flex-grow">{children}</div>
+      {/* <div className="border-t border-2 flex justify-end  mt-5 p-4">
+        <h3 className="text-lg  text-gray-400">WORLD WIDE ASSOCIATES</h3>
+      </div> */}
+    </div>
   );
 }

@@ -31,7 +31,7 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     },
     {
       label: (t: Record<string, any>) => t.mainNav.history,
-      href: (locale: Locale) => `/${locale}/history`,
+      href: (locale: Locale) => `/${locale}/meetings/history`,
       active: pathname === `/history`,
     },
     {
