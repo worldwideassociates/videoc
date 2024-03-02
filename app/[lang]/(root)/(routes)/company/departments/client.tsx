@@ -65,7 +65,7 @@ export const DepartmentClient: React.FC<Props> = ({ data, t }) => {
         description={t.header.subTitle}
         CallToAction={() => (
           <Button asChild variant="ghost" className="rounded-full">
-            <Link href={`${locale}/company/departments/new`}>
+            <Link href={`/${locale}/company/departments/new`}>
               <Plus size={20} />
             </Link>
           </Button>

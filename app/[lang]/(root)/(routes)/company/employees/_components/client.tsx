@@ -78,7 +78,7 @@ export const EmployeeClient: React.FC<Props> = ({ data, t }) => {
               asChild
               className="rounded-full border-gray-600 p-4"
             >
-              <Link href={`${locale}/company/employees/new`}>
+              <Link href={`/${locale}/company/employees/new`}>
                 <Plus size={25} />
               </Link>
             </Button>

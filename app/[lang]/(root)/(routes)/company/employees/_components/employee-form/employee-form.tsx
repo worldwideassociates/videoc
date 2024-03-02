@@ -102,7 +102,7 @@ const EmployeeForm: React.FC<Props> = ({
           description: result.message,
         });
 
-        router.push(`${locale}/company/employees`);
+        router.push(`/${locale}/company/employees`);
       } else {
         toast({
           title: "Oops",
