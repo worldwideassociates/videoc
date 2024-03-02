@@ -12,9 +12,14 @@ const SettingsLayout: React.FC<Props> = async ({ children, params }) => {
 
   return (
     <div className="hidden space-y-6 p-10 py-5 md:block">
-      <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">{t.header.title}</h2>
-        <p className="text-muted-foreground">{t.header.subTitle}</p>
+      <div className="flex justify-between items-baseline">
+        <div className="space-y-0.5">
+          <h2 className="text-2xl font-bold tracking-tight">
+            {t.header.title}
+          </h2>
+          <p className="text-muted-foreground">{t.header.subTitle}</p>
+        </div>
+        <SettingsNav t={t} />
       </div>
       <div
         data-orientation="horizontal"
@@ -23,7 +28,7 @@ const SettingsLayout: React.FC<Props> = async ({ children, params }) => {
       ></div>
 
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <SettingsNav t={t} />
+        {/* <SettingsNav t={t} /> */}
 
         <div className="flex-1">{children}</div>
       </div>
