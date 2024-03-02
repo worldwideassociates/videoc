@@ -34,18 +34,46 @@ async function download(url, filename) {
 
   const savePath = path.join(SAVE_PATH, filename);
 
-  const response = await axios({
-    method: "get",
-    url,
+  const response = await fetch(url, {
     headers: {
       api_key: streamApiKey,
     },
   });
 
-  if (response.status !== 200)
+  if (!response.ok)
     throw new Error(`unexpected response ${response.statusText}`);
 
-  await pipeline(response.data, createWriteStream(savePath));
+  await pipeline(response.body, createWriteStream(savePath));
+  const fileStream = createReadStream(savePath);
+  const meetingId = filename.split("_")[2];
+  const baseURL = `https://storage.bunnycdn.com`;
+  const client = axios.create({
+    baseURL: `${baseURL}/videoc/`,
+    headers: {
+      AccessKey: bunnyApiKey,
+    },
+    maxContentLength: Infinity,
+  });
+  try {
+    const response = await client({
+      method: "PUT",
+      url: filename,
+      data: fileStream,
+    });
+    console.log("Uploaded to CDN:", response.status);
+    if (response.status == 201) {
+      const url = `${CDN_BASE_URL}/${filename}`;
+      const recording = await prisma.recording.create({
+        data: {
+          url,
+          meetingId,
+        },
+      });
+      console.log("Recording saved to DB:", recording.id);
+    }
+  } catch (error) {
+    console.error("Error uploading to CDN", error);
+  }
   console.log(`Video downloaded to ${savePath}`);
 }
 
@@ -72,8 +100,8 @@ async function main() {
   await new Promise((resolve, reject) =>
     meetings.forEach(async (meeting) => {
       // TODO: uncomment this line
-      // if (meeting.recordings.length > 0)
-      //   return console.log("Skip meeting: saved recording found");
+      if (meeting.recordings.length > 0)
+        return console.log("Skip meeting: saved recording found");
 
       const callType = "default";
       const call = client.video.call(callType, meeting.id);
@@ -86,7 +114,8 @@ async function main() {
         const recording = result.recordings[0];
 
         try {
-          await download(recording.url, recording.filename);
+          // await download(recording.url, recording.filename);
+          await uploadRecording(recording.url, recording.filename, meeting.id);
         } catch (error) {
           // TODO: send to honeybadger
           console.error;
@@ -100,7 +129,7 @@ async function main() {
   console.log("Downloaded......");
 
   //update the downloaded recordings to bunnycdn
-  uploadToCdn();
+  // uploadToCdn();
 }
 
 /**
@@ -133,7 +162,8 @@ async function uploadToCdn() {
           data: fileStream,
         });
 
-        if (response.status == 200) {
+        console.log("Uploaded to CDN:", response.status);
+        if (response.status == 201) {
           const url = `${CDN_BASE_URL}/${file}`;
 
           const recording = await prisma.recording.create({
@@ -164,6 +194,60 @@ async function uploadToCdn() {
   }
 
   console.log("Uploaded....");
+}
+
+// Function to download file from a public URL using Axios
+async function downloadFileFromUrl(url) {
+  console.log("Downloading file from URL:", url);
+
+  try {
+    const response = await axios.get(url, {
+      responseType: "arraybuffer",
+      headers: {
+        api_key: streamApiKey,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error downloading file from URL:", err);
+    throw err;
+  }
+}
+
+async function uploadRecording(url, filename, meetingId) {
+  const fileData = await downloadFileFromUrl(url);
+
+  const baseURL = `https://storage.bunnycdn.com`;
+  const client = axios.create({
+    baseURL: `${baseURL}/videoc/`,
+    headers: {
+      AccessKey: bunnyApiKey,
+    },
+    maxContentLength: Infinity,
+  });
+
+  try {
+    const uploadResponse = await client({
+      method: "PUT",
+      url: filename,
+      data: fileData,
+    });
+
+    console.log("Uploaded to CDN:", uploadResponse.status);
+
+    if (uploadResponse.status == 201) {
+      const url = `${CDN_BASE_URL}/${filename}`;
+      const recording = await prisma.recording.create({
+        data: {
+          url,
+          meetingId,
+        },
+      });
+      console.log("Recording saved to DB:", recording.id);
+    }
+  } catch (error) {
+    console.error("Error uploading to CDN", error);
+  }
 }
 
 main()
