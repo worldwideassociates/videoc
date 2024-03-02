@@ -71,15 +71,6 @@ export const HistoryClient: FC<clientProps> = ({ meetings, t }) => {
     });
   };
 
-  const downloadFile = (url, filename) => {
-    var anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = filename;
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
-  };
-
   return (
     <LocaleProvider dictionary={t}>
       <Modal

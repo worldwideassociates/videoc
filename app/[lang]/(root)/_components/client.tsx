@@ -7,7 +7,7 @@ import { UpcomingMeetingCard } from "@/components/upcoming-meeting-card";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
-import { Invite, Meeting, User } from "@prisma/client";
+import { Invite, Meeting, Recording, User } from "@prisma/client";
 import React, { FC, use, useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
@@ -19,6 +19,7 @@ import { Locale } from "@/i18n.config";
 
 interface IMeeting extends Meeting {
   invites: (Invite & { user: User })[];
+  recordings: Recording[];
 }
 
 interface clientProps {
@@ -142,6 +143,7 @@ export const DashboardClient: FC<clientProps> = ({
               key={meeting.id}
               meeting={meeting}
               handleCancelMeeting={prepareCanceling}
+              handlePlayRecording={() => {}}
             />
           ))}
         </div>

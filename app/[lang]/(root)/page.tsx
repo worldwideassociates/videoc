@@ -115,8 +115,8 @@ export default async function DashboardPage({ params }: Props) {
         </ScrollArea>
       </div>
       <DashboardClient
-        todaysMeetings={todaysMeetings}
-        scheduledMeetings={scheduledMeetings}
+        todaysMeetings={todaysMeetings as any}
+        scheduledMeetings={scheduledMeetings as any}
         t={t}
         locale={params.lang}
       />
