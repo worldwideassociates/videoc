@@ -74,8 +74,8 @@ export const HistoryClient: FC<clientProps> = ({ meetings, t }) => {
         title={currentMeeting?.title!}
         onClose={handlePauseRecording}
       >
-        {/* <VideoPlayer options={videoJsOptions} onReady={handlePlayerReady} /> */}
-        <video
+        <VideoPlayer options={videoJsOptions} onReady={handlePlayerReady} />
+        {/* <video
           id="my-player"
           className="video-js"
           controls
@@ -84,7 +84,7 @@ export const HistoryClient: FC<clientProps> = ({ meetings, t }) => {
           height="264"
           data-setup="{}"
           src={currentMeeting?.recordings[0].url!}
-        />
+        /> */}
       </Modal>
       <div className="flex flex-col  space-y-2">
         {meetings.map((meeting) => (

@@ -60,7 +60,6 @@ export default function VideoConference({ invite }: Props) {
       await call.join({ create: true });
       setJoined(true);
     } catch (error: any) {
-      console.log("error", error);
     } finally {
       setJoining(false);
     }
