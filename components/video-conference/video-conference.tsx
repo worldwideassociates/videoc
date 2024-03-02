@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from "react"
+import { useState } from "react";
 import {
   CallControls,
   SpeakerLayout,
@@ -8,40 +8,34 @@ import {
   StreamTheme,
   StreamVideo,
   StreamVideoClient,
-} from "@stream-io/video-react-sdk"
-import { useSearchParams } from "next/navigation"
-import { User } from "@prisma/client";
+} from "@stream-io/video-react-sdk";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Invite, Meeting, User } from "@prisma/client";
 
-
-import '@stream-io/video-react-sdk/dist/css/styles.css';
-import './style.css';
+import "@stream-io/video-react-sdk/dist/css/styles.css";
+import "./style.css";
 import { UserObjectRequest } from "@stream-io/node-sdk";
 import { Button } from "../ui/button";
 
 interface Props {
-  user: User,
-  callId: string
+  invite: Invite & { user: User } & { meeting: Meeting };
 }
 
-const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!
+const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
 
 const CallUiLayout = () => {
   return (
-    <StreamTheme>
-      <SpeakerLayout participantsBarPosition='bottom' />
-      <CallControls />
+    <StreamTheme className="light">
+      <SpeakerLayout participantsBarPosition="bottom" />
+      <CallControls onLeave={() => window.location.reload()} />
     </StreamTheme>
   );
-}
+};
 
-
-export default function VideoConference({ user, callId }: Props) {
-  const searchParams = useSearchParams()
-  const token = searchParams.get('token')!
-  const [joined, setJoined] = useState(false)
-
-  console.log('token', token);
-
+export default function VideoConference({ invite }: Props) {
+  const { meeting, user, token } = invite;
+  const [joined, setJoined] = useState(false);
+  const [joining, setJoining] = useState(false);
 
   const [client] = useState<StreamVideoClient>(() => {
     const streamUser: UserObjectRequest = {
@@ -58,22 +52,20 @@ export default function VideoConference({ user, callId }: Props) {
     });
   });
 
-  const [call] = useState(() => client.call('default', callId));
-
+  const [call] = useState(() => client.call("default", meeting.id));
 
   const joinCall = async () => {
     try {
+      setJoining(true);
       await call.join({ create: true });
       setJoined(true);
     } catch (error: any) {
-      console.log('error', error);
+    } finally {
+      setJoining(false);
     }
-
-  }
-
+  };
 
   if (joined) {
-
     return (
       <StreamVideo client={client}>
         <StreamCall call={call}>
@@ -84,8 +76,25 @@ export default function VideoConference({ user, callId }: Props) {
   } else {
     return (
       <div className="flex justify-center items-center min-h-[650px]">
-        <Button variant='outline' size='lg' onClick={joinCall}>Join Call</Button>
+        <div className="flex flex-col space-y-8">
+          <div className="">
+            <h2 className="text-2xl font-bold tracking-tight text-center">
+              {meeting.title}
+            </h2>
+            <p className="text-muted-foreground tesxt-center">
+              {meeting.description}
+            </p>
+          </div>
+          <Button
+            disabled={joining}
+            variant="outline"
+            size="lg"
+            onClick={joinCall}
+          >
+            {joining ? "Joining..." : "Join call"}
+          </Button>
+        </div>
       </div>
-    )
+    );
   }
 }

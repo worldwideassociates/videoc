@@ -5,6 +5,8 @@ import { MEETING_STATUS, Meeting, User } from "@prisma/client";
 import streamClient from "@/lib/stream-server-client";
 import { sendInvites } from "@/lib/send-invites";
 import { auth } from "@/app/api/auth/[...nextauth]/auth";
+import { Locale } from "@/i18n.config";
+import { getDictionary } from "@/lib/dictionary";
 
 
 
@@ -89,7 +91,10 @@ const update = async (id: string, values: Meeting & { participants: { id: string
       })
 
       // send meeting link to participants
-      const message = `You have been invited to the meeting "${meeting.title}" on ${values.startDateTime.toLocaleString()}.`
+
+      const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
+      const { email: t } = await getDictionary(locale) as any
+      const message = `${t.inviteMessage} "${meeting.title}": ${values.startDateTime.toLocaleString()}.`
       sendInvites(participantMeetings, message)
 
       // Add new users to stream call
@@ -121,7 +126,10 @@ const update = async (id: string, values: Meeting & { participants: { id: string
       const userIds = values.participants.map((p: any) => p.id)
       const oldParticipants = invites.filter((i: any) => userIds.includes(i.userId)).map((i: any) => ({ participant: i.user, meeting, token: i.token }))
 
-      const message = `The meeting "${meeting.title}" has been rescheduled to ${values.startDateTime.toLocaleString()}.`
+
+      const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
+      const { email: t } = await getDictionary(locale) as any
+      const message = `"${meeting.title}":  ${t.rescheduledMessage.body} ${values.startDateTime.toLocaleString()}.`
 
       sendInvites(oldParticipants, message)
     }
@@ -159,6 +167,7 @@ const create = async (values: Meeting & { participants: User[] }) => {
     const callType = 'default';
     const call = await streamClient.video.call(callType, meeting.id);
 
+
     await call.create({
       data: {
         created_by_id: hostId,
@@ -173,15 +182,19 @@ const create = async (values: Meeting & { participants: User[] }) => {
     const token = await streamClient.createToken(hostId, stream_token_exp)
 
     // participants tokens
+    const hostMeeting = await createUserTokens(meeting, [host as User])
     const participantMeetings = await createUserTokens(meeting, values.participants)
+    const userToInvite = [...hostMeeting, ...participantMeetings]
 
     await prismadb.invite.createMany({
-      data: participantMeetings.map((p: any) => ({ userId: p.participant.id, meetingId: p.meeting.id, token: p.token }))
+      data: userToInvite.map((p: any) => ({ userId: p.participant.id, meetingId: p.meeting.id, token: p.token }))
     })
 
     // send meeting link to participants
-    const message = `You have been invited to the meeting "${meeting.title}" on ${values.startDateTime.toLocaleTimeString()}.`
-    sendInvites([{ participant: host!, meeting, token }, ...participantMeetings], message)
+    const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
+    const { email: t } = await getDictionary(locale) as any
+    const message = `${t.inviteMessage.body} "${meeting.title}": ${values.startDateTime.toLocaleTimeString()}.`
+    sendInvites(participantMeetings, message)
 
     return { success: true, message: "Meeting scheduled successfully." };
   } catch (error: any) {
@@ -203,6 +216,7 @@ const createUserTokens = async (meeting: Meeting, participants: User[]) => {
   });
 
   return await Promise.all(participants.map(async (participant) => {
+
     const token = await streamClient.createToken(participant.id, stream_token_exp)
     return {
       participant,

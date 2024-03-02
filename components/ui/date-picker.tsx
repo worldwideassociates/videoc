@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 
-export function DatePicker({ value, onChange }: { value: Date | undefined; onChange: any }) {
+export function DatePicker({ value, onChange, placeholder }:
+  { value: Date | undefined; onChange: any, placeholder?: string }) {
 
   return (
     <Popover>
@@ -18,7 +19,7 @@ export function DatePicker({ value, onChange }: { value: Date | undefined; onCha
           className={cn("w-[240px] justify-start text-left font-normal", !value && "text-muted-foreground")}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "PPP") : <span>Pick a date</span>}
+          {value ? format(value, "PPP") : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className=" w-auto p-0">

@@ -4,6 +4,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import prismadb from '@/lib/prismadb';
 import MagicLinkEmail from '@/emails/magic-link-email';
 import nodemailer from 'nodemailer';
+import { getDictionary } from '@/lib/dictionary';
+import { Locale } from '@/i18n.config';
 
 export const {
   handlers: { GET, POST },
@@ -38,7 +40,13 @@ export const {
       async sendVerificationRequest(params) {
         const { identifier, url, provider, theme } = params
         const { host } = new URL(url)
-        const emailContent = MagicLinkEmail({ url })
+
+        const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale
+
+        const { auth: t } = await getDictionary(locale) as any
+
+
+        const emailContent = MagicLinkEmail({ url, t: t.signInForm })
 
         const transport = nodemailer.createTransport(provider.server)
         const result = await transport.sendMail({

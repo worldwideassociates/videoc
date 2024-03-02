@@ -1,0 +1,604 @@
+{
+  "auth": {
+    "title": "Welcome back!",
+    "subTitle": "Καταχωρήστε τα διαπιστευτήριά σας για πρόσβαση στον λογαριασμό σας",
+    "signInForm": {
+      "placeholder": {
+        "email": "name@example.com"
+      },
+      "button": "Σύνδεση",
+      "label": {
+        "email": "Email"
+      },
+      "tns": {
+        "label": "Κάνοντας κλικ στο κουμπί Συνέχεια, συμφωνείτε με τους",
+        "termsLink": "Όρους Παροχής Υπηρεσιών μας",
+        "privacyLink": "και την Πολιτική Απορρήτου"
+      },
+      "magicLink": {
+        "subject": "Ο σύνδεσμος που ζητήσατε για την σύνδεση σας",
+        "description": "ζητήσατε έναω σύνδεσμο για να συνδεθείτε στο λογαριασμό σας. Κάντε κλικ στο παραπάνω κουμπί για να συνδεθείτε.",
+        "link": "Πατήστε εδώ για να συνδεθείτε"
+      },
+      "toast": {
+        "success": {
+          "title": "Είστε σχεδόν έτοιμοι",
+          "description": "ένας σύνδεσμος σύνδεσης στάλθηκε στο email σας"
+        }
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Πίνακας Λειτουργιών",
+    "subTitle": "Καλώς ήρθατε στο σύστημα διαχείρισης",
+    "upcomingMeetings": {
+      "title": "Επόμενες συναντήσεις",
+      "subTitle": "Το σημερινό πρόγραμμα των συναντήσεών σας",
+      "startLabel": "Ξεκινά σε ",
+      "startLabelPast": "Ξεκίνησε στις ",
+      "joinButton": "Συμμετοχή"
+    },
+    "scheduledMeetings": {
+      "title": "Προγραμματισμένες συναντήσεις",
+      "subTitle": "Όλες οι συνεδριάσεις που έχουν προγραμματιστεί για τις επόμενες 7 ημέρες"
+    },
+    "alertModal": {
+      "title": "Είστε σίγουρος;",
+      "description": "Πρόκειται να ακυρώσετε αυτή τη συνάντηση. Αυτή η ενέργεια δεν μπορεί να ανακληθεί.",
+      "cancelButton": "Ακύρωση",
+      "confirmButton": "Ναι, Ακύρωσε την"
+    },
+    "statsCards": {
+      "meetings": {
+        "title": "Σύνολο Συναντήσεων",
+        "subTitle": "Συνολικές προγραμματισμένες συνεδριάσεις"
+      },
+      "employees": {
+        "title": "Σύνολο Υπαλλήλων",
+        "subTitle": "TΣύνολο υπαλλήλων στην εταιρεία"
+      },
+      "customers": {
+        "title": "Σύνολο πελατών",
+        "subTitle": "Σύνολο πελατών στην εταιρεία"
+      },
+      "collaborators": {
+        "title": "Σύνολο Συνεργατών",
+        "subTitle": "Συνολικοί συνεργάτες της εταιρείας"
+      }
+    }
+  },
+  "meetings": {
+    "form": {
+      "update": {
+        "title": "Ενημέρωση Συνάντησης",
+        "subTitle": "Όταν ενημερώνετε την ημερομηνία και την ώρα έναρξης ή τις προσκλήσεις, θα αποστέλλονται ειδοποιήσεις ηλεκτρονικού ταχυδρομείου στους συμμετέχοντες",
+        "button": "Ενημέρωση συνάντησης",
+        "confirmMessage": "Ενημέρωση λεπτομερειών συνάντησης"
+      },
+      "create": {
+        "title": "Δημιουργία συνάντησης",
+        "subTitle": "Δημιουργήστε μια νέα συνάντηση και προσκαλέστε τα μέλη της ομάδας σας",
+        "button": "Δημιουργία συνάντησης",
+        "confirmMessage": "Πρόκειται να προγραμματίσετε μια συνάντηση και να στείλετε προσκλήσεις στους συμμετέχοντες. Θέλετε να συνεχίσετε;"
+      },
+      "fields": {
+        "title": {
+          "label": "Ατζέντα",
+          "placeholder": "Θέμα της συνάντησης",
+          "helperText": "Αυτή θα είναι η ατζέντα της συνεδρίασης"
+        },
+        "description": {
+          "label": "Περιγραφή",
+          "placeholder": "Τί θα συζητηθεί;"
+        },
+        "date": {
+          "label": "Ημέρα",
+          "placeholder": "Επιλέξτε ημερομηνία",
+          "helperText": "Πότε θα πραγματοποιηθεί η συνεδρίαση;"
+        },
+        "time": {
+          "label": "Ώρα",
+          "placeholder": "Διαλέξτε ώρα",
+          "helperText": "Ποια Ώρα"
+        },
+        "estimatedDuration": {
+          "label": "Προβλεπόμενη διάρκεια",
+          "placeholder": "Πόση ώρα θα διαρκέσει η συνάντηση;"
+        },
+        "inviteEmployees": {
+          "label": "Προσκαλέστε υπαλλήλους",
+          "placeholder": "Αναζήτηση υπαλλήλων",
+          "helpText": "Επιλέξτε τους υπαλλήλους που θα προσκαλέσετε στη συνάντηση και στείλτε τους μια ειδοποίηση ηλεκτρονικού ταχυδρομείου σε καθέναν από αυτούς."
+        },
+        "inviteCollaborators": {
+          "label": "Προσκαλέστε συνεργάτες",
+          "placeholder": "Αναζήτηση συνεργάτών",
+          "helpText": "Επιλέξτε τους συνεργάτες που θα προσκαλέσετε στη συνάντηση και στείλτε τους μια ειδοποίηση ηλεκτρονικού ταχυδρομείου σε καθέναν από αυτούς."
+        },
+        "inviteCustomers": {
+          "label": "Προσκαλέστε πελάτες",
+          "placeholder": "Αναζήτηση πελατών",
+          "helpText": "Επιλέξτε τους πελάτες που θα προσκαλέσετε στη συνάντηση και στείλτε τους μια ειδοποίηση ηλεκτρονικού ταχυδρομείου σε καθέναν από αυτούς."
+        }
+      },
+      "buttons": {
+        "cancel": "Ακύρωση",
+        "confirm": "Επιβεβαίωση"
+      }
+    }
+  },
+  "customers": {
+    "header": {
+      "title": "Πληροφορίες πελάτη",
+      "subTitle": "Διαχειριστείτε τις πληροφορίες των πελατών σας εδώ"
+    },
+    "title": "Πελάτες",
+    "addButton": "Προσθήκη πελάτη",
+    "form": {
+      "create": {
+        "title": "Νέος πελάτης",
+        "subTitle": "Προσθήκη νέου πελάτη στη λίστα σας",
+        "button": "Δημιουργία πελάτη"
+      },
+      "update": {
+        "title": "Ενημέρωση πελάτη",
+        "subTitle": "Ενημέρωση στοιχείων πελάτη",
+        "button": "Ενημέρωση πελάτη"
+      },
+      "fields": {
+        "name": {
+          "label": "Όνομα",
+          "placeholder": "Όνομα πελάτη"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "contact@example.com"
+        },
+        "phone": {
+          "label": "Τηλέφωνο",
+          "placeholder": "Τηλέφωνο πελάτη"
+        },
+        "address": {
+          "label": "Διεύθυνση",
+          "placeholder": "Διεύθυνση πελάτη"
+        },
+        "city": {
+          "label": "Πόλη",
+          "placeholder": "Πόλη πελάτη"
+        },
+        "region": {
+          "label": "Περιοχή",
+          "placeholder": "Περιοχή πελάτη"
+        },
+        "postalCode": {
+          "label": "Ταχυδρομικός κώδικας",
+          "placeholder": "Ταχυδρομικός κωδικός πελάτη"
+        },
+        "country": {
+          "label": "Χώρα",
+          "placeholder": "Χώρα πελάτη"
+        },
+        "websiteUrl": {
+          "label": "Website URL",
+          "placeholder": "https://www.example.com"
+        },
+        "logo": {
+          "label": "Λογότυπο",
+          "placeholder": "Λογότυπο Εταιρίας"
+        },
+        "vatNumber": {
+          "label": "ΑΦΜ",
+          "placeholder": "ΑΦΜ Πελάτη",
+          "helpText": "Αριθμός ΦΠΑ για σκοπούς τιμολόγησης και συμμόρφωσης"
+        },
+        "profession": {
+          "label": "Επάγγελμα",
+          "placeholder": "Επαγγελματική Δραστηριότητα"
+        },
+        "localTaxOffice": {
+          "label": "ΔΟΥ",
+          "placeholder": "Επιλέξτε ΔΟΥ"
+        }
+      },
+      "buttons": {
+        "create": "Δημιουργία Πελάτη",
+        "update": "Ενημέρωση Πελάτη"
+      }
+    },
+    "alertModal": {
+      "title": "Είστε σίγουρος;",
+      "description": "Πρόκειται να διαγράψετε αυτόν τον πελάτη;. Αυτή η ενέργεια δεν μπορεί να ανακληθεί.",
+      "cancelButton": "Ακύρωση",
+      "confirmButton": "Ναι, Ακύρωση"
+    },
+    "table": {
+      "columnsSettings": "Στήλες",
+      "search": "Φίλτρο κατά",
+      "selectFilterColumn": "Επιλέξτε στήλη φίλτρου",
+      "nextPage": "Επόμενο",
+      "previousPage": "Προηγούμενο",
+      "actions": {
+        "title": "Ενέργειες",
+        "edit": "Τροποποίηση",
+        "delete": "Διαγραφή",
+        "view": "Προβολή"
+      }
+    },
+    "details": {
+      "title": "Πελάτης"
+    }
+  },
+  "collaborators": {
+    "header": {
+      "title": "Πληροφορίες συνεργάτη",
+      "subTitle": "Διαχειριστείτε τις πληροφορίες των συνεργατών σας εδώ"
+    },
+    "title": "Συνεργάτες",
+    "addButton": "Προσθήκη συνεργάτη",
+    "form": {
+      "create": {
+        "title": "Νέος συνεργάτης",
+        "subTitle": "Προσθήκη νέου συνεργάτη στη λίστα σας",
+        "button": "Δημιουργία συνεργάτη"
+      },
+      "update": {
+        "title": "Ενημέρωση Συνεργάτη",
+        "subTitle": "Ενημέρωση στοιχείων συνεργάτη",
+        "button": "Ενημέρωση συνεργάτη"
+      },
+      "fields": {
+        "name": {
+          "label": "Όνομα",
+          "placeholder": "Όνομα συνεργάτη"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "contact@example.com"
+        },
+        "phone": {
+          "label": "Τηλέφωνο",
+          "placeholder": "Τηλέφωνο συνεργάτη"
+        },
+        "address": {
+          "label": "Διεύθυνση",
+          "placeholder": "Διεύθυνση συνεργάτη"
+        },
+        "city": {
+          "label": "Πόλη",
+          "placeholder": "Collaborator city"
+        },
+        "region": {
+          "label": "Περιοχή",
+          "placeholder": "Περιοχή Συνεργάτη"
+        },
+        "postalCode": {
+          "label": "Ταχυδρομικός κωδικός",
+          "placeholder": "Ταχυδρομικός κωδικός συνεργάτη"
+        },
+        "country": {
+          "label": "Χώρα",
+          "placeholder": "Χώρα συνεργάτη"
+        },
+        "websiteUrl": {
+          "label": "Website URL",
+          "placeholder": "https://www.example.com"
+        },
+        "logo": {
+          "label": "Λογότυπο",
+          "placeholder": "Λογότυπο Συνεργάτη"
+        },
+        "vatNumber": {
+          "label": "ΑΦΜ",
+          "placeholder": "ΑΦΜ Συνεργάτη",
+          "helpText": "Αριθμός ΦΠΑ για σκοπούς τιμολόγησης και συμμόρφωσης"
+        },
+        "profession": {
+          "label": "Επαγγελματική Δραστηριότητα",
+          "placeholder": "Επαγγελματική Δραστηριότητα Συνεργάτη"
+        },
+        "localTaxOffice": {
+          "label": "ΔΟΥ",
+          "placeholder": "Επιλέξτε ΔΟΥ"
+        }
+      },
+      "buttons": {
+        "create": "Δημιουργία συνεργάτη",
+        "update": "Ενημέρωση συνεργάτη"
+      }
+    },
+    "table": {
+      "columnsSettings": "Στήλες",
+      "search": "Φίλτρο κατά",
+      "selectFilterColumn": "Επιλογή στήλης φίλτρου",
+      "nextPage": "Επόμενο",
+      "previousPage": "Προηγούμενο",
+      "actions": {
+        "title": "Ενέργειες",
+        "edit": "Τροποποίηση",
+        "delete": "Διαγραφή",
+        "view": "Προβολή"
+      }
+    },
+    "alertModal": {
+      "title": "Είστε σίγουρος;",
+      "description": "Πρόκειται να διαγράψετε αυτόν τον συνεργάτη. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+      "cancelButton": "Ακύρωση",
+      "confirmButton": "Ναι, Ακύρωση"
+    },
+    "details": {
+      "title": "Συνεργάτης"
+    }
+  },
+  "companyProfile": {
+    "header": {
+      "title": "Πληροφορίες εταιρείας",
+      "subTitle": "Λεπτομέρειες σχετικά με την εταιρεία"
+    },
+    "nav": {
+      "companyProfile": "Προφίλ Εταιρείας",
+      "departments": "Τμήματα",
+      "employees": "Υπάλληλοι",
+      "license": "Άδεια"
+    },
+    "form": {
+      "header": {
+        "title": "Προφίλ εταιρείας",
+        "subTitle": "Διαχειριστείτε τις πληροφορίες του προφίλ της εταιρείας σας εδώ"
+      },
+      "update": {
+        "title": "Ενημέρωση προφίλ εταιρείας",
+        "subTitle": "Ενημέρωση στοιχείων προφίλ εταιρείας",
+        "button": "Ενημέρωση προφίλ εταιρείας"
+      },
+      "fields": {
+        "name": {
+          "label": "Όνομα εταιρείας",
+          "placeholder": "Όνομα εταιρείας"
+        },
+        "email": {
+          "label": "Email εταιρείας",
+          "placeholder": "Email εταιρείας"
+        },
+        "vatNumber": {
+          "label": "ΑΦΜ",
+          "placeholder": "ΑΦΜ Εταιρίας",
+          "helpText": "Αριθμός ΦΠΑ για σκοπούς τιμολόγησης"
+        },
+        "localTaxOffice": {
+          "label": "ΔΟΥ",
+          "placeholder": "Επιλέξτε ΔΟΥ",
+          "helpText": "Εφορία στην οποία η επιχείρηση ανήκει"
+        },
+        "companyProfession": {
+          "label": "Επαγγελματική Δραστηριότητα",
+          "placeholder": "Επαγγελματική Δραστηριότητα Εταιρίας"
+        },
+        "address": {
+          "label": "Διεύθυνση",
+          "placeholder": "Διεύθυνση Εταιρίας"
+        },
+        "city": {
+          "label": "Πόλη",
+          "placeholder": "Πόλη εταιρίας"
+        },
+        "region": {
+          "label": "Περιοχή",
+          "placeholder": "Περιοχή εταιρίας"
+        },
+        "country": {
+          "label": "Χώρα",
+          "placeholder": "Χώρα εταιρίας"
+        },
+        "websiteUrl": {
+          "label": "Website URL",
+          "placeholder": "https://www.example.com",
+          "helpText": "Company website URL"
+        },
+        "accountingEmail": {
+          "label": "Email Λογιστηρίου",
+          "placeholder": "Email Λογιστηρίου",
+          "helpText": "Email για το Λογιστήριο"
+        },
+        "generalEmail": {
+          "label": "Γενικό Email",
+          "placeholder": "Γενικό email",
+          "helpText": "Γενικό email της εταιρίαςy"
+        },
+        "phone": {
+          "label": "Τηλέφωνο",
+          "placeholder": "Τηλέφωνο εταιρίας"
+        },
+        "alternativePhone": {
+          "label": "Εναλλακτικό τηλέφωνο",
+          "placeholder": "Εναλλακτικό τηλέφωνο"
+        },
+        "companyLogo": {
+          "label": "Λογότυπο",
+          "placeholder": "Λογότυπο εταιρίας"
+        }
+      },
+      "buttons": {
+        "edit": "Τροποποίηση",
+        "cancel": "Ακύρωση",
+        "save": "Αποθήκευση"
+      }
+    }
+  },
+  "departments": {
+    "header": {
+      "title": "Τμήματα",
+      "subTitle": "Διαχείριση τμημάτων της εταιρίας σας"
+    },
+    "alertModal": {
+      "title": "Είστε σίγουρος;",
+      "description": "Είστε έτοιμοι να διαγράψετε αυτό το τμήμα. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+      "cancelButton": "Ακύρωση",
+      "confirmButton": "Ναι, Ακύρωσε την"
+    },
+    "form": {
+      "header": {
+        "create": "Νέο Τμήμα"
+      },
+      "create": {
+        "title": "Νέο Τμήμα",
+        "subTitle": "Προσθήκη νέου τμήματος στη λίστα σας",
+        "button": "Δημιουργία τμήματος"
+      },
+      "update": {
+        "title": "Ενημέρωση Τμήματος",
+        "subTitle": "Ενημέρωση στοιχείων του τμήματος",
+        "button": "Ενημέρωση Τμήματος"
+      },
+      "fields": {
+        "name": {
+          "label": "Όνομα",
+          "placeholder": "Όνομα τμήματος",
+          "helpText": "Το όνομα του τμήματος πρέπει να είναι μοναδικό"
+        },
+        "email": {
+          "label": "Email του τμήματος",
+          "placeholder": "Εmail του τμήματος"
+        },
+        "phone": {
+          "label": "Τηλέφωνο",
+          "placeholder": "Τηλέφωνο τμήματο"
+        },
+        "manager": {
+          "label": "Προϊστάμενος",
+          "placeholder": "Επιλογή Προϊστάμενου"
+        },
+        "members": {
+          "label": "Μέλη",
+          "placeholder": "Επιλογή Μελών",
+          "helpText": "Αν δεν μπορείτε να βρείτε τον χρήστη που ψάχνετε, βεβαιωθείτε ότι δεν είναι ήδη μέλος άλλου τμήματος."
+        }
+      },
+
+      "buttons": {
+        "create": "Δημιουργία",
+        "update": "Ενημέρωση"
+      }
+    }
+  },
+  "employees": {
+    "header": {
+      "title": "Στοιχεία Υπαλλήλου",
+      "subTitle": "Διαχειριστείτε τις πληροφορίες των υπαλλήλων σας εδώ"
+    },
+    "title": "Υπάλληλοι",
+    "addButton": "Προσθήκη Υπαλήλου",
+    "form": {
+      "create": {
+        "title": "Νέος Υπάλληλος",
+        "subTitle": "Προσθέστε έναν νέο εργαζόμενο στη λίστα σας",
+        "button": "Δημιουργία Υπαλλήλου"
+      },
+      "update": {
+        "title": "Ενημέρωση Υπαλλήλου",
+        "subTitle": "Ενημέρωση στοιχείων υπαλλήλου",
+        "button": "Ενημέρωση Υπαλλήλου"
+      },
+      "fields": {
+        "name": {
+          "label": "Όνομα",
+          "placeholder": "Όνομα Υπαλλήλου"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email Υπαλλήλου"
+        },
+        "position": {
+          "label": "Θέση",
+          "placeholder": "Θέση Υπαλλήλου"
+        },
+        "department": {
+          "label": "Τμήμα",
+          "placeholder": "SΕπιλογή Τμήματος"
+        },
+        "vatNumber": {
+          "label": "ΑΦΜ",
+          "placeholder": "ΑΦΜ Υπαλλήλου",
+          "helpText": "Αριθμός ΦΠΑ για σκοπούς μισθοδοσίας"
+        },
+        "localTaxOffice": {
+          "label": "ΔΟΥ",
+          "placeholder": "Επιλογή ΔΟΥ"
+        },
+        "phone": {
+          "label": "Τηλέφωνο",
+          "placeholder": "Τηλέφωνο Υπαλλήλου"
+        },
+        "dateOfBirth": {
+          "label": "Ημερομηνία Γέννησης",
+          "placeholder": "Ημερομηνία γέννησης"
+        },
+        "address": {
+          "label": "Διεύθυνση",
+          "placeholder": "Διεύθυνση Υπαλλήλου"
+        },
+        "city": {
+          "label": "Πόλη",
+          "placeholder": "Πόλη Υπαλλήλου"
+        },
+        "region": {
+          "label": "Περιοχή",
+          "placeholder": "Περιοχή Υπαλλήλου"
+        },
+        "postalCode": {
+          "label": "Ταχυδρομικός κωδικός",
+          "placeholder": "Ταχυδρομικός κωδικός Υπαλλήλου"
+        },
+        "country": {
+          "label": "Χώρα",
+          "placeholder": "Χώρα Υπαλλήλου"
+        }
+      },
+      "buttons": {
+        "create": "Δημιουργία Υπαλλήλου",
+        "update": "Ενημέρωση Υπαλλήλου"
+      }
+    },
+    "table": {
+      "columnsSettings": "Στήλες",
+      "search": "Φίλτρο κατά",
+      "selectFilterColumn": "Επιλέξτε στήλη φίλτρου",
+      "nextPage": "Επόμενο",
+      "previousPage": "Προηγούμενο",
+      "actions": {
+        "title": "Ενέργειες",
+        "edit": "Ενημέρωση",
+        "delete": "Διαγραφή",
+        "view": "Προβολή"
+      }
+    },
+    "alertModal": {
+      "title": "Είστε σίγουρος;",
+      "description": "Πρόκειται να διαγράψετε έναν υπάλληλο. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+      "cancelButton": "Ακύρωση",
+      "confirmButton": "Ναι, ακύρωση"
+    }
+  },
+  "email": {
+    "inviteMessage": {
+      "subject": "Έχετε προσκληθεί σε συνάντηση",
+      "body": "Έχετε προσκληθεί σε συνάντηση. Με Θέμα:",
+      "link": "Συμμετοχή στην συνάντηση"
+    },
+    "rescheduleMessage": {
+      "subject": "Επαναπρογραμματισμός συνάντησης",
+      "body": "Η συνάντηση μετατέθηκε για:",
+      "button": "Προβολή συνάντησης"
+    }
+  },
+  "license": {
+    "title": "Άδεια"
+  },
+  "mainNav": {
+    "dashboard": "Πίνακας ελέγχου",
+    "meetings": "Συναντήσεις",
+    "customers": "Πελάτες",
+    "collaborators": "Συνεργάτες",
+    "companyProfile": "Εταιρικό προφίλ",
+    "history": "Ιστορικό"
+  }
+}

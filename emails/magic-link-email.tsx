@@ -16,18 +16,15 @@ import * as React from "react";
 
 interface MagicLinkEmailProps {
   magicLink?: string;
+  t: any;
 }
 
-const baseUrl = process.env.BASE_URL
-  ? `https://${process.env.BASE_URL}`
-  : "";
+const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "";
 
-export const MagicLinkEmail = ({
-  magicLink,
-}: MagicLinkEmailProps) => (
+export const MagicLinkEmail = ({ magicLink, t }: MagicLinkEmailProps) => (
   <Html>
     <Head />
-    <Preview>Log in with this magic link.</Preview>
+    <Preview>{t.magicLink.subject}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
@@ -36,16 +33,14 @@ export const MagicLinkEmail = ({
           height={48}
           alt="MbMVio"
         />
-        <Heading style={heading}>🪄 Your magic link</Heading>
+        <Heading style={heading}>🪄 {t.magicLink.subject}</Heading>
         <Section style={body}>
           <Text style={paragraph}>
             <Link style={link} href={magicLink}>
-              👉 Click here to sign in 👈
+              👉 {t.magicLink.link} 👈
             </Link>
           </Text>
-          <Text style={paragraph}>
-            If you didn't request this, please ignore this email.
-          </Text>
+          <Text style={paragraph}>{t.magicLink.description}</Text>
         </Section>
         <Text style={paragraph}>
           Best,
@@ -63,14 +58,13 @@ export const MagicLinkEmail = ({
           }}
         />
         <Text style={footer}>World Wide Associates Inc.</Text>
-
       </Container>
     </Body>
   </Html>
 );
 
-
-export default ({ url }: { url: string }) => render(<MagicLinkEmail magicLink={url} />)
+export default ({ url, t }: { url: string; t: any }) =>
+  render(<MagicLinkEmail magicLink={url} t={t} />);
 
 const main = {
   backgroundColor: "#ffffff",

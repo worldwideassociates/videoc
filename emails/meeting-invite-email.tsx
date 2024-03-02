@@ -17,24 +17,23 @@ import {
 import * as React from "react";
 
 interface MeetingInvite {
-  meeting: Meeting
-  participant: User,
-  message: string
-  token: string
+  meeting: Meeting;
+  participant: User;
+  message: string;
+  token: string;
+  t: any;
 }
 
-const baseUrl = process.env.BASE_URL
-  ? `https://${process.env.BASE_URL}`
-  : "";
+const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "";
 
 export const MeetingInviteEmail = ({
   meeting,
   participant,
   message,
-  token
+  token,
+  t,
 }: MeetingInvite) => {
-
-  const meetingUrl = `${process.env.BASE_URL}/meetings/${meeting.id}/active?token=${token}`
+  const meetingUrl = `${process.env.BASE_URL}/meetings/${meeting.id}/active?token=${token}`;
 
   return (
     <Html>
@@ -49,19 +48,21 @@ export const MeetingInviteEmail = ({
             alt="WWA"
             style={logo}
           />
-          <Heading style={heading}>You're invited to a meeting</Heading>
+          <Heading style={heading}>{t.inviteMessage.subject}</Heading>
           <Section style={buttonContainer}>
             <Button style={button} href={meetingUrl}>
-              Join Meeting
+              {t.inviteMessage.link}
             </Button>
           </Section>
-          <Text style={paragraph}>Agenda: {meeting.title}</Text>
-          <Text style={paragraph}>
-            {message}
-          </Text>
+          <Text style={paragraph}>{meeting.title}</Text>
+          <Text style={paragraph}>{message}</Text>
           <hr />
           <Text style={paragraph}>
-            Scheduled For: <code style={code}>{meeting.startDateTime.toLocaleDateString()}</code>
+            <code style={code}>
+              {meeting.startDateTime.toLocaleDateString() +
+                ":" +
+                meeting.startDateTime.toLocaleTimeString()}
+            </code>
           </Text>
           <Hr style={hr} />
           <Link href={baseUrl} style={reportLink}>
@@ -71,11 +72,30 @@ export const MeetingInviteEmail = ({
       </Body>
     </Html>
   );
-}
+};
 
-
-export default ({ message, participant, meeting, token }: { message: string, participant: User, meeting: Meeting, token: string }) =>
-  render(<MeetingInviteEmail message={message} participant={participant} meeting={meeting} token={token} />)
+export default ({
+  message,
+  participant,
+  meeting,
+  token,
+  t,
+}: {
+  message: string;
+  participant: User;
+  meeting: Meeting;
+  token: string;
+  t: any;
+}) =>
+  render(
+    <MeetingInviteEmail
+      message={message}
+      participant={participant}
+      meeting={meeting}
+      token={token}
+      t={t}
+    />
+  );
 
 const logo = {
   borderRadius: 21,
