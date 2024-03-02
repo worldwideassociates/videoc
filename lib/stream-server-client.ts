@@ -1,5 +1,5 @@
 
-import { StreamClient } from '@stream-io/node-sdk';
+import { StreamClient, StreamVideoClient } from '@stream-io/node-sdk';
 
 const apiKey = process.env.STREAM_API_KEY
 const secret = process.env.STREAM_API_SECRET
@@ -9,6 +9,7 @@ declare global {
 }
 
 const streamClient = globalThis.streamClient || new StreamClient(apiKey, secret);
+
 
 if (process.env.NODE_ENV !== 'production') globalThis.streamClient = streamClient
 

@@ -8,5 +8,6 @@ declare namespace NodeJS {
     STREAM_API_KEY: string;
     STREAM_API_SECRET: string;
     DEFAULT_LOCALE: string;
+    BUNNY_API_KEY: string;
   }
 }
