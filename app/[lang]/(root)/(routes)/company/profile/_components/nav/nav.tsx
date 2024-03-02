@@ -10,19 +10,19 @@ import { use } from "react";
 const routes = [
   {
     label: (t: Record<string, any>) => t.nav.companyProfile,
-    href: (locale: Locale) => `${locale}/company/profile`,
+    href: (locale: Locale) => `/${locale}/company/profile`,
   },
   {
     label: (t: Record<string, any>) => t.nav.departments,
-    href: (locale: Locale) => `${locale}/company/departments`,
+    href: (locale: Locale) => `/${locale}/company/departments`,
   },
   {
     label: (t: Record<string, any>) => t.nav.employees,
-    href: (locale: Locale) => `${locale}/company/employees`,
+    href: (locale: Locale) => `/${locale}/company/employees`,
   },
   {
     label: (t: Record<string, any>) => t.nav.license,
-    href: (locale: Locale) => `${locale}/company/license`,
+    href: (locale: Locale) => `/${locale}/company/license`,
   },
 ];
 
