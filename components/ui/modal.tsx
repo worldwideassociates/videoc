@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 
 interface ModalProps {
-  title: string;
+  title?: string;
   description?: string;
   isOpen: boolean;
   onClose: () => void;
@@ -42,7 +42,9 @@ export const Modal: React.FC<ModalProps> = ({
               {Icon && <Icon className="mr-2" size={30} />}
             </div>
             <div className="">
-              <DialogTitle className="text-2xl">{title}</DialogTitle>
+              <DialogTitle className="text-2xl text-gray-600">
+                {title}
+              </DialogTitle>
               {description && (
                 <DialogDescription>{description}</DialogDescription>
               )}

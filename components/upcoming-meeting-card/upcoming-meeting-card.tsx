@@ -1,5 +1,13 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Calendar, Download, Edit2, Info, PlayIcon, X } from "lucide-react";
+import {
+  Calendar,
+  Download,
+  Edit2,
+  Info,
+  PlayIcon,
+  Video,
+  X,
+} from "lucide-react";
 import { UserCard } from "@/components/user-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -95,41 +103,23 @@ export default function UpcomingMeetingCard({
 
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
-        <CardFooter className="flex justify-end pb-0">
+        <CardFooter className="pb-0 flex justify-end">
           {isInthePast() && (
-            <>
-              {meeting.recordings.length == 0 ? (
-                <Card className="flex space-x-2 items-center p-4 m-0">
-                  <Info size={24} className="text-gray-400" />
-                  <span className="text-gray-400 text-xs">
-                    If meeting was recorded, it will be available in 12-24 hours
-                  </span>
-                </Card>
-              ) : (
-                <Card className="flex space-x-2 items-center p-4 m-0">
-                  <span className="text-gray-400">Recording:</span>
-                  <Button
-                    asChild
-                    variant="ghost"
-                    size="icon"
-                    className="p-2 rounded-full"
-                    onClick={() => handlePlayRecording(meeting)}
-                  >
-                    <PlayIcon className="text-gray-400 w-8 h-8" />
-                  </Button>
-                  <Button
-                    asChild
-                    variant="ghost"
-                    size="icon"
-                    className="p-2 rounded-full"
-                  >
-                    <Link href={`#`}>
-                      <Download className="text-gray-400 w-8 h-8" />
-                    </Link>
-                  </Button>
-                </Card>
+            <div>
+              {meeting.recordings.length > 0 && (
+                <Button
+                  asChild
+                  variant="link"
+                  className=""
+                  onClick={() => handlePlayRecording(meeting)}
+                >
+                  <div className="flex space-x-2">
+                    <Video size={24} className="text-gray-600" />
+                    <span className="text-gray-600">Recording</span>
+                  </div>
+                </Button>
               )}
-            </>
+            </div>
           )}
         </CardFooter>
       </CardContent>
