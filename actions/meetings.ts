@@ -183,6 +183,7 @@ const create = async (values: Meeting & { participants: User[] }) => {
 
     // participants tokens
     const hostMeeting = await createUserTokens(meeting, [host as User])
+
     const participantMeetings = await createUserTokens(meeting, values.participants)
     const userToInvite = [...hostMeeting, ...participantMeetings]
 
@@ -194,7 +195,8 @@ const create = async (values: Meeting & { participants: User[] }) => {
     const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
     const { email: t } = await getDictionary(locale) as any
     const message = `${t.inviteMessage.body} "${meeting.title}": ${values.startDateTime.toLocaleTimeString()}.`
-    sendInvites(participantMeetings, message)
+
+    sendInvites(userToInvite, message)
 
     return { success: true, message: "Meeting scheduled successfully." };
   } catch (error: any) {
