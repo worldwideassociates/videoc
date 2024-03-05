@@ -391,7 +391,7 @@ const ProfileForm: React.FC<Props> = ({ company, t }) => {
           {isEditMode && (
             <Button disabled={isPending}>
               {/* TODO: only show button to admin users */}
-              t.form.buttons.save
+              {t.form.buttons.save}
             </Button>
           )}
         </CardFooter>

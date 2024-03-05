@@ -608,8 +608,10 @@
   },
   "email": {
     "inviteMessage": {
-      "subject": "You have been invited to a meeting",
-      "body": "You have been invited to a meeting. for:",
+      "subject": "You have been invited",
+      "body1": " You're cordially invited to a video call hosted by ",
+      "body2": "on",
+      "body3": "Join us for an engaging discussion and discover new opportunities together. See you there!",
       "link": "Join meeting"
     },
     "rescheduleMessage": {
@@ -619,7 +621,16 @@
     }
   },
   "license": {
-    "title": "License"
+    "title": "License Agreement",
+    "fields": {
+      "companyName": "COMPANY NAME",
+      "vatNumber": "VAT NUMBER",
+      "address": "ADDRESS",
+      "city": "CITY",
+      "zipCode": "ZIP CODE",
+      "serialNumber": "SERIAL NUMBER",
+      "description": "SOFTWARE LICENSE AGREEMENT <br/> <br/> This Software License Agreement (the \"Agreement\") is between you (the \"Customer\") and World Wide Associates E.E.<br/> (\"World Wide Associates\"). This Agreement governs your use of the software that you have acquired from World Wide<br/> Associates.<br/> 1. Grant of License<br/> World Wide Associates grants to you a non-exclusive, non-transferable license to use the Software. The Software<br/> includes all of its technical features, the services provided through it, additional applications and/or databases<br/> that are incorporated into the Program, as well as future upgrades to it.<br/> 2. Disclaimer of Warranties<br/> WORLD WIDE ASSOCIATES MAKES NO WARRANTIES, EXPRESS OR IMPLIED, WITH RESPECT TO THE SOFTWARE. WORLD WIDE ASSOCIATES <br/>DISCLAIMS ALL WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. WORLD WIDE ASSOCIATES DOES NOT<br/> WARRANT THAT THE SOFTWARE WILL BE ERROR-FREE OR UNINTERRUPTED.<br/> 3. Limitations of Liability<br/> IN NO EVENT SHALL WORLD WIDE ASSOCIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR <br/>CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,<br/> DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, <br/>STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE SOFTWARE, <br/>EVEN IF WORLD WIDE ASSOCIATES HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.<br/> 4. Customer's Obligations<br/> The Customer agrees to:<br/> Use the Software only in accordance with this Agreement.<br/> Not copy, modify, or distribute the Software.<br/> Not reverse engineer or decompile the Software.<br/> Not remove or alter any copyright or other proprietary notices from the Software.<br/> Keep the Software confidential and secure.<br/> 5. Intellectual Property<br/> All intellectual property rights in the Software are owned by World Wide Associates. The Customer agrees not to <br/>infringe on any of World Wide Associates' intellectual property rights.<br/> 6. Term and Termination<br/> This Agreement will commence on the date that the Customer first uses the Software and will continue in effect <br/>until terminated. Either party may terminate this Agreement at any time for any reason. Upon termination of this <br/>Agreement, the Customer must cease all use of the Software and destroy all copies of the Software in its possession.<br/> 7. Governing Law<br/> This Agreement will be governed by and construed in accordance with the laws of Greece.<br/> 8. Entire Agreement<br/> This Agreement constitutes the entire agreement between the parties with respect to the subject matter hereof and <br/>supersedes all prior or contemporaneous communications, representations, or agreements, whether oral or written.<br/> 9. Severability<br/> If any provision of this Agreement is held to be invalid or unenforceable, such provision will be struck from this <br/>Agreement and the remaining provisions will remain in full force and effect.<br/> 10. Waiver<br/> No waiver of any provision of this Agreement will be effective unless in writing and signed by both parties.<br/>"
+    }
   },
   "mainNav": {
     "dashboard": "Dashboard",

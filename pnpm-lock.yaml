@@ -113,6 +113,9 @@ dependencies:
   form-data:
     specifier: ^4.0.0
     version: 4.0.0
+  keygen:
+    specifier: ^0.4.0
+    version: 0.4.0
   lucide-react:
     specifier: ^0.316.0
     version: 0.316.0(react@18.2.0)
@@ -10785,6 +10788,10 @@ packages:
 
   /keycode@2.2.0:
     resolution: {integrity: sha512-ps3I9jAdNtRpJrbBvQjpzyFbss/skHqzS+eu4RxKLaEAtFqkjZaB6TZMSivPbLxf4K7VI4SjR0P5mRCX5+Q25A==}
+    dev: false
+
+  /keygen@0.4.0:
+    resolution: {integrity: sha512-Fam+Q+CaIsVWneZCBYfea6SQSTEHE4mU8bkqkT7eDOWhLEgOhDZvADDxi6q6dFLtWbeWJ9Z8YgVhBW5WhkH7Xw==}
     dev: false
 
   /keyv@4.5.4:
