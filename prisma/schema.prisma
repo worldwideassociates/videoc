@@ -112,6 +112,7 @@ model Company {
   companyLogo       String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  serialNumber      String
 }
 
 model Department {
