@@ -47,7 +47,7 @@ export const MeetingInviteEmail = ({
         >
           <Container style={{ display: "absolute", inset: 0 }}>
             <Img
-              src={`${baseUrl}/images/email-bg.png`}
+              src="https://videoconf.b-cdn.net/assets/email-bg.png"
               style={{
                 width: "100%",
                 height: "100%",
@@ -108,7 +108,7 @@ export const MeetingInviteEmail = ({
             <Section>
               <Text style={{ textAlign: "center" }}>Powered by</Text>
               <Img
-                src={`${baseUrl}/images/logo.svg`}
+                src="https://videoConf.b-cdn.net/assets/logo.png"
                 style={{
                   width: "200px",
                   height: "auto",
