@@ -22,7 +22,7 @@ interface MeetingInvite {
   t: any;
 }
 
-const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "";
+const baseUrl = process.env.BASE_URL ? process.env.BASE_URL : "";
 
 export const MeetingInviteEmail = ({
   meeting,
@@ -30,7 +30,9 @@ export const MeetingInviteEmail = ({
   company,
   t,
 }: MeetingInvite) => {
-  const meetingUrl = `${process.env.BASE_URL}/meetings/${meeting.id}/active`;
+  const meetingUrl = `${process.env.BASE_URL}/${
+    process.env.DEFAULT_LOCALE ?? "en"
+  }/meetings/${meeting.id}/active`;
 
   return (
     <Html>
@@ -45,7 +47,7 @@ export const MeetingInviteEmail = ({
         >
           <Container style={{ display: "absolute", inset: 0 }}>
             <Img
-              src="/images/email-bg.png"
+              src={`${baseUrl}/images/email-bg.png`}
               style={{
                 width: "100%",
                 height: "100%",
@@ -106,7 +108,7 @@ export const MeetingInviteEmail = ({
             <Section>
               <Text style={{ textAlign: "center" }}>Powered by</Text>
               <Img
-                src="/images/logo.svg"
+                src={`${baseUrl}/images/logo.svg`}
                 style={{
                   width: "200px",
                   height: "auto",

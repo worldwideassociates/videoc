@@ -20,22 +20,28 @@ const transporter = nodemailer.createTransport({
 
 export const sendInvites = async (participantMeetings: { meeting: Meeting, participant: User, token: string }[], message: string) => {
   console.log('-----------------------------------------------------------')
-  console.log('sending invites to participants')
+  console.log('sending invites to participants', participantMeetings.length)
 
 
   const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
   const { email: t } = await getDictionary(locale) as any
   const company = await prismadb.company.findFirst({})
 
-  participantMeetings.forEach((p) => {
+  participantMeetings.forEach(async (p) => {
 
-    const emailContent = MeetingInviteEmail({
+    const emailContent = await MeetingInviteEmail({
       meeting: p.meeting,
       participant: p.participant,
       t: t,
       company: company!,
     })
-    const result = transporter.sendMail({
+
+    console.log("sending email to", p.participant.email);
+
+
+
+
+    const result = await transporter.sendMail({
       to: p.participant.email,
       from: process.env.SMTP_USER,
       subject: t.inviteMessage.subject,
