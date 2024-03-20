@@ -10,11 +10,13 @@ import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { DataTable } from "@/components/ui/data-table";
 import { EmployeeColumn, getColumns } from "./columns";
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { deleteUser } from "@/actions/users";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LocaleContext, LocaleProvider } from "@/providers/locale-provider";
+import { useSession } from "next-auth/react";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface Props {
   data: EmployeeColumn[];
@@ -24,6 +26,7 @@ interface Props {
 export const EmployeeClient: React.FC<Props> = ({ data, t }) => {
   const [deleting, setDeleting] = useState(false);
   const [selectedEmmployee, setSelectedEmployee] = useState<User | null>(null);
+  const { isAdmin } = useAdmin();
 
   const { locale } = use(LocaleContext);
 
@@ -73,15 +76,18 @@ export const EmployeeClient: React.FC<Props> = ({ data, t }) => {
           </div>
           <div className="flex space-x-1">
             {/* TODO: More buttons as needed */}
-            <Button
-              variant="link"
-              asChild
-              className="rounded-full border-gray-600 p-4"
-            >
-              <Link href={`/${locale}/company/employees/new`}>
-                <Plus size={25} />
-              </Link>
-            </Button>
+
+            {isAdmin && (
+              <Button
+                variant="link"
+                asChild
+                className="rounded-full border-gray-600 p-4"
+              >
+                <Link href={`/${locale}/company/employees/new`}>
+                  <Plus size={25} />
+                </Link>
+              </Button>
+            )}
           </div>
         </CardHeader>
 

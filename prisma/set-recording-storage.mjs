@@ -12,20 +12,22 @@ async function main() {
   // 1. create a new storage with all the required parameters
   const result = await client.video.createExternalStorage({
     bucket: "videoc12345",
-    name: "my-s3",
+    name: "my-s3-another",
     storage_type: "s3",
     path: "/",
-    // aws_s3: {
-    //   s3_region: "eu-north-1",
-    // },
+    aws_s3: {
+      s3_region: "eu-north-1",
+      s3_api_key: "AKIA5FTZE2QSSFGHYGB7",
+      s3_secret: "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",
+    },
   });
 
   console.log(result);
 
   // 2. update the call type to use the new storage
-  await videoClient.updateCallType("default", {
-    external_storage: "my-s3",
-  });
+  // await videoClient.updateCallType("default", {
+  //   external_storage: "my-s3",
+  // });
 }
 
 main()

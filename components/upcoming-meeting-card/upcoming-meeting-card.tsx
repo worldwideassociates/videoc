@@ -21,6 +21,7 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface IMeeting extends Meeting {
   invites: (Invite & { user: User })[];
@@ -39,6 +40,7 @@ export default function UpcomingMeetingCard({
   handlePlayRecording,
 }: Props) {
   const isInthePast = () => new Date(meeting.startDateTime) < new Date();
+  const { isEmployee } = useAdmin();
 
   return (
     <Card>
@@ -51,7 +53,9 @@ export default function UpcomingMeetingCard({
               {meeting.startDateTime.toLocaleString()}
             </p>
           </div>
-          {meeting.status !== MEETING_STATUS.CANCELED && !isInthePast() && (
+          {meeting.status !== MEETING_STATUS.CANCELED &&
+          !isInthePast() &&
+          isEmployee ? (
             <div className="">
               <Button
                 asChild
@@ -72,7 +76,7 @@ export default function UpcomingMeetingCard({
                 <X size={24} className="text-gray-400" />
               </Button>
             </div>
-          )}
+          ) : null}
           <div className="">
             {meeting.status !== MEETING_STATUS.PLANNED && (
               <Badge

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAdmin } from "@/hooks/use-admin";
 import { Locale } from "@/i18n.config";
 import { cn } from "@/lib/utils";
 import { LocaleContext } from "@/providers/locale-provider";
@@ -12,6 +13,7 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   ...props
 }) => {
   const pathname = usePathname();
+  const { isEmployee } = useAdmin();
 
   const routes = [
     {
@@ -19,6 +21,14 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       label: (t: Record<string, any>) => t.mainNav.dashboard,
       href: (locale: Locale) => `/${locale}`,
     },
+    {
+      label: (t: Record<string, any>) => t.mainNav.history,
+      href: (locale: Locale) => `/${locale}/meetings/history`,
+      active: pathname === `/history`,
+    },
+  ];
+
+  const adminRoutes = [
     {
       label: (t: Record<string, any>) => t.mainNav.customers,
       href: (locale: Locale) => `/${locale}/customers`,
@@ -28,11 +38,6 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       label: (t: Record<string, any>) => t.mainNav.collaborators,
       href: (locale: Locale) => `/${locale}/collaborators`,
       active: pathname.includes(`/collaborators`),
-    },
-    {
-      label: (t: Record<string, any>) => t.mainNav.history,
-      href: (locale: Locale) => `/${locale}/meetings/history`,
-      active: pathname === `/history`,
     },
     {
       label: (t: Record<string, any>) => t.mainNav.companyProfile,
@@ -59,6 +64,22 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
           {route.label(t)}
         </Link>
       ))}
+      {adminRoutes.map((route) =>
+        isEmployee ? (
+          <Link
+            key={route.href(locale)}
+            href={route.href(locale)}
+            className={cn(
+              "text-sm font-medium transition-colors hover:text-primary",
+              route.active
+                ? "text-black dark:text-white"
+                : "text-muted-foreground"
+            )}
+          >
+            {route.label(t)}
+          </Link>
+        ) : null
+      )}
     </nav>
   );
 };

@@ -16,7 +16,6 @@ const page: FC<pageProps> = async ({ params }) => {
 
   return (
     <div className="max-w-2xl mt--5">
-      <Heading title={t.form.create.title} />
       <DepartmentForm usersOptions={users} t={t} />
     </div>
   );

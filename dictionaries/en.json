@@ -105,20 +105,10 @@
           "label": "Estimated duration",
           "placeholder": "How long will the meeting last?"
         },
-        "inviteEmployees": {
-          "label": "Invite employees",
-          "placeholder": "Search for employees",
-          "helpText": "Select employees to invite to the meeting and send them an email notification to each of them"
-        },
-        "inviteCollaborators": {
-          "label": "Invite collaborators",
-          "placeholder": "Search for collaborators",
-          "helpText": "Select collaborators to invite to the meeting and send them an email notification to each of them"
-        },
-        "inviteCustomers": {
-          "label": "Invite customers",
-          "placeholder": "Search for customers",
-          "helpText": "Select customers to invite to the meeting and send them an email notification to each of them"
+        "invitedParticipants": {
+          "label": "Invite Participants",
+          "placeholder": "Search for participants",
+          "helpText": "Select participants to invite to the meeting and send them an email notification to each of them"
         }
       },
       "buttons": {

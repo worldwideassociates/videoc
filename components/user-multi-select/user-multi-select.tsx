@@ -55,7 +55,12 @@ export default function MultiSelect({
   );
 
   const selectables = users
-    .map((user) => ({ label: user.name, value: user.id, image: user.image }))
+    .map((user) => ({
+      label: user.name,
+      value: user.id,
+      image: user.image,
+      role: user.role,
+    }))
     .filter((option) => !selected.some((s) => s.value === option.value));
 
   return (
@@ -84,7 +89,12 @@ export default function MultiSelect({
                     }
                     className="w-8 h-8"
                   />
-                  <span className="text-gray-500">{option.label}</span>
+                  <div className="flex flex-col">
+                    <span className="text-gray-500">{option.label}</span>
+                    <span className="text-[10px] text-gray-900">
+                      {option.role}
+                    </span>
+                  </div>
                 </div>
                 <button
                   className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -149,7 +159,12 @@ export default function MultiSelect({
                         }
                         className="w-8 h-8"
                       />
-                      <span className="text-gray-500">{option.label}</span>
+                      <div className="flex flex-col">
+                        <span className="text-gray-500">{option.label}</span>
+                        <span className="text-[10px] text-gray-900">
+                          {option.role}
+                        </span>
+                      </div>
                     </div>
                   </CommandItem>
                 );
