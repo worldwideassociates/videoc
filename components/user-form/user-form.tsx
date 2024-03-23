@@ -17,9 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { use, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Company, Role, User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { toast } from "@/components/ui/use-toast";
-import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
 import { upsert } from "@/actions/users";
 import { useRouter } from "next/navigation";
@@ -35,7 +34,7 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { CheckIcon, SortAscIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import { UploadButton } from "@/lib/utils/uploadthing";
 import { LocaleContext } from "@/providers/locale-provider";
 
@@ -334,7 +333,11 @@ const UserForm: React.FC<Props> = ({
                 <FormItem>
                   <FormLabel className="text-meduim">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="contact@example.com" {...field} />
+                    <Input
+                      placeholder="contact@example.com"
+                      {...field}
+                      disabled={!!user}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
