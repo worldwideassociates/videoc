@@ -10,7 +10,7 @@ import { User } from "@prisma/client";
 import { CustomAvatar } from "../custom-avatar";
 import { ScrollArea } from "../ui/scroll-area";
 
-type Option = Record<"value" | "label" | "image", string | null>;
+type Option = Record<"value" | "label" | "image" | "role", string | null>;
 
 interface Props {
   users: User[];
@@ -62,6 +62,8 @@ export default function MultiSelect({
       role: user.role,
     }))
     .filter((option) => !selected.some((s) => s.value === option.value));
+
+  console.log("selected", selected);
 
   return (
     <Command

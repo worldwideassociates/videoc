@@ -59,6 +59,7 @@ model User {
   department   Department? @relation("DepartmentMembers", fields: [departmentId], references: [id], onDelete: SetNull)
   departmentId String?
   position     String?
+  activeMeetingId String?
 
   // Customer fields
   localTaxOffice String?
@@ -154,15 +155,15 @@ model Meeting {
 }
 
 model Invite {
+  id        String         @id @default(cuid())
   meetingId String
   userId    String
   token     String
   isHost    Boolean @default(false)
+  isActive  Boolean @default(false)
 
   meeting Meeting @relation(fields: [meetingId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
-
-  @@id([meetingId, userId])
 }
 
 model Upload {

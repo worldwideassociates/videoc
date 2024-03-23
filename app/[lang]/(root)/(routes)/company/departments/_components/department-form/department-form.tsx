@@ -42,6 +42,7 @@ const formSchema = z.object({
       label: z.string(),
       value: z.string(),
       image: z.string(),
+      role: z.string(),
     })
     .optional(),
   members: z.array(
@@ -49,6 +50,7 @@ const formSchema = z.object({
       label: z.string(),
       value: z.string(),
       image: z.string(),
+      role: z.string(),
     })
   ),
 });
@@ -74,16 +76,18 @@ const DepartmentForm: React.FC<Props> = ({
       phone: department?.phone!,
       manager: manager
         ? {
-            label: manager?.name!,
-            value: manager?.id!,
-            image: manager?.image!,
-          }
+          label: manager?.name!,
+          value: manager?.id!,
+          image: manager?.image!,
+          role: manager?.role!,
+        }
         : undefined,
       members:
         department?.members.map((member) => ({
           label: member.name!,
           value: member.id!,
           image: member.image!,
+          role: member.role!,
         })) || [],
     },
   });

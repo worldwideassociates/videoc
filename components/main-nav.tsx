@@ -10,7 +10,6 @@ import { use } from "react";
 
 export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   className,
-  ...props
 }) => {
   const pathname = usePathname();
   const { isEmployee } = useAdmin();
@@ -20,11 +19,6 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       active: pathname === `/`,
       label: (t: Record<string, any>) => t.mainNav.dashboard,
       href: (locale: Locale) => `/${locale}`,
-    },
-    {
-      label: (t: Record<string, any>) => t.mainNav.history,
-      href: (locale: Locale) => `/${locale}/meetings/history`,
-      active: pathname === `/history`,
     },
   ];
 
@@ -43,6 +37,11 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       label: (t: Record<string, any>) => t.mainNav.companyProfile,
       href: (locale: Locale) => `/${locale}/company/profile`,
       active: pathname.includes(`/company`),
+    },
+    {
+      label: (t: Record<string, any>) => t.mainNav.history,
+      href: (locale: Locale) => `/${locale}/meetings/history`,
+      active: pathname === `/history`,
     },
   ];
 

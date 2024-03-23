@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { UserMultiSelect as MultiSelect } from "@/components/user-multi-select";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Meeting, Role, User } from "@prisma/client";
+import { Meeting, User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { use, useState } from "react";
@@ -63,8 +63,8 @@ const formSchema = z.object({
     z.object({
       label: z.string(),
       value: z.string(),
-      image: z.string(),
       role: z.string(),
+      image: z.string(),
     })
   ),
 });
@@ -209,6 +209,7 @@ const MeetingForm: React.FC<Props> = ({
                         {
                           name: user.label,
                           image: user.image,
+                          role: user.role,
                         } as any
                       }
                     />
