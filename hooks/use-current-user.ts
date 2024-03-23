@@ -4,7 +4,7 @@ import { create } from "zustand";
 
 interface useCurrentUserStore {
   currentUser: User;
-  setCurrentUser: (employee: User) => void;
+  setCurrentUser: (user: User) => void;
 }
 
 export const useCurrentUser = create<useCurrentUserStore>(

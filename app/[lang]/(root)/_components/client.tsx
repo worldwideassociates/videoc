@@ -16,6 +16,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { LocaleContext, LocaleProvider } from "@/providers/locale-provider";
 import { Locale } from "@/i18n.config";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface IMeeting extends Meeting {
   invites: (Invite & { user: User })[];
@@ -39,6 +40,7 @@ export const DashboardClient: FC<clientProps> = ({
   const [meetingToCancel, setMeetingToCancel] = useState<Meeting | null>(null);
   const { toast } = useToast();
   const router = useRouter();
+  const { isEmployee } = useAdmin();
 
   const isOpen = useAlertModal((state) => state.isOpen);
   const onClose = useAlertModal((state) => state.onClose);
@@ -130,11 +132,13 @@ export const DashboardClient: FC<clientProps> = ({
                 {t.scheduledMeetings.subTitle}
               </p>
             </div>
-            <Button variant="outline" asChild className="rounded-full">
-              <Link href={`/${locale}/meetings/new`}>
-                <Plus size={24} />
-              </Link>
-            </Button>
+            {isEmployee ? (
+              <Button variant="outline" asChild className="rounded-full">
+                <Link href={`/${locale}/meetings/new`}>
+                  <Plus size={24} />
+                </Link>
+              </Button>
+            ) : null}
           </div>
         </CardHeader>
         <div className="flex flex-col  space-y-2">

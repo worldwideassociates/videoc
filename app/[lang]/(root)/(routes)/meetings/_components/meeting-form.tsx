@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { UserMultiSelect as MultiSelect } from "@/components/user-multi-select";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Meeting, Role, User } from "@prisma/client";
+import { Meeting, User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { use, useState } from "react";
@@ -59,24 +59,11 @@ const formSchema = z.object({
   startDate: z.date(),
   startTime: z.array(z.number()),
   estimatedDuration: z.string().optional(),
-  employees: z.array(
+  participants: z.array(
     z.object({
       label: z.string(),
       value: z.string(),
-      image: z.string(),
-    })
-  ),
-  collaborators: z.array(
-    z.object({
-      label: z.string(),
-      value: z.string(),
-      image: z.string(),
-    })
-  ),
-  customers: z.array(
-    z.object({
-      label: z.string(),
-      value: z.string(),
+      role: z.string(),
       image: z.string(),
     })
   ),
@@ -88,26 +75,8 @@ const MeetingForm: React.FC<Props> = ({
   participants,
   t,
 }) => {
-  const employeesOptions = usersOptions.filter(
-    (user) => user.role === Role.EMPLOYEE || user.role === Role.ADMIN
-  );
-  const savedEmployees = participants?.filter(
-    (user) => user.role === Role.EMPLOYEE || user.role === Role.ADMIN
-  );
-
-  const collaboratorsOptions = usersOptions.filter(
-    (user) => user.role === Role.COLLABORATOR
-  );
-  const savedCollaborators = participants?.filter(
-    (user) => user.role === Role.COLLABORATOR
-  );
-
-  const customersOptions = usersOptions.filter(
-    (user) => user.role === Role.CUSTOMER
-  );
-  const savedCustomers = participants?.filter(
-    (user) => user.role === Role.CUSTOMER
-  );
+  const userOptions = usersOptions;
+  const savedParticipants = participants;
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -131,23 +100,12 @@ const MeetingForm: React.FC<Props> = ({
         ? [meeting.startDateTime.getHours(), meeting.startDateTime.getMinutes()]
         : undefined,
       estimatedDuration: meeting?.estimatedDuration || "30",
-      employees:
-        savedEmployees?.map((user) => ({
+      participants:
+        savedParticipants?.map((user) => ({
           label: user.name!,
           value: user.id!,
           image: user.image!,
-        })) || [],
-      collaborators:
-        savedCollaborators?.map((user) => ({
-          label: user.name!,
-          value: user.id!,
-          image: user.image!,
-        })) || [],
-      customers:
-        savedCustomers?.map((user) => ({
-          label: user.name!,
-          value: user.id!,
-          image: user.image!,
+          role: user.role!,
         })) || [],
     },
   });
@@ -160,14 +118,8 @@ const MeetingForm: React.FC<Props> = ({
 
   const handleConfirm = async () => {
     setLoading(true);
-    const employees = values.employees.map((employee) => ({
+    const updatedParticipants = values.participants.map((employee) => ({
       id: employee.value,
-    }));
-    const collaborator = values.collaborators.map((collaborator) => ({
-      id: collaborator.value,
-    }));
-    const customers = values.customers.map((customers) => ({
-      id: customers.value,
     }));
 
     const startDateTime = new Date(values.startDate);
@@ -177,7 +129,7 @@ const MeetingForm: React.FC<Props> = ({
     const payload = {
       ...values,
       startDateTime,
-      participants: employees.concat(collaborator, customers),
+      participants: updatedParticipants,
     } as any;
 
     const result = await upsert(payload, meeting?.id);
@@ -243,62 +195,21 @@ const MeetingForm: React.FC<Props> = ({
             </p>
           </div>
           <div className="flex flex-col space-y-2">
-            {values.employees.length > 0 && (
+            {values.participants.length > 0 && (
               <div className="">
                 <h1 className="text-xs font-bold">
-                  {t.form.fields.inviteEmployees.label}
+                  {t.form.fields.invitedParticipants.label}
                 </h1>
                 <Separator className="my-2" />
                 <div className="flex flex-col space-y-2">
-                  {values.employees.map((user, index) => (
+                  {values.participants.map((user, index) => (
                     <UserCard
                       key={index}
                       user={
                         {
                           name: user.label,
                           image: user.image,
-                        } as any
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-            {values.collaborators.length > 0 && (
-              <div className="">
-                <h1 className="text-xs font-bold">
-                  {t.form.fields.inviteCollaborators.label}
-                </h1>
-                <Separator className="my-2" />
-                <div className="flex flex-col space-y-2">
-                  {values.collaborators.map((user, index) => (
-                    <UserCard
-                      key={index}
-                      user={
-                        {
-                          name: user.label,
-                          image: user.image,
-                        } as any
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-            {values.customers.length > 0 && (
-              <div className="">
-                <h1 className="text-xs font-bold">
-                  {t.form.fields.inviteCustomers.label}
-                </h1>
-                <Separator className="my-2" />
-                <div className="flex flex-col space-y-2">
-                  {values.customers.map((user, index) => (
-                    <UserCard
-                      key={index}
-                      user={
-                        {
-                          name: user.label,
-                          image: user.image,
+                          role: user.role,
                         } as any
                       }
                     />
@@ -462,62 +373,22 @@ const MeetingForm: React.FC<Props> = ({
 
             <FormField
               control={form.control}
-              name="employees"
-              render={({ field }) => (
-                <FormItem className="max-w-xl">
-                  <FormLabel>{t.form.fields.inviteEmployees.label}</FormLabel>
-                  <MultiSelect
-                    selected={field.value || []}
-                    onSelect={field.onChange}
-                    users={employeesOptions}
-                    placeholder={t.form.fields.inviteEmployees.placeholder}
-                  />
-                  <FormMessage />
-                  <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
-                    <InfoIcon size={16} />
-                    <span>{t.form.fields.inviteEmployees.helpText}</span>
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="collaborators"
+              name="participants"
               render={({ field }) => (
                 <FormItem className="max-w-xl">
                   <FormLabel>
-                    {t.form.fields.inviteCollaborators.label}
+                    {t.form.fields.invitedParticipants.label}
                   </FormLabel>
                   <MultiSelect
                     selected={field.value || []}
                     onSelect={field.onChange}
-                    users={collaboratorsOptions}
-                    placeholder={t.form.fields.inviteCollaborators.placeholder}
+                    users={userOptions}
+                    placeholder={t.form.fields.invitedParticipants.placeholder}
                   />
                   <FormMessage />
                   <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
                     <InfoIcon size={16} />
-                    <span>{t.form.fields.inviteCollaborators.helpText}</span>
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="customers"
-              render={({ field }) => (
-                <FormItem className="max-w-xl">
-                  <FormLabel>{t.form.fields.inviteCustomers.label}</FormLabel>
-                  <MultiSelect
-                    selected={field.value || []}
-                    onSelect={field.onChange}
-                    users={customersOptions}
-                    placeholder={t.form.fields.inviteCustomers.placeholder}
-                  />
-                  <FormMessage />
-                  <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
-                    <InfoIcon size={16} />
-                    <span>{t.form.fields.inviteCustomers.helpText}</span>
+                    <span>{t.form.fields.invitedParticipants.helpText}</span>
                   </FormDescription>
                 </FormItem>
               )}

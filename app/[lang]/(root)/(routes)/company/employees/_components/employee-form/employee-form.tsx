@@ -66,12 +66,7 @@ const EmployeeForm: React.FC<Props> = ({
     resolver: zodResolver(formSchema),
     // TODO: fix types error
     defaultValues: employee
-      ? {
-          ...(employee as any),
-          dateOfBirth: employee.dateOfBirth
-            ? createCalendarDate(employee.dateOfBirth)
-            : undefined,
-        }
+      ? (employee as any)
       : {
           name: "",
           email: "",
@@ -198,6 +193,7 @@ const EmployeeForm: React.FC<Props> = ({
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  disabled={loading || readonly}
                 >
                   <FormControl>
                     <SelectTrigger>

@@ -21,25 +21,23 @@ export const {
           pass: process.env.SMTP_PASSWORD,
         },
       },
-      credentials: {
-        async authorize(credentials: any) {
-          // Check if the user exists in the database
-          const user = await prismadb.user.findUnique({
-            where: { email: credentials.email }
-          });
-
-          if (user) {
-            // User exists, allow sign-in
-            return true;
-          } else {
-            // User does not exist, prevent sign-in
-            return false;
-          }
-        }
-      },
       async sendVerificationRequest(params) {
+
+
         const { identifier, url, provider, theme } = params
         const { host } = new URL(url)
+
+        // Check if the user exists in the database
+        const user = await prismadb.user.findUnique({
+          where: { email: identifier },
+        });
+
+        if (!user) {
+          // User does not exist, prevent sending the email
+          console.log(`No user found with email ${identifier}, not sending verification email.`);
+          return;
+        }
+
 
         const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale
 

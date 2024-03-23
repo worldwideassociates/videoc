@@ -16,6 +16,7 @@ import { Invite, Meeting, User } from "@prisma/client";
 import { use } from "react";
 import { LocaleContext } from "@/providers/locale-provider";
 import Link from "next/link";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface Props {
   meeting: Meeting & { invites: (Invite & { user: User })[] };
@@ -27,6 +28,7 @@ export default function ActiveMeetingCard({
   handleCancelMeeting,
 }: Props) {
   const { dictionary: t, locale } = use(LocaleContext);
+  const { isEmployee } = useAdmin();
 
   const onlineAttendees: any[] = []; //TODO: get online attendees
   const isModerator = (invite: any) => invite.userId === meeting.hostId;
@@ -46,19 +48,21 @@ export default function ActiveMeetingCard({
               {meeting.startDateTime.toLocaleTimeString()}
             </CardDescription>
           </div>
-          <div className="flex space-x-2 items-center">
-            <Link href={`/meetings/${meeting.id}/edit`}>
-              <Edit2 size={24} className="text-gray-400" />
-            </Link>
-            <Button
-              onClick={() => handleCancelMeeting(meeting)}
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-            >
-              <X size={24} className="text-gray-400" />
-            </Button>
-          </div>
+          {isEmployee ? (
+            <div className="flex space-x-2 items-center">
+              <Link href={`/meetings/${meeting.id}/edit`}>
+                <Edit2 size={24} className="text-gray-400" />
+              </Link>
+              <Button
+                onClick={() => handleCancelMeeting(meeting)}
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+              >
+                <X size={24} className="text-gray-400" />
+              </Button>
+            </div>
+          ) : null}
         </div>
       </CardHeader>
       <Separator className="mb-4" />

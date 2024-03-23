@@ -17,6 +17,12 @@ export default async function DashboardPage({ params }: Props) {
 
   const session = await auth();
 
+  const user = session?.user as any;
+  const isEmployee =
+    user?.role === Role.EMPLOYEE ||
+    user?.role === Role.ADMIN ||
+    user?.role === Role.SUPER_ADMIN;
+
   const meetings = await prismadb.meeting.findMany({
     where: {
       startDateTime: {
@@ -88,31 +94,33 @@ export default async function DashboardPage({ params }: Props) {
             </div>
           </div>
         </CardHeader>
-        <ScrollArea className="w-full whitespace-nowrap">
-          <div className="flex w-max space-x-4 px-0 py-4">
-            <StatsCard
-              title={t.statsCards.meetings.title}
-              description={meetingCount.toLocaleString()}
-              footerText="+20% since yesterday"
-            />
-            <StatsCard
-              title={t.statsCards.collaborators.title}
-              description={collaboratorCount.toLocaleString()}
-              footerText="+20% since yesterday"
-            />
-            <StatsCard
-              title={t.statsCards.customers.title}
-              description={customerCount.toLocaleString()}
-              footerText="+20% since yesterday"
-            />
-            <StatsCard
-              title={t.statsCards.employees.title}
-              description={employeeCount.toLocaleString()}
-              footerText="+20% since yesterday"
-            />
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        {isEmployee ? (
+          <ScrollArea className="w-full whitespace-nowrap">
+            <div className="flex w-max space-x-4 px-0 py-4">
+              <StatsCard
+                title={t.statsCards.meetings.title}
+                description={meetingCount.toLocaleString()}
+                footerText="+20% since yesterday"
+              />
+              <StatsCard
+                title={t.statsCards.collaborators.title}
+                description={collaboratorCount.toLocaleString()}
+                footerText="+20% since yesterday"
+              />
+              <StatsCard
+                title={t.statsCards.customers.title}
+                description={customerCount.toLocaleString()}
+                footerText="+20% since yesterday"
+              />
+              <StatsCard
+                title={t.statsCards.employees.title}
+                description={employeeCount.toLocaleString()}
+                footerText="+20% since yesterday"
+              />
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        ) : null}
       </div>
       <DashboardClient
         todaysMeetings={todaysMeetings as any}

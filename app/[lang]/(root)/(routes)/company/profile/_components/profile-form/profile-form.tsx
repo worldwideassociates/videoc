@@ -22,6 +22,7 @@ import { update } from "@/actions/company";
 import { toast } from "@/components/ui/use-toast";
 import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
+import { useAdmin } from "@/hooks/use-admin";
 
 const formSchema = z.object({
   name: z.string().optional(),
@@ -47,6 +48,8 @@ interface Props {
 }
 
 const ProfileForm: React.FC<Props> = ({ company, t }) => {
+  const { isAdmin } = useAdmin();
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -379,22 +382,24 @@ const ProfileForm: React.FC<Props> = ({ company, t }) => {
             />
           </fieldset>
         </CardContent>
-        <CardFooter className="flex justify-end space-x-4">
-          <Button
-            type="button"
-            onClick={toggleEditMode}
-            variant="outline"
-            disabled={isPending}
-          >
-            {isEditMode ? t.form.buttons.cancel : t.form.buttons.edit}
-          </Button>
-          {isEditMode && (
-            <Button disabled={isPending}>
-              {/* TODO: only show button to admin users */}
-              {t.form.buttons.save}
+        {isAdmin ? (
+          <CardFooter className="flex justify-end space-x-4">
+            <Button
+              type="button"
+              onClick={toggleEditMode}
+              variant="outline"
+              disabled={isPending}
+            >
+              {isEditMode ? t.form.buttons.cancel : t.form.buttons.edit}
             </Button>
-          )}
-        </CardFooter>
+            {isEditMode && (
+              <Button disabled={isPending}>
+                {/* TODO: only show button to admin users */}
+                {t.form.buttons.save}
+              </Button>
+            )}
+          </CardFooter>
+        ) : null}
       </form>
     </Form>
   );

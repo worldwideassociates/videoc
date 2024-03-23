@@ -17,6 +17,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@prisma/client";
 import { use } from "react";
 import { LocaleContext } from "@/providers/locale-provider";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface CellActionsProps {
   data: EmployeeColumn;
@@ -25,6 +26,7 @@ interface CellActionsProps {
 const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   const onOpen = useAlertModal((state) => state.onOpen);
   const setCurrentUser = useCurrentUser((state) => state.setCurrentUser);
+  const { isAdmin } = useAdmin();
 
   const { dictionary: t, locale } = use(LocaleContext);
 
@@ -61,16 +63,20 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
               {t.table.actions.view}
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href={`/${locale}/company/employees/${data.id}/edit`}>
-              <Edit className="h-4 w-4 mr-2" />
-              {t.table.actions.edit}
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={onDelete}>
-            <Trash className="h-4 w-4 mr-2" />
-            {t.table.actions.delete}
-          </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuItem asChild>
+                <Link href={`/${locale}/company/employees/${data.id}/edit`}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  {t.table.actions.edit}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onDelete}>
+                <Trash className="h-4 w-4 mr-2" />
+                {t.table.actions.delete}
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

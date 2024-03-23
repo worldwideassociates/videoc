@@ -8,11 +8,11 @@ import { Locale } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
 
 interface pageProps {
-  params: { employeeId: string; locale: Locale };
+  params: { employeeId: string; lang: Locale };
 }
 
 const Page: FC<pageProps> = async ({ params }) => {
-  const { employees: t } = (await getDictionary(params.locale)) as any;
+  const { employees: t } = (await getDictionary(params.lang)) as any;
 
   const departments = await prismadb.department.findMany();
 

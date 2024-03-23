@@ -9,7 +9,6 @@ import {
   StreamVideo,
   StreamVideoClient,
 } from "@stream-io/video-react-sdk";
-import { useRouter, useSearchParams } from "next/navigation";
 import { Invite, Meeting, User } from "@prisma/client";
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
@@ -58,6 +57,7 @@ export default function VideoConference({ invite }: Props) {
     try {
       setJoining(true);
       await call.join({ create: true });
+
       setJoined(true);
     } catch (error: any) {
     } finally {
