@@ -48,17 +48,14 @@ const page: FC<pageProps> = async ({ params }) => {
 
   return (
     <div className="pace-y-6 p-10 py-5">
-      <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">{t.title}</h2>
-        <p className="text-muted-foreground">{t.subTitle}</p>
-      </div>
       <div
         data-orientation="horizontal"
         role="none"
-        className="shrink-0 bg-border h-[1px] w-full my-6"
+        className="shrink-0  h-[1px] w-full my-6"
       >
         <HistoryClient
           meetings={myPastMeetings}
+          meetingT={t}
           t={dashT}
           locale={params.lang}
         />
