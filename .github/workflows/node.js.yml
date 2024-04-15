@@ -78,6 +78,9 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install
-      - run: pnpm ci
+        run: CI=true pnpm install
+      - name: Generate Prisma Schema
+        run: CI=true npx prisma generate
+      - name: Apply migrations
+          run: CI=true npx prisma db push --force
       - run: pnpm run build --if-present
