@@ -84,3 +84,6 @@ jobs:
       - name: Apply migrations
         run: CI=true npx prisma db push --accept-data-loss
       - run: pnpm run build
+      - name: Change directory
+        run: cd /home/dellan/actions-runner/_work/videoc/videoc
+      - run: pm2 restart videoc --update-env
