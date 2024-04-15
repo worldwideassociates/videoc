@@ -47,7 +47,7 @@ export const Navbar = ({ t }: { t: any }) => {
 
   return (
     <LocaleProvider dictionary={t}>
-      <div className="border-b">
+      <div className="border-b pl-16">
         <div className="flex h-16 items-center px-4">
           <MainNav />
           <div className="ml-auto flex space-x-3">

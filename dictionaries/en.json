@@ -38,9 +38,17 @@
       "startLabelPast": "Started at ",
       "joinButton": "Join"
     },
+    "previousMeetings": {
+      "title": "Previous Meetings"
+    },
     "scheduledMeetings": {
       "title": "Scheduled Meetings",
       "subTitle": "All meetings scheduled for the next 7 days"
+    },
+    "recordings": {
+      "title": "Recordings",
+      "filterInputPlaceholder": "Filter by meeting, name, email",
+      "linkCopied": "Link copied"
     },
     "alertModal": {
       "title": "Are you sure?",
@@ -68,6 +76,10 @@
     }
   },
   "meetings": {
+    "sidenav": {
+      "upcoming": "Upcoming",
+      "previous": "Previous"
+    },
     "form": {
       "update": {
         "title": "Update Meeting",
@@ -81,34 +93,44 @@
         "button": "Create meeting",
         "confirmMessage": "You are about to schedule a meeting and send invites to participants. Do you want to proceed?"
       },
+      "toast": {
+        "success": "meeting scheduled successfully",
+        "error": "failed to scheduled meeting"
+      },
       "fields": {
         "title": {
           "label": "Agenda",
           "placeholder": "Meeting subject",
-          "helperText": "This will be the agenda of the meeting"
+          "helperText": "This will be the agenda of the meeting",
+          "errors": {
+            "required": "agenda is required",
+            "min": "minimum of 3 characters"
+          }
         },
         "description": {
           "label": "Description",
-          "placeholder": "What will be discussed?"
+          "placeholder": "What will be discussed?",
+          "errors": {
+            "max": "Description is too long (max:255)"
+          }
         },
-        "date": {
-          "label": "Date",
-          "placeholder": "Pick a date",
-          "helperText": "When the meeting will take place?"
+        "startDateTime": {
+          "label": "Date and Time",
+          "placeholder": "Pick a date and time",
+          "helperText": "When the meeting will take place?",
+          "errors": {
+            "required": "Start date and time is required",
+            "futureDate": "Start date and time should be more than 5min into the future."
+          }
         },
-        "time": {
-          "label": "Time",
-          "placeholder": "Pick a time",
-          "helperText": "What time"
-        },
-        "estimatedDuration": {
-          "label": "Estimated duration",
-          "placeholder": "How long will the meeting last?"
-        },
-        "invitedParticipants": {
+        "participants": {
           "label": "Invite Participants",
           "placeholder": "Search for participants",
-          "helpText": "Select participants to invite to the meeting and send them an email notification to each of them"
+          "helpText": "Select participants to invite to the meeting and send them an email notification to each of them",
+          "errors": {
+            "min": "Select at least one participant.",
+            "notFound": "No participants found"
+          }
         }
       },
       "buttons": {
@@ -141,6 +163,27 @@
       },
       "details": {
         "title": "Meeting"
+      }
+    },
+    "dashboard": {
+      "upcomingMeeting": "Upcoming Meeting:",
+      "noTodayMeeting": "No meetings today.",
+      "meetingFormModal": {
+        "title": "Schedule Meeting"
+      },
+      "homeCards": {
+        "schedule": {
+          "title": "Schedule",
+          "description": "Plan your meeting"
+        },
+        "recordings": {
+          "title": "Recordings",
+          "description": "Meeting Recordings"
+        },
+        "upcoming": {
+          "title": "Upcoming",
+          "description": "Scheduled meetings"
+        }
       }
     }
   },
@@ -352,7 +395,7 @@
       "subTitle": "Details about the company and more"
     },
     "nav": {
-      "companyProfile": "Company Profile",
+      "companyProfile": "Profile",
       "departments": "Departments",
       "employees": "Employees",
       "license": "License"
@@ -453,6 +496,9 @@
       "cancelButton": "Cancel",
       "confirmButton": "Yes, cancel"
     },
+    "formModal": {
+      "title": "New Department"
+    },
     "form": {
       "header": {
         "create": "New Department"
@@ -488,7 +534,10 @@
         "members": {
           "label": "Members",
           "placeholder": "Select members",
-          "helpText": "If you cant find the user you are looking for, make sure they are not already a member of another department"
+          "helpText": "If you cant find the user you are looking for, make sure they are not already a member of another department",
+          "errors": {
+            "notFound": "No employees found."
+          }
         }
       },
 

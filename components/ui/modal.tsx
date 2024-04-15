@@ -39,14 +39,16 @@ export const Modal: React.FC<ModalProps> = ({
         <DialogHeader>
           <div className="flex items-center space-x-2">
             <div className="">
-              {Icon && <Icon className="mr-2" size={30} />}
+              {Icon && <Icon className="mr-2" size={50} />}
             </div>
             <div className="">
-              <DialogTitle className="text-2xl text-gray-600">
+              <DialogTitle className="text-3xl text-gray-800">
                 {title}
               </DialogTitle>
               {description && (
-                <DialogDescription>{description}</DialogDescription>
+                <DialogDescription className="text-lg">
+                  {description}
+                </DialogDescription>
               )}
             </div>
           </div>

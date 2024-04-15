@@ -1,5 +1,5 @@
 "use client";
-import { ActiveMeetingCard } from "@/components/active-meeting-card";
+import { MeetingCard } from "@/components/meeting-card";
 import { Button } from "@/components/ui/button";
 import { CardHeader } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -111,7 +111,7 @@ export const DashboardClient: FC<clientProps> = ({
         <ScrollArea className="w-full whitespace-nowrap">
           <div className="flex w-max space-x-4 px-0 py-4">
             {todaysMeetings.map((meeting) => (
-              <ActiveMeetingCard
+              <MeetingCard
                 key={meeting.id}
                 meeting={meeting}
                 handleCancelMeeting={prepareCanceling}

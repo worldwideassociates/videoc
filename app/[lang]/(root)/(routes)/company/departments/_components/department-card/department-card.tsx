@@ -47,7 +47,7 @@ const DepartmentCard: React.FC<Props> = ({
             <Button
               asChild
               variant="outline"
-              className="rounded-full p-4 border-gray-600"
+              className="rounded-full p-4 border-gray-300"
             >
               <Link
                 href={`/${locale}/company/departments/${department.id}/edit`}
@@ -57,7 +57,7 @@ const DepartmentCard: React.FC<Props> = ({
             </Button>
             <Button
               variant="outline"
-              className="rounded-full p-4  border-gray-600"
+              className="rounded-full p-4  border-gray-300"
               onClick={handleDelete}
             >
               <TrashIcon size={10} />

@@ -1,36 +1,42 @@
-import { auth } from "@/app/api/auth/[...nextauth]/auth";
+"use client";
+
+import { fetchInvite } from "@/actions/meetings";
 import VideoConference from "@/components/video-conference/video-conference";
-import prismadb from "@/lib/prismadb";
-import { User } from "@prisma/client";
-import React, { FC } from "react";
+import { Invite, Meeting, User } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import React, { FC, useEffect, useState } from "react";
 
-interface pageProps {
-  params: { meetingId: string };
-}
+interface pageProps { }
 
-const page: FC<pageProps> = async ({ params }: pageProps) => {
-  const session = await auth();
+const page: FC<pageProps> = () => {
+  const [invite, setInvite] = useState<
+    (Invite & { user: User; meeting: Meeting }) | null
+  >(null);
+  const params = useParams<{ meetingId: string }>();
+
+  const { data: session } = useSession();
+
+  const getInvite = async () => {
+    const invite = await fetchInvite(params.meetingId);
+    setInvite(invite);
+  };
+
+  useEffect(() => {
+    getInvite();
+  }, []);
 
   if (!session) {
     return null;
   }
 
-  const invite = await prismadb.invite.findFirst({
-    where: {
-      meetingId: params.meetingId,
-      userId: session.user?.id!,
-    },
-    include: {
-      meeting: true,
-      user: true,
-    },
-  });
-
-  return (
-    <div>
-      <VideoConference invite={invite!} />
-    </div>
-  );
+  if (invite) {
+    return (
+      <div>
+        <VideoConference invite={invite} />
+      </div>
+    );
+  }
 };
 
 export default page;

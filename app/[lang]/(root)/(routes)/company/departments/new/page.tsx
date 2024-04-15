@@ -3,7 +3,6 @@ import React, { FC } from "react";
 import { DepartmentForm } from "../_components/department-form";
 import { Locale } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
-import { Heading } from "@/components/heading";
 
 interface pageProps {
   params: { lang: Locale };

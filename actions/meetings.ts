@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import prismadb from "@/lib/prismadb";
 import { MEETING_STATUS, Meeting, User } from "@prisma/client";
@@ -8,223 +8,263 @@ import { auth } from "@/app/api/auth/[...nextauth]/auth";
 import { Locale } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
 
-
-
-
-
-
 export const cancelMeeting = async (id: string) => {
   try {
     await prismadb.meeting.update({
       where: { id },
       data: {
-        status: MEETING_STATUS.CANCELED
-      }
-    })
+        status: MEETING_STATUS.CANCELED,
+      },
+    });
 
     return { success: true, message: "Meeting canceled successfully." };
   } catch (error: any) {
-    return { success: false, message: 'Something went wrong.' };
+    return { success: false, message: "Something went wrong." };
   }
-}
+};
 
-
-export const upsert = async (values: Meeting & { participants: User[] }, meetingId?: string) => {
+export const upsert = async (
+  values: Meeting & { participants: User[] },
+  meetingId?: string
+) => {
   if (meetingId) {
     return await update(meetingId, values);
   } else {
     return await create(values);
   }
-}
+};
 
+export const fetchInvite = async (meetingId: string) => {
+  const session = await auth();
+
+  const invite = await prismadb.invite.findFirst({
+    where: {
+      meetingId: meetingId,
+      userId: session?.user?.id!,
+    },
+    include: {
+      meeting: true,
+      user: true,
+    },
+  });
+
+  return invite;
+};
 
 /** Private methods */
 
-
-const update = async (id: string, values: Meeting & { participants: { id: string }[] }) => {
+const update = async (
+  id: string,
+  values: Meeting & { participants: { id: string }[] }
+) => {
   const oldMeeting = await prismadb.meeting.findFirst({
     where: {
-      id
-    }
-  })
+      id,
+    },
+  });
   try {
     const meeting = await prismadb.meeting.update({
       where: { id },
       data: {
         title: values.title,
         description: values.description,
-        estimatedDuration: values.estimatedDuration,
         startDateTime: values.startDateTime,
-        status: values.startDateTime > oldMeeting?.startDateTime! ?
-          MEETING_STATUS.RESCHEDULED
-          : oldMeeting?.status,
+        status:
+          values.startDateTime > oldMeeting?.startDateTime!
+            ? MEETING_STATUS.RESCHEDULED
+            : oldMeeting?.status,
       },
-    })
-
+    });
 
     const invites = await prismadb.invite.findMany({
       where: {
-        meetingId: id
+        meetingId: id,
       },
       include: {
         user: true,
-        meeting: true
-      }
-    })
+        meeting: true,
+      },
+    });
 
     //filter participants that are only in the new list
-    const userIds = invites.map((invite: any) => invite.userId)
-    const newParticipants = values.participants.filter((p: any) => !userIds.includes(p.id)) as User[]
+    const userIds = invites.map((invite: any) => invite.userId);
+    const newParticipants = values.participants.filter(
+      (p: any) => !userIds.includes(p.id)
+    ) as User[];
 
     // Create stream call
-    const callType = 'default';
+    const callType = "default";
     const call = await streamClient.video.call(callType, meeting.id);
-
-
 
     if (newParticipants.length > 0) {
       // participants tokens
-      const participantMeetings = await createUserTokens(meeting, newParticipants)
+      const participantMeetings = await createUserTokens(
+        meeting,
+        newParticipants
+      );
 
       await prismadb.invite.createMany({
-        data: participantMeetings.map((p: any) => ({ userId: p.participant.id, meetingId: p.meeting.id, token: p.token }))
-      })
+        data: participantMeetings.map((p: any) => ({
+          userId: p.participant.id,
+          meetingId: p.meeting.id,
+          token: p.token,
+        })),
+      });
 
       // send meeting link to participants
 
-      const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
-      const { email: t } = await getDictionary(locale) as any
-      const message = `${t.inviteMessage} "${meeting.title}": ${values.startDateTime.toLocaleString()}.`
-      sendInvites(participantMeetings, message)
+      const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale;
+      const { email: t } = (await getDictionary(locale)) as any;
+      const message = `${t.inviteMessage} "${meeting.title
+        }": ${values.startDateTime.toLocaleString()}.`;
+      sendInvites(participantMeetings, message);
 
       // Add new users to stream call
       await call.updateCallMembers({
-        update_members: newParticipants.map((participant: any) => ({ user_id: participant.id, role: 'user' }))
-      })
+        update_members: newParticipants.map((participant: any) => ({
+          user_id: participant.id,
+          role: "user",
+        })),
+      });
     }
 
     // if incoming invites are missing saved invites, delete them from db and stream call
-    const missingParticipants = invites.filter((i: any) => !values.participants.map((p: any) => p.id).includes(i.userId))
+    const missingParticipants = invites.filter(
+      (i: any) => !values.participants.map((p: any) => p.id).includes(i.userId)
+    );
     if (missingParticipants.length > 0) {
       await prismadb.invite.deleteMany({
         where: {
           userId: {
-            in: missingParticipants.map((p: any) => p.userId)
-          }
-        }
-      })
-
+            in: missingParticipants.map((p: any) => p.userId),
+          },
+        },
+      });
 
       await call.updateCallMembers({
-        remove_members: missingParticipants.map((p: any) => p.userId)
-      })
+        remove_members: missingParticipants.map((p: any) => p.userId),
+      });
     }
 
     // if the meeting start date time is changed, sent to old participants
-    if (values.startDateTime.toISOString() !== meeting.startDateTime.toISOString()) {
+    if (
+      values.startDateTime.toISOString() !== meeting.startDateTime.toISOString()
+    ) {
+      const userIds = values.participants.map((p: any) => p.id);
+      const oldParticipants = invites
+        .filter((i: any) => userIds.includes(i.userId))
+        .map((i: any) => ({ participant: i.user, meeting, token: i.token }));
 
-      const userIds = values.participants.map((p: any) => p.id)
-      const oldParticipants = invites.filter((i: any) => userIds.includes(i.userId)).map((i: any) => ({ participant: i.user, meeting, token: i.token }))
+      const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale;
+      const { email: t } = (await getDictionary(locale)) as any;
+      const message = `"${meeting.title}":  ${t.rescheduledMessage.body
+        } ${values.startDateTime.toLocaleString()}.`;
 
-
-      const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
-      const { email: t } = await getDictionary(locale) as any
-      const message = `"${meeting.title}":  ${t.rescheduledMessage.body} ${values.startDateTime.toLocaleString()}.`
-
-      sendInvites(oldParticipants, message)
+      sendInvites(oldParticipants, message);
     }
 
     return { success: true, message: "Meeting updated successfully." };
   } catch (error: any) {
     console.log(error);
-    return { success: false, message: 'Something went wrong.' };
+    return { success: false, message: "Something went wrong." };
   }
-}
-
+};
 
 const create = async (values: Meeting & { participants: User[] }) => {
-
   const session = await auth();
-  const hostId = session?.user?.id!
+  const hostId = session?.user?.id!;
   const host = await prismadb.user.findFirst({
     where: {
-      id: hostId
-    }
-  })
+      id: hostId,
+    },
+  });
 
   try {
     const meeting = await prismadb.meeting.create({
       data: {
         title: values.title,
         description: values.description,
-        estimatedDuration: values.estimatedDuration,
         startDateTime: values.startDateTime,
         hostId,
-      }
-    })
+      },
+    });
 
     // Create stream call
-    const callType = 'default';
+    const callType = "default";
     const call = await streamClient.video.call(callType, meeting.id);
-
 
     await call.create({
       data: {
         created_by_id: hostId,
-        members: [
-          { user_id: hostId, role: 'admin' },
-        ].concat(values.participants.map((participant: any) => ({ user_id: participant.id, role: 'user' }))),
-      }
-    })
+        members: [{ user_id: hostId, role: "admin" }].concat(
+          values.participants.map((participant: any) => ({
+            user_id: participant.id,
+            role: "user",
+          }))
+        ),
+      },
+    });
 
     // host token
-    const stream_token_exp = Math.round(new Date().getTime() / 1000) + 60 * 60 * 48;
-    const token = await streamClient.createToken(hostId, stream_token_exp)
+    const stream_token_exp =
+      Math.round(new Date().getTime() / 1000) + 60 * 60 * 48;
+    const token = await streamClient.createToken(hostId, stream_token_exp);
 
     // participants tokens
-    const hostMeeting = await createUserTokens(meeting, [host as User])
+    const hostMeeting = await createUserTokens(meeting, [host as User]);
 
-    const participantMeetings = await createUserTokens(meeting, values.participants)
-    const userToInvite = [...hostMeeting, ...participantMeetings]
+    const participantMeetings = await createUserTokens(
+      meeting,
+      values.participants
+    );
+    const userToInvite = [...hostMeeting, ...participantMeetings];
 
     await prismadb.invite.createMany({
-      data: userToInvite.map((p: any) => ({ userId: p.participant.id, meetingId: p.meeting.id, token: p.token }))
-    })
+      data: userToInvite.map((p: any) => ({
+        userId: p.participant.id,
+        meetingId: p.meeting.id,
+        token: p.token,
+      })),
+    });
 
     // send meeting link to participants
-    const locale = (process.env.DEFAULT_LOCALE ?? 'en') as Locale
-    const { email: t } = await getDictionary(locale) as any
-    const message = `${t.inviteMessage.body} "${meeting.title}": ${values.startDateTime.toLocaleTimeString()}.`
+    const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale;
+    const { email: t } = (await getDictionary(locale)) as any;
+    const message = `${t.inviteMessage.body} "${meeting.title
+      }": ${values.startDateTime.toLocaleTimeString()}.`;
 
-    sendInvites(userToInvite, message)
+    sendInvites(userToInvite, message);
 
     return { success: true, message: "Meeting scheduled successfully." };
   } catch (error: any) {
     console.log(error);
-    return { success: false, message: 'Something went wrong.' };
+    return { success: false, message: "Something went wrong." };
   }
-}
-
+};
 
 const createUserTokens = async (meeting: Meeting, participants: User[]) => {
-  const stream_token_exp = Math.round(new Date().getTime() / 1000) + 60 * 60 * 48;
+  const stream_token_exp =
+    Math.round(new Date().getTime() / 1000) + 60 * 60 * 48;
 
   participants = await prismadb.user.findMany({
     where: {
       id: {
-        in: participants.map(participant => participant.id)
-      }
-    }
+        in: participants.map((participant) => participant.id),
+      },
+    },
   });
 
-  return await Promise.all(participants.map(async (participant) => {
-
-    const token = await streamClient.createToken(participant.id, stream_token_exp)
-    return {
-      participant,
-      meeting,
-      token,
-    }
-  }))
-}
-
+  return await Promise.all(
+    participants.map(async (participant) => {
+      const token = await streamClient.createToken(
+        participant.id,
+        stream_token_exp
+      );
+      return {
+        participant,
+        meeting,
+        token,
+      };
+    })
+  );
+};

@@ -15,6 +15,7 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "./style.css";
 import { UserObjectRequest } from "@stream-io/node-sdk";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface Props {
   invite: Invite & { user: User } & { meeting: Meeting };
@@ -75,24 +76,16 @@ export default function VideoConference({ invite }: Props) {
     );
   } else {
     return (
-      <div className="flex justify-center items-center min-h-[650px]">
+      <div className="flex justify-center items-center h-screen">
         <div className="flex flex-col space-y-8">
-          <div className="">
-            <h2 className="text-2xl font-bold tracking-tight text-center">
-              {meeting.title}
-            </h2>
-            <p className="text-muted-foreground tesxt-center">
-              {meeting.description}
-            </p>
+          <div className="flex space-x-4 items-center">
+            <Button disabled={joining} size="lg" onClick={joinCall}>
+              {joining ? "Joining..." : "Join call"}
+            </Button>
+            <Link className="underline" href={`/en/dashboard`}>
+              Return home
+            </Link>
           </div>
-          <Button
-            disabled={joining}
-            variant="outline"
-            size="lg"
-            onClick={joinCall}
-          >
-            {joining ? "Joining..." : "Join call"}
-          </Button>
         </div>
       </div>
     );

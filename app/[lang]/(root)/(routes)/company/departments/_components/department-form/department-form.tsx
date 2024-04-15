@@ -20,10 +20,24 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
-import { InfoIcon } from "lucide-react";
+import { Check, ChevronsUpDown, InfoIcon } from "lucide-react";
 import { UserSelect } from "@/components/user-select";
 import { CardTitle } from "@/components/ui/card";
 import { LocaleContext } from "@/providers/locale-provider";
+import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { CustomAvatar } from "@/components/custom-avatar";
 
 interface Props {
   usersOptions: User[];
@@ -76,11 +90,11 @@ const DepartmentForm: React.FC<Props> = ({
       phone: department?.phone!,
       manager: manager
         ? {
-          label: manager?.name!,
-          value: manager?.id!,
-          image: manager?.image!,
-          role: manager?.role!,
-        }
+            label: manager?.name!,
+            value: manager?.id!,
+            image: manager?.image!,
+            role: manager?.role!,
+          }
         : undefined,
       members:
         department?.members.map((member) => ({
@@ -128,9 +142,6 @@ const DepartmentForm: React.FC<Props> = ({
 
   return (
     <Form {...form}>
-      <CardTitle className="mb-4">
-        {department ? t.form.header.update : t.form.header.create}
-      </CardTitle>
       <form onSubmit={onSubmit} className="">
         <fieldset disabled={loading} className="flex flex-col space-y-4">
           <FormField
@@ -210,16 +221,175 @@ const DepartmentForm: React.FC<Props> = ({
 
           <FormField
             control={form.control}
+            name="manager"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>{t.form.fields.manager.label}</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-full justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? usersOptions.find(
+                              (option) => option.id === field.value?.value
+                            )?.name
+                          : t.form.fields.manager.placeholder}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent align="start" className="w-[400px] p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder={t.form.fields.members.placeholder}
+                      />
+                      <CommandEmpty>
+                        {t.form.fields.members.errors.notFound}
+                      </CommandEmpty>
+                      <CommandGroup>
+                        {usersOptions.map((option) => (
+                          <CommandItem
+                            value={option.id}
+                            key={option.id}
+                            onSelect={() => {
+                              field.onChange(option.id);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                option.id === field.value?.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            <CustomAvatar
+                              image={option.image || undefined}
+                              initials={
+                                option.name
+                                  ?.split(" ")
+                                  .map((n: string) => n[0])
+                                  .join("") || ""
+                              }
+                              className="w-8 h-8"
+                            />
+                            <div className="flex flex-col">
+                              <span className="text-gray-500">
+                                {option.name}
+                              </span>
+                              <span className="text-[10px] text-gray-900">
+                                {option.role}
+                              </span>
+                            </div>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="members"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex flex-col">
                 <FormLabel>{t.form.fields.members.label}</FormLabel>
-                <MultiSelect
-                  selected={field.value || []}
-                  onSelect={field.onChange}
-                  users={usersOptions}
-                  placeholder={t.form.fields.members.placeholder}
-                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-[620px] justify-between text-muted-foreground",
+                          !field.value && ""
+                        )}
+                      >
+                        {field.value.length + " " + t.form.fields.members.label}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[400px] p-0 mb-5" align="start">
+                    <Command>
+                      <CommandInput
+                        placeholder={t.form.fields.members.placeholder}
+                      />
+                      <CommandEmpty>
+                        {t.form.fields.members.errors.notFound}
+                      </CommandEmpty>
+                      <CommandGroup>
+                        {usersOptions.map((user: User) => {
+                          const option = {
+                            label: user.name,
+                            value: user.id,
+                            image: user.image,
+                            role: user.role,
+                          };
+
+                          const isSelected = field.value.find(
+                            (s) => s.value === option.value
+                          );
+
+                          return (
+                            <CommandItem
+                              key={option.value}
+                              className={"cursor-pointer"}
+                              onSelect={() => {
+                                if (isSelected) {
+                                  const newOptions = field.value.filter(
+                                    (s) => s.value !== option.value
+                                  );
+                                  field.onChange(newOptions);
+                                } else {
+                                  field.onChange([...field.value, option]);
+                                }
+                              }}
+                            >
+                              <div className="flex space-x-2 py-1 items-center">
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    isSelected ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                <CustomAvatar
+                                  image={option.image || undefined}
+                                  initials={
+                                    option.label
+                                      ?.split(" ")
+                                      .map((n: string) => n[0])
+                                      .join("") || ""
+                                  }
+                                  className="w-8 h-8"
+                                />
+                                <div className="flex flex-col">
+                                  <span className="text-gray-500">
+                                    {option.label}
+                                  </span>
+                                  <span className="text-[10px] text-gray-900">
+                                    {option.role}
+                                  </span>
+                                </div>
+                              </div>
+                            </CommandItem>
+                          );
+                        })}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
                 <FormDescription className="font-light text-xs text-muted-foreground flex space-x-2">
                   <InfoIcon size={16} />
@@ -229,8 +399,8 @@ const DepartmentForm: React.FC<Props> = ({
             )}
           />
         </fieldset>
-        <div className="mt-4">
-          <Button disabled={loading}>
+        <div className="mt-4 bg-red-300">
+          <Button size="lg" className="w-full" disabled={loading}>
             {/* TODO: only show button to admin users */}
             {department ? t.form.buttons.update : t.form.buttons.create}
           </Button>

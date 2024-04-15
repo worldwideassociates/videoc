@@ -70,7 +70,7 @@ export default function MultiSelect({
       onKeyDown={handleKeyDown}
       className="overflow-visible bg-transparent"
     >
-      <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+      <div className="relative max-10 w-[620px] group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex gap-1 flex-wrap">
           {selected.map((option) => {
             return (
@@ -126,54 +126,52 @@ export default function MultiSelect({
             className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
             {...props}
           />
-        </div>
-      </div>
-      <div className="relative mt-2">
-        {open && selectables.length > 0 ? (
-          <ScrollArea className=" max-h-72 -absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-            <CommandGroup className="h-full overflow-auto">
-              {selectables.map((option) => {
-                return (
-                  <CommandItem
-                    key={option.value}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                    onSelect={(value) => {
-                      setInputValue("");
-                      const exists = selected.find(
-                        (s) => s.value === option.value
-                      );
-                      if (exists) return;
-                      onSelect([...selected, option]);
-                    }}
-                    className={"cursor-pointer"}
-                  >
-                    <div className="flex space-x-2 py-1 items-center">
-                      <CustomAvatar
-                        image={option.image || undefined}
-                        initials={
-                          option.label
-                            ?.split(" ")
-                            .map((n: string) => n[0])
-                            .join("") || ""
-                        }
-                        className="w-8 h-8"
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-gray-500">{option.label}</span>
-                        <span className="text-[10px] text-gray-900">
-                          {option.role}
-                        </span>
+          {open && selectables.length > 0 ? (
+            <ScrollArea className=" max-h-48 absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+              <CommandGroup className="h-full overflow-auto">
+                {selectables.map((option) => {
+                  return (
+                    <CommandItem
+                      key={option.value}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      onSelect={() => {
+                        setInputValue("");
+                        const exists = selected.find(
+                          (s) => s.value === option.value
+                        );
+                        if (exists) return;
+                        onSelect([...selected, option]);
+                      }}
+                      className={"cursor-pointer"}
+                    >
+                      <div className="flex space-x-2 py-1 items-center">
+                        <CustomAvatar
+                          image={option.image || undefined}
+                          initials={
+                            option.label
+                              ?.split(" ")
+                              .map((n: string) => n[0])
+                              .join("") || ""
+                          }
+                          className="w-8 h-8"
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-gray-500">{option.label}</span>
+                          <span className="text-[10px] text-gray-900">
+                            {option.role}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CommandItem>
-                );
-              })}
-            </CommandGroup>
-          </ScrollArea>
-        ) : null}
+                    </CommandItem>
+                  );
+                })}
+              </CommandGroup>
+            </ScrollArea>
+          ) : null}
+        </div>
       </div>
     </Command>
   );

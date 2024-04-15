@@ -13,22 +13,22 @@ export async function POST(req: Request) {
 
     uploadRecording(url, filename, meetingId);
   }
-
-  const meetingId = event.call_cid.split(":")[1];
-
-  if (event.type == "call.session_participant_left") {
-    await prismadb.user.update({
-      where: { id: event.participant.user.id },
-      data: { activeMeetingId: null },
-    });
-  }
-
-  if (event.type == "call.session_participant_joined") {
-    await prismadb.user.update({
-      where: { id: event.participant.user.id },
-      data: { activeMeetingId: meetingId },
-    });
-  }
-
+  //
+  // const meetingId = event.call_cid.split(":")[1];
+  //
+  // if (event.type == "call.session_participant_left") {
+  //   await prismadb.user.update({
+  //     where: { id: event.participant.user.id },
+  //     data: { activeMeetingId: null },
+  //   });
+  // }
+  //
+  // if (event.type == "call.session_participant_joined") {
+  //   await prismadb.user.update({
+  //     where: { id: event.participant.user.id },
+  //     data: { activeMeetingId: meetingId },
+  //   });
+  // }
+  //
   return Response.json({ status: "ok" });
 }

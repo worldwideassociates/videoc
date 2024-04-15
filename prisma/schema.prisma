@@ -143,7 +143,6 @@ model Meeting {
   title             String
   description       String?
   startDateTime     DateTime
-  estimatedDuration String
   status            MEETING_STATUS @default(PLANNED)
 
   hostId String
