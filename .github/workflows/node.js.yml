@@ -82,5 +82,5 @@ jobs:
       - name: Generate Prisma Schema
         run: CI=true npx prisma generate
       - name: Apply migrations
-        run: CI=true npx prisma db push --force
+        run: CI=true npx prisma db push --accept-data-loss
       - run: pnpm run build --if-present
