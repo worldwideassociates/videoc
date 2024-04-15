@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface IRecording extends Recording {
-  meeting: Meeting & { invites: (Invite & { user: User; meeting: Meeting })[] };
+  meeting: Meeting & { invites: (Invite & { user: User })[] };
 }
 
 interface Props {

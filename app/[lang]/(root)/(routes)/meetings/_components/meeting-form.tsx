@@ -99,7 +99,6 @@ const MeetingForm: React.FC<Props> = ({
       startTime: meeting?.startDateTime
         ? [meeting.startDateTime.getHours(), meeting.startDateTime.getMinutes()]
         : undefined,
-      estimatedDuration: meeting?.estimatedDuration || "30",
       participants:
         savedParticipants?.map((user) => ({
           label: user.name!,
