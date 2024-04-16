@@ -80,7 +80,7 @@ jobs:
       - name: Install dependencies
         run: CI=true pnpm install
       - name: Boot database container
-        run: sudo docker-compose up -d
+        run: docker-compose up -d
       - name: Generate Prisma Schema
         run: CI=true npx prisma generate
       - name: Apply migrations
