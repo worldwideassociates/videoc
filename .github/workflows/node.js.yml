@@ -86,6 +86,8 @@ jobs:
       - name: Apply migrations
         run: CI=true npx prisma migrate deploy
       - run: pnpm run build
+      - name: Install pm2
+        run: pnpm install pm2 -g
       - name: Change directory
         run: cd /home/videoc/actions-runner/_work/videoc/videoc
       - run: pm2 restart videoc --update-env
