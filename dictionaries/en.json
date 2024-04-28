@@ -78,7 +78,9 @@
   "meetings": {
     "sidenav": {
       "upcoming": "Upcoming",
-      "previous": "Previous"
+      "previous": "Previous",
+      "home": "Home",
+      "recordings": "Recordings"
     },
     "form": {
       "update": {

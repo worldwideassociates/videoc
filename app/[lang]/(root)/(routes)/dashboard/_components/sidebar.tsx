@@ -36,13 +36,13 @@ const Sidebar: React.FC<Props> = ({ locale, t }) => {
       imgURL: "/icons/Home.svg",
       lightImgURL: "/icons/HomeLight.svg",
       route: `/${locale}/dashboard`,
-      label: "Home",
+      label: t.sidenav.home,
     },
     {
       imgURL: "/icons/Video.svg",
       lightImgURL: "/icons/recordingsLight.svg",
       route: `/${locale}/dashboard/recordings`,
-      label: "Recordings",
+      label: t.sidenav.recordings,
     },
   ];
 
