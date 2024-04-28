@@ -16,28 +16,16 @@ const Sidebar: React.FC<Props> = ({ locale, t }) => {
 
   const routes = [
     {
-      imgURL: "/icons/upcoming.svg",
-      lightImgURL: "/icons/upcomingLight.svg",
-      route: `/${locale}/company/profile`,
-      label: t.nav.companyProfile,
+      imgURL: "/icons/collaborators.svg",
+      lightImgURL: "/icons/collaboratorsLight.svg",
+      route: `/${locale}/partners/collaborators`,
+      label: t.nav.collaborators,
     },
     {
-      imgURL: "/icons/departments.svg",
-      lightImgURL: "/icons/departmentsLight.svg",
-      route: `/${locale}/company/departments`,
-      label: t.nav.departments,
-    },
-    {
-      imgURL: "/icons/workers.svg",
-      lightImgURL: "/icons/workersLight.svg",
-      route: `/${locale}/company/employees`,
-      label: t.nav.employees,
-    },
-    {
-      imgURL: "/icons/license.svg",
-      lightImgURL: "/icons/licenseLight.svg",
-      route: `/${locale}/company/license`,
-      label: t.nav.license,
+      imgURL: "/icons/customers.svg",
+      lightImgURL: "/icons/customersLight.svg",
+      route: `/${locale}/partners/customers`,
+      label: t.nav.customers,
     },
   ];
 

@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UserMultiSelect as MultiSelect } from "@/components/user-multi-select";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Meeting, User } from "@prisma/client";
@@ -21,8 +20,6 @@ import { useForm } from "react-hook-form";
 import { Calendar as CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import * as z from "zod";
 import { use, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { InfoIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { LocaleContext } from "@/providers/locale-provider";
 import { TimePicker } from "./time-picker";
@@ -69,7 +66,7 @@ const getFormSchema = (t: Record<string, any>) => {
             label: z.string(),
             value: z.string(),
             role: z.string(),
-            image: z.string(),
+            image: z.string().optional(),
           })
         )
         .min(1, t.participants.errors.min),
@@ -92,17 +89,10 @@ const getFormSchema = (t: Record<string, any>) => {
 
 const MeetingForm: React.FC<Props> = ({ meeting }) => {
   const [userOptions, setUserOptions] = useState<any | User[]>([]);
-
   const closeModal = useModal((state) => state.onClose);
-
   const { dictionary: t } = use(LocaleContext);
-
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const { locale } = use(LocaleContext);
-
   const formSchema = getFormSchema(t);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -128,7 +118,6 @@ const MeetingForm: React.FC<Props> = ({ meeting }) => {
       } as any;
 
       const result = await upsert(payload, meeting?.id);
-
       if (result?.success) {
         form.reset();
         toast({
@@ -276,7 +265,7 @@ const MeetingForm: React.FC<Props> = ({ meeting }) => {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent
-                      className="w-[400px] p-0 mb-5"
+                      className="w-[400px] p-0 mb-5 max-h-[600px]"
                       side="right"
                       align="start"
                     >
@@ -292,7 +281,7 @@ const MeetingForm: React.FC<Props> = ({ meeting }) => {
                             const option = {
                               label: user.name,
                               value: user.id,
-                              image: user.image,
+                              image: user.image || undefined,
                               role: user.role,
                             };
 

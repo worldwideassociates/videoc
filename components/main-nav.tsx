@@ -25,19 +25,14 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
   const adminRoutes = [
     {
-      label: (t: Record<string, any>) => t.mainNav.customers,
-      href: (locale: Locale) => `/${locale}/customers`,
-      active: pathname.includes(`/customers`),
-    },
-    {
-      label: (t: Record<string, any>) => t.mainNav.collaborators,
-      href: (locale: Locale) => `/${locale}/collaborators`,
-      active: pathname.includes(`/collaborators`),
-    },
-    {
       label: (t: Record<string, any>) => t.mainNav.companyProfile,
       href: (locale: Locale) => `/${locale}/company/profile`,
       active: pathname.includes(`/company`),
+    },
+    {
+      label: (t: Record<string, any>) => t.mainNav.partners,
+      href: (locale: Locale) => `/${locale}/partners/collaborators`,
+      active: pathname.includes(`/partners`),
     },
   ];
 

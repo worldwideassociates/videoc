@@ -27,13 +27,13 @@ export const DepartmentClient: React.FC<Props> = ({ data, t }) => {
   const [selectedDepartment, setSelectedDepartment] =
     useState<Department | null>(null);
   const [userOptions, setUserOptions] = useState<User[]>([]);
-
   const { toast } = useToast();
-
   const isOpen = useAlertModal((state) => state.isOpen);
   const onClose = useAlertModal((state) => state.onClose);
-
   const modal = useModal();
+  const [currentDepartment, setCurrentDepartment] = useState<
+    Department & { members: User[] }
+  >();
 
   const onDelete = async () => {
     setDeleting(true);
@@ -41,13 +41,12 @@ export const DepartmentClient: React.FC<Props> = ({ data, t }) => {
     const result = await deleteDepartment(selectedDepartment?.id as string);
     if (result.success) {
       toast({
-        title: "Success",
-        description: "Department deleted successfully",
+        title: "",
+        description: t.form.toast.deleted,
       });
     } else {
       toast({
-        title: "Oops",
-        description: result.message,
+        description: t.form.toast.error,
       });
     }
 
@@ -75,13 +74,23 @@ export const DepartmentClient: React.FC<Props> = ({ data, t }) => {
         onConfirm={onDelete}
       />
       <Modal
-        title={t.formModal.title}
+        title={
+          currentDepartment ? t.formModal.title.edit : t.formModal.title.create
+        }
         Icon={BuildingIcon}
         isOpen={modal.isOpen}
-        onClose={modal.onClose}
+        onClose={() => {
+          setSelectedDepartment(null);
+          setCurrentDepartment(undefined);
+          modal.onClose();
+        }}
       >
         <Separator className="mb-5" />
-        <DepartmentForm usersOptions={userOptions} t={t} />
+        <DepartmentForm
+          department={currentDepartment}
+          usersOptions={userOptions}
+          t={t}
+        />
       </Modal>
       <Heading
         title={`${t.header.title} (${data.length})`}
@@ -103,6 +112,10 @@ export const DepartmentClient: React.FC<Props> = ({ data, t }) => {
             key={department.id}
             department={department}
             setSelectedDepartment={setSelectedDepartment}
+            onEditDepartmentClicked={() => {
+              setCurrentDepartment(department);
+              modal.onOpen();
+            }}
           />
         ))}
       </div>

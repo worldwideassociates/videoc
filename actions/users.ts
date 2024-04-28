@@ -45,7 +45,6 @@ export const getAllUsers = async () => {
 export const getUsersWithoutDepartment = async () => {
   return await prismadb.user.findMany({
     where: {
-      department: null,
       OR: [{ role: Role.EMPLOYEE }, { role: Role.ADMIN }],
     },
   });

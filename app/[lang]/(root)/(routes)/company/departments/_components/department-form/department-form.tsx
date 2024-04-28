@@ -12,18 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UserMultiSelect as MultiSelect } from "@/components/user-multi-select";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Department, User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { use, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Check, ChevronsUpDown, InfoIcon } from "lucide-react";
-import { UserSelect } from "@/components/user-select";
-import { CardTitle } from "@/components/ui/card";
-import { LocaleContext } from "@/providers/locale-provider";
 import { cn } from "@/lib/utils";
 import {
   Popover,
@@ -38,48 +33,61 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { CustomAvatar } from "@/components/custom-avatar";
+import { useModal } from "@/hooks/use-modal";
+import { useRouter } from "next/navigation";
 
 interface Props {
   usersOptions: User[];
-  department?: (Department & { members: User[] }) | null;
-  manager?: User | null;
+  department?: Department & { members: User[] };
   t: Record<string, any>;
 }
+const getFormSchema = (t: Record<string, any>) => {
+  t = t.form.fields;
 
-const formSchema = z.object({
-  name: z.string().min(3, "Name is required (minuimum of 3 characters)."),
-  description: z.string().max(255, "Description is too long").optional(),
-  email: z.string().optional(),
-  phone: z.string().optional(),
-  manager: z
-    .object({
-      label: z.string(),
-      value: z.string(),
-      image: z.string(),
-      role: z.string(),
-    })
-    .optional(),
-  members: z.array(
-    z.object({
-      label: z.string(),
-      value: z.string(),
-      image: z.string(),
-      role: z.string(),
-    })
-  ),
-});
+  const formSchema = z.object({
+    name: z
+      .string({
+        required_error: t.name.errors.required,
+      })
+      .min(3, t.name.errors.min),
+    email: z.string().optional(),
+    phone: z.string().optional(),
+    manager: z
+      .object(
+        {
+          label: z.string(),
+          value: z.string(),
+          image: z.string(),
+          role: z.string(),
+        },
+        {
+          required_error: t.manager.errors.required,
+        }
+      )
+      .optional(),
+    members: z
+      .array(
+        z.object({
+          label: z.string(),
+          value: z.string(),
+          image: z.string(),
+          role: z.string(),
+        })
+      )
+      .min(1, t.members.errors.min),
+  });
+  return formSchema;
+};
 
-const DepartmentForm: React.FC<Props> = ({
-  usersOptions,
-  department,
-  manager,
-  t,
-}) => {
+const DepartmentForm: React.FC<Props> = ({ usersOptions, department, t }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const modal = useModal();
   const router = useRouter();
 
-  const { locale } = use(LocaleContext);
+  const formSchema = getFormSchema(t);
+
+  const manager = usersOptions.find((u) => u.id === department?.managerId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -122,20 +130,21 @@ const DepartmentForm: React.FC<Props> = ({
         ? await update(department.id, payload)
         : await create(payload);
 
-      if (result.success) {
+      if (result?.success) {
         form.reset();
         toast({
-          title: "Success",
-          description: result.message,
+          title: "✅",
+          description: department ? t.form.toast.updated : t.form.toast.created,
         });
-
-        router.push(`/${locale}/company/departments`);
+        modal.onClose();
+        router.refresh();
       } else {
         toast({
-          title: "Oops",
-          description: result.message,
+          title: "⚠️",
+          description: t.form.toast.error,
         });
       }
+
       setLoading(false);
     }
   );
@@ -198,27 +207,6 @@ const DepartmentForm: React.FC<Props> = ({
               </FormItem>
             )}
           />
-
-          <FormField
-            control={form.control}
-            name="manager"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t.form.fields.manager.label}</FormLabel>
-                {/* TODO fix these hacks */}
-                <UserSelect
-                  selected={(field.value as any) || []}
-                  onSelect={field.onChange}
-                  users={usersOptions}
-                />
-                <FormDescription className="font-light text-xs text-muted-foreground">
-                  {t.form.fields.manager.helpText}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="manager"
@@ -236,11 +224,25 @@ const DepartmentForm: React.FC<Props> = ({
                           !field.value && "text-muted-foreground"
                         )}
                       >
-                        {field.value
-                          ? usersOptions.find(
-                              (option) => option.id === field.value?.value
-                            )?.name
-                          : t.form.fields.manager.placeholder}
+                        {field.value ? (
+                          <div className="flex space-x-2 pt-2 items-center">
+                            <CustomAvatar
+                              image={field.value.image || undefined}
+                              initials={
+                                field.value.label
+                                  ?.split(" ")
+                                  .map((n: string) => n[0])
+                                  .join("") || ""
+                              }
+                              className="w-8 h-8"
+                            />
+                            <span className="text-gray-500">
+                              {field.value.label}
+                            </span>
+                          </div>
+                        ) : (
+                          <p>{t.form.fields.manager.placeholder}</p>
+                        )}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </FormControl>
@@ -254,42 +256,50 @@ const DepartmentForm: React.FC<Props> = ({
                         {t.form.fields.members.errors.notFound}
                       </CommandEmpty>
                       <CommandGroup>
-                        {usersOptions.map((option) => (
-                          <CommandItem
-                            value={option.id}
-                            key={option.id}
-                            onSelect={() => {
-                              field.onChange(option.id);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                option.id === field.value?.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            <CustomAvatar
-                              image={option.image || undefined}
-                              initials={
-                                option.name
-                                  ?.split(" ")
-                                  .map((n: string) => n[0])
-                                  .join("") || ""
-                              }
-                              className="w-8 h-8"
-                            />
-                            <div className="flex flex-col">
-                              <span className="text-gray-500">
-                                {option.name}
-                              </span>
-                              <span className="text-[10px] text-gray-900">
-                                {option.role}
-                              </span>
-                            </div>
-                          </CommandItem>
-                        ))}
+                        {usersOptions.map((user) => {
+                          const option = {
+                            label: user.name,
+                            value: user.id,
+                            image: user.image,
+                            role: user.role,
+                          };
+                          return (
+                            <CommandItem
+                              value={option.value}
+                              key={option.value}
+                              onSelect={() => {
+                                field.onChange(option);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  option.value === field.value?.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              <CustomAvatar
+                                image={option.image || undefined}
+                                initials={
+                                  option.label
+                                    ?.split(" ")
+                                    .map((n: string) => n[0])
+                                    .join("") || ""
+                                }
+                                className="w-8 h-8"
+                              />
+                              <div className="flex flex-col">
+                                <span className="text-gray-500">
+                                  {option.label}
+                                </span>
+                                <span className="text-[10px] text-gray-900">
+                                  {option.role}
+                                </span>
+                              </div>
+                            </CommandItem>
+                          );
+                        })}
                       </CommandGroup>
                     </Command>
                   </PopoverContent>
@@ -321,7 +331,10 @@ const DepartmentForm: React.FC<Props> = ({
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[400px] p-0 mb-5" align="start">
+                  <PopoverContent
+                    className="w-[400px] max-h-[500px] p-0 mb-5"
+                    align="start"
+                  >
                     <Command>
                       <CommandInput
                         placeholder={t.form.fields.members.placeholder}
@@ -338,7 +351,7 @@ const DepartmentForm: React.FC<Props> = ({
                             role: user.role,
                           };
 
-                          const isSelected = field.value.find(
+                          const isSelected = field.value.some(
                             (s) => s.value === option.value
                           );
 

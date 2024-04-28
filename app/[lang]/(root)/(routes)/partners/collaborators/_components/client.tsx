@@ -9,7 +9,6 @@ import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { DataTable } from "@/components/ui/data-table";
 import { CollaboratorColumn, getColumns } from "./columns";
-import { User } from "@prisma/client";
 import { deleteUser } from "@/actions/users";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -73,16 +72,18 @@ export const CollaboratorClient: React.FC<Props> = ({ data, t }) => {
               asChild
               className="rounded-full border-gray-600 p-4"
             >
-              <Link href={`/${locale}/collaborators/import`}>
+              {/* <Link href={`/${locale}/partners/collaborators/import`}>
                 <ImportIcon size={25} />
-              </Link>
+            </Link>
+
+              */}
             </Button>
             <Button
               variant="link"
               asChild
               className="rounded-full border-gray-600 p-4"
             >
-              <Link href={`/${locale}/collaborators/new`}>
+              <Link href={`/${locale}/partners/collaborators/new`}>
                 <Plus size={25} />
               </Link>
             </Button>

@@ -71,7 +71,7 @@ export const CustomerClient: React.FC<Props> = ({ data, t }) => {
               asChild
               className="rounded-full border-gray-600 p-4"
             >
-              <Link href={`/${locale}/customers/import`}>
+              <Link href={`/${locale}/partners/customers/import`}>
                 <ImportIcon size={25} />
               </Link>
             </Button>
@@ -80,7 +80,7 @@ export const CustomerClient: React.FC<Props> = ({ data, t }) => {
               asChild
               className="rounded-full border-gray-600 p-4"
             >
-              <Link href={`/${locale}/customers/new`}>
+              <Link href={`/${locale}/partners/customers/new`}>
                 <Plus size={25} />
               </Link>
             </Button>

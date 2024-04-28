@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import prismadb from "@/lib/prismadb";
 import { CustomerForm } from "../../_components/customer-form";
-import { Heading } from "@/components/heading";
 import { normalize } from "@/lib/utils";
 import { User } from "@prisma/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,11 +8,11 @@ import { Locale } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
 
 interface pageProps {
-  params: { customerId: string; locale: Locale };
+  params: { customerId: string; lang: Locale };
 }
 
 const Page: FC<pageProps> = async ({ params }) => {
-  const { customers: t } = (await getDictionary(params.locale)) as any;
+  const { customers: t } = (await getDictionary(params.lang)) as any;
 
   const customer = await prismadb.user.findFirst({
     where: {

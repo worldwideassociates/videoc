@@ -35,7 +35,7 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, SortAscIcon } from "lucide-react";
 import { LocaleContext } from "@/providers/locale-provider";
 
 const formSchema = z.object({
@@ -51,21 +51,20 @@ const formSchema = z.object({
   websiteUrl: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
-  logo: z.string().optional(),
 });
 
 interface Props {
-  collaborator?: User | null;
+  customer?: User | null;
   readonly?: boolean;
   localTaxOfficesOptions: { label: string; value: string }[];
   t: Record<string, any>;
 }
 
-const CollaboratorForm: React.FC<Props> = ({
-  collaborator,
+const CustomerForm: React.FC<Props> = ({
+  customer,
   localTaxOfficesOptions,
-  readonly = false,
   t,
+  readonly = false,
 }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -75,19 +74,18 @@ const CollaboratorForm: React.FC<Props> = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: collaborator?.name ?? "",
-      vatNumber: collaborator?.vatNumber ?? "",
-      localTaxOffice: collaborator?.localTaxOffice ?? "",
-      profession: collaborator?.profession ?? "",
-      address: collaborator?.address ?? "",
-      city: collaborator?.city ?? "",
-      postalCode: collaborator?.postalCode ?? "",
-      region: collaborator?.region ?? "",
-      country: collaborator?.country ?? "",
-      websiteUrl: collaborator?.websiteUrl ?? "",
-      email: collaborator?.email ?? "",
-      phone: collaborator?.phone ?? "",
-      logo: collaborator?.logo ?? "",
+      name: customer?.name ?? "",
+      vatNumber: customer?.vatNumber ?? "",
+      localTaxOffice: customer?.localTaxOffice ?? "",
+      profession: customer?.profession ?? "",
+      address: customer?.address ?? "",
+      city: customer?.city ?? "",
+      postalCode: customer?.postalCode ?? "",
+      region: customer?.region ?? "",
+      country: customer?.country ?? "",
+      websiteUrl: customer?.websiteUrl ?? "",
+      email: customer?.email ?? "",
+      phone: customer?.phone ?? "",
     },
   });
 
@@ -96,9 +94,9 @@ const CollaboratorForm: React.FC<Props> = ({
       setLoading(true);
 
       const payload = {
-        ...collaborator,
+        ...customer,
         ...values,
-        role: Role.COLLABORATOR,
+        role: Role.CUSTOMER,
       } as any;
 
       const result = await upsert(payload);
@@ -107,7 +105,7 @@ const CollaboratorForm: React.FC<Props> = ({
           title: "Success",
           description: result.message,
         });
-        router.push(`/${locale}/collaborators`);
+        router.push(`/${locale}/partners/customers`);
       } else {
         toast({
           title: "Oops",
@@ -380,7 +378,7 @@ const CollaboratorForm: React.FC<Props> = ({
         <CardFooter className="flex justify-end space-x-4">
           {!readonly && (
             <Button disabled={loading}>
-              {collaborator ? t.form.buttons.update : t.form.buttons.create}
+              {customer ? t.form.buttons.update : t.form.buttons.create}
             </Button>
           )}
         </CardFooter>
@@ -389,4 +387,4 @@ const CollaboratorForm: React.FC<Props> = ({
   );
 };
 
-export default CollaboratorForm;
+export default CustomerForm;

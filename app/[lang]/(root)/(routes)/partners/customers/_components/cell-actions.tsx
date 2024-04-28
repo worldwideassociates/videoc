@@ -10,28 +10,40 @@ import {
   DropdownMenuLabel,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { CollaboratorColumn } from "./columns";
+import { CustomerColumn } from "./columns";
 import Link from "next/link";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@prisma/client";
-import { use } from "react";
 import { LocaleContext } from "@/providers/locale-provider";
+import { use } from "react";
 
 interface CellActionsProps {
-  data: CollaboratorColumn;
+  data: CustomerColumn;
 }
 
 const CellActions: React.FC<CellActionsProps> = ({ data }) => {
   const onOpen = useAlertModal((state) => state.onOpen);
   const setCurrentuser = useCurrentUser((state) => state.setCurrentUser);
 
-  const { dictionary: t, locale } = use(LocaleContext);
-
   const onDelete = () => {
     setCurrentuser(data as User);
     onOpen();
   };
+
+  // const handleChangeStatus = (status: AffiliateStatus) => {
+  //   startTransition(async () => {
+  //     const result = await updateAffiliateStatus(data.id, status);
+  //     if (result) {
+  //       toast.success("Updated successfully.");
+  //     } else {
+  //       toast.error("Something went wrong.");
+  //     }
+  //   });
+  // };
+
+  const { dictionary: t } = use(LocaleContext);
+  const { locale } = use(LocaleContext);
 
   return (
     <>
@@ -43,15 +55,15 @@ const CellActions: React.FC<CellActionsProps> = ({ data }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t.table.actions.title}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/${locale}/collaborators/${data.id}/details`}>
+            <Link href={`/${locale}/partners/customers/${data.id}/details`}>
               <EyeIcon className="h-4 w-4 mr-2" />
               {t.table.actions.view}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/${locale}/collaborators/${data.id}/edit`}>
+            <Link href={`/${locale}/partners/customers/${data.id}/edit`}>
               <Edit className="h-4 w-4 mr-2" />
               {t.table.actions.edit}
             </Link>

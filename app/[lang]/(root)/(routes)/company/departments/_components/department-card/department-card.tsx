@@ -1,4 +1,3 @@
-import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -6,22 +5,23 @@ import { UserCard } from "@/components/user-card";
 import { useAlertModal } from "@/hooks/use-alert-modal ";
 import { LocaleContext } from "@/providers/locale-provider";
 import { Department, User } from "@prisma/client";
-import { Building, Edit2, Plus, PlusCircle, TrashIcon } from "lucide-react";
-import Link from "next/link";
+import { Building, Edit2, TrashIcon } from "lucide-react";
 import { use } from "react";
 
 interface Props {
   department: Department & { members: User[] };
   setSelectedDepartment: any; //TODO: this is a react setState function I dont know its signature right now
+  onEditDepartmentClicked: () => void;
 }
 
 const DepartmentCard: React.FC<Props> = ({
   department,
   setSelectedDepartment,
+  onEditDepartmentClicked,
 }) => {
   const onOpen = useAlertModal((state) => state.onOpen);
 
-  const { locale, dictionary: t } = use(LocaleContext);
+  const { dictionary: t } = use(LocaleContext);
 
   const handleDelete = () => {
     setSelectedDepartment(() => {
@@ -32,11 +32,6 @@ const DepartmentCard: React.FC<Props> = ({
 
   return (
     <Card className="px-4">
-      {/* <Heading title={department.name} Icon={Building} CallToAction={() =>
-        <Button variant='outline' className="rounded-full p-4">
-          <Edit2 size={10} />
-        </Button>
-      } /> */}
       <CardHeader className="px-0 py-2">
         <div className="flex justify-between items-center">
           <div className="flex space-x-2">
@@ -45,15 +40,11 @@ const DepartmentCard: React.FC<Props> = ({
           </div>
           <div className="flex space-x-2 mt-3">
             <Button
-              asChild
               variant="outline"
               className="rounded-full p-4 border-gray-300"
+              onClick={onEditDepartmentClicked}
             >
-              <Link
-                href={`/${locale}/company/departments/${department.id}/edit`}
-              >
-                <Edit2 size={10} />
-              </Link>
+              <Edit2 size={10} />
             </Button>
             <Button
               variant="outline"

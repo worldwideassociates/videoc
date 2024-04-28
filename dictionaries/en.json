@@ -187,6 +187,12 @@
       }
     }
   },
+  "partners": {
+    "nav": {
+      "customers": "Customers",
+      "collaborators": "Collaborators"
+    }
+  },
   "customers": {
     "header": {
       "title": "Customer Information",
@@ -497,7 +503,10 @@
       "confirmButton": "Yes, cancel"
     },
     "formModal": {
-      "title": "New Department"
+      "title": {
+        "create": "New Department",
+        "edit": "Edit Department"
+      }
     },
     "form": {
       "header": {
@@ -513,11 +522,22 @@
         "subTitle": "Update department details",
         "button": "Update department"
       },
+      "toast": {
+        "success": "Department created.",
+        "error": "an error occured",
+        "deleted": "Department deleted.",
+        "created": "created.",
+        "updated": "updated"
+      },
       "fields": {
         "name": {
           "label": "Name",
           "placeholder": "Department name",
-          "helpText": "department names must be unique"
+          "helpText": "department names must be unique",
+          "errors": {
+            "required": "Name is required (minuimum of 3 characters).",
+            "min": "minuimum of 3 characters"
+          }
         },
         "email": {
           "label": "Department Email",
@@ -529,14 +549,18 @@
         },
         "manager": {
           "label": "Manager",
-          "placeholder": "Select manager"
+          "placeholder": "Select manager",
+          "errors": {
+            "required": "Manager is required"
+          }
         },
         "members": {
           "label": "Members",
           "placeholder": "Select members",
           "helpText": "If you cant find the user you are looking for, make sure they are not already a member of another department",
           "errors": {
-            "notFound": "No employees found."
+            "notFound": "No employees found.",
+            "min": "Select at least one member"
           }
         }
       },
@@ -677,6 +701,7 @@
     "customers": "Customers",
     "collaborators": "Collaborators",
     "companyProfile": "Company",
+    "partners": "Partners",
     "history": "History"
   }
 }

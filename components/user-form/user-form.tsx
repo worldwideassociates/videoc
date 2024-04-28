@@ -129,7 +129,7 @@ const UserForm: React.FC<Props> = ({
           title: "Success",
           description: result.message,
         });
-        router.push(`/${locale}/customers`);
+        router.push(`/${locale}/partners/customers`);
       } else {
         toast({
           title: "Oops",
