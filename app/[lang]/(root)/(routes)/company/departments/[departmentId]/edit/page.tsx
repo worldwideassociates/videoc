@@ -23,22 +23,10 @@ const page: FC<pageProps> = async ({ params }) => {
     },
   });
 
-  const manager = department?.managerId
-    ? await prismadb.user.findFirst({
-        where: {
-          id: department?.managerId!,
-        },
-      })
-    : null;
   return (
     <div className="max-w-2xl mt--5">
       <Heading title={t.form.create.title} />
-      <DepartmentForm
-        usersOptions={users}
-        department={department}
-        manager={manager}
-        t={t}
-      />
+      <DepartmentForm usersOptions={users} department={department!} t={t} />
     </div>
   );
 };
