@@ -47,7 +47,7 @@ export const MeetingInviteEmail = ({
         >
           <Container style={{ display: "absolute", inset: 0 }}>
             <Img
-              src="https://videoconf.b-cdn.net/assets/email-bg.png"
+              src={`${process.env.BUNNY_CDN_BASE_URL}/assets/logo.jpeg`}
               style={{
                 width: "100%",
                 height: "100%",
@@ -98,25 +98,12 @@ export const MeetingInviteEmail = ({
             </Link>
           </Text>
           <Hr style={hr} />
-          <Section
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Section>
-              <Text style={{ textAlign: "center" }}>Powered by</Text>
-              <Img
-                src="https://videoConf.b-cdn.net/assets/logo.png"
-                style={{
-                  width: "200px",
-                  height: "auto",
-                  objectFit: "cover",
-                }}
-              />
-            </Section>
-          </Section>
+          <Text style={paragraph}>
+            Best,
+            <br />- WWA Team
+          </Text>
+          <Hr style={hr} />
+          <Text style={footer}>World Wide Associates Inc.</Text>
         </Container>
       </Body>
     </Html>
@@ -210,4 +197,10 @@ const code = {
   fontSize: "21px",
   borderRadius: "4px",
   color: "#3c4149",
+};
+
+const footer = {
+  color: "#8898aa",
+  fontSize: "12px",
+  marginLeft: "4px",
 };

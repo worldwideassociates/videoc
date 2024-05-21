@@ -28,9 +28,8 @@ export const MagicLinkEmail = ({ magicLink, t }: MagicLinkEmailProps) => (
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={`${baseUrl}/assets/logo.png`}
-          width={48}
-          height={48}
+          src={`${process.env.BUNNY_CDN_BASE_URL}/assets/logo.jpeg`}
+          width={400}
           alt="MbMVio"
         />
         <Heading style={heading}>🪄 {t.magicLink.subject}</Heading>
@@ -47,16 +46,6 @@ export const MagicLinkEmail = ({ magicLink, t }: MagicLinkEmailProps) => (
           <br />- WWA Team
         </Text>
         <Hr style={hr} />
-        <Img
-          src={`${baseUrl}/assets/logo.png`}
-          width={32}
-          height={32}
-          style={{
-            WebkitFilter: "grayscale(100%)",
-            filter: "grayscale(100%)",
-            margin: "20px 0",
-          }}
-        />
         <Text style={footer}>World Wide Associates Inc.</Text>
       </Container>
     </Body>

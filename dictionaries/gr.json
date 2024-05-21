@@ -26,7 +26,8 @@
           "description": "στάλθηκε ένας σύνδεσμος σύνδεσης στο ηλεκτρονικό ταχυδρομeίο σας"
         }
       }
-    }
+    },
+    "emailSubject": "Εγγραφή στο My Video Conference"
   },
   "dashboard": {
     "title": "Πίνακας Ελέγχου",
@@ -79,8 +80,8 @@
     "sidenav": {
       "upcoming": "Επερχόμενες",
       "previous": "Προηγούμενες",
-      "home": "Home",
-      "recordings": "Recordingss"
+      "home": "Αρχική",
+      "recordings": "Βινεοσκοπήσεις"
     },
     "form": {
       "update": {
@@ -155,6 +156,7 @@
         "selectFilterColumn": "Επιλέξτε στήλη ταξινόμισης",
         "nextPage": "Επόμενο",
         "previousPage": "Προηγούμενο",
+        "noResults": "Δεν βρέθηκαν αποτελέσματα",
         "actions": {
           "title": "Ενέργειες",
           "edit": "Τροποποίηση",
@@ -283,6 +285,7 @@
       "search": "Φιλτρο με",
       "nextPage": "Επόμενο",
       "previousPage": "Προηγούμενο",
+      "noResults": "Δεν βρέθηκαν αποτελέσματα",
       "actions": {
         "title": "Ενέργειες",
         "edit": "Τροποποίηση",
@@ -378,6 +381,7 @@
       "selectFilterColumn": "Επιλέξτε στήλη ταξινόμισης",
       "nextPage": "Επόμενο",
       "previousPage": "Προηγούμενο",
+      "noResults": "Δεν βρέθηκαν αποτελέσματα",
       "actions": {
         "title": "Ενέργειες",
         "edit": "Τροποποίηση",
@@ -654,6 +658,7 @@
       "selectFilterColumn": "Επιλέξτε στήλη ταξινόμισης",
       "nextPage": "Επόμενο",
       "previousPage": "Προηγούμενο",
+      "noResults": "Δεν βρέθηκαν αποτελέσματα",
       "actions": {
         "title": "Ενέργειες",
         "edit": "Τροποποίηση",
@@ -700,7 +705,7 @@
     "customers": "Πελάτες",
     "collaborators": "Συνεργατες",
     "companyProfile": "Εταιρία",
-    "partners": "Partners",
+    "partners": "Συνεργάτες",
     "history": "Ιστορικό"
   }
 }

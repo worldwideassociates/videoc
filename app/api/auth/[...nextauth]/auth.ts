@@ -1,11 +1,11 @@
-import NextAuth, { Session } from 'next-auth';
-import EmailProvider from 'next-auth/providers/email';
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import prismadb from '@/lib/prismadb';
-import MagicLinkEmail from '@/emails/magic-link-email';
-import nodemailer from 'nodemailer';
-import { getDictionary } from '@/lib/dictionary';
-import { Locale } from '@/i18n.config';
+import NextAuth, { Session } from "next-auth";
+import EmailProvider from "next-auth/providers/email";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import prismadb from "@/lib/prismadb";
+import MagicLinkEmail from "@/emails/magic-link-email";
+import nodemailer from "nodemailer";
+import { getDictionary } from "@/lib/dictionary";
+import { Locale } from "@/i18n.config";
 
 export const {
   handlers: { GET, POST },
@@ -22,10 +22,7 @@ export const {
         },
       },
       async sendVerificationRequest(params) {
-
-
-        const { identifier, url, provider, theme } = params
-        const { host } = new URL(url)
+        const { identifier, url } = params;
 
         // Check if the user exists in the database
         const user = await prismadb.user.findUnique({
@@ -34,44 +31,55 @@ export const {
 
         if (!user) {
           // User does not exist, prevent sending the email
-          console.log(`No user found with email ${identifier}, not sending verification email.`);
+          console.log(
+            `No user found with email ${identifier}, not sending verification email.`
+          );
           return;
         }
 
+        const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale;
 
-        const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale
+        const { auth: t } = (await getDictionary(locale)) as any;
 
-        const { auth: t } = await getDictionary(locale) as any
+        const emailContent = MagicLinkEmail({ url, t: t.signInForm });
 
+        const payload = {
+          api_key: process.env.SMTP_2GO_API_KEY,
+          to: [`<${identifier}>`],
+          sender: `My Video Conference <${process.env.SMTP_2GO_SENDER}>`,
+          subject: t.emailSubject,
+          html_body: emailContent,
+          custom_headers: [
+            {
+              header: "Reply-To",
+              value: "Actual Person <info@my-video.gr>",
+            },
+          ],
+        };
 
-        const emailContent = MagicLinkEmail({ url, t: t.signInForm })
-
-        const transport = nodemailer.createTransport(provider.server)
-        const result = await transport.sendMail({
-          to: identifier,
-          from: provider.from,
-          subject: `Sign in to ${host}`,
-          html: emailContent,
-        })
-        const failed = result.rejected.concat(result.pending).filter(Boolean)
-        if (failed.length) {
-          throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`)
-        }
+        const response = await fetch(process.env.SMTP_2GO_URL!, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        console.log(response);
       },
     }),
   ],
   callbacks: {
     async session({ session, user }: any) {
-      session.user.role = user.role
-      session.user.id = user.id
-      session.user.name = user.name
-      return session
-    }
+      session.user.role = user.role;
+      session.user.id = user.id;
+      session.user.name = user.name;
+      return session;
+    },
     // Other callbacks
   },
   adapter: PrismaAdapter(prismadb),
   pages: {
-    signIn: '/sign-in',
-    signOut: '/sign-in',
+    signIn: "/sign-in",
+    signOut: "/sign-out",
   },
 });

@@ -13,15 +13,15 @@ import { deleteUser } from "@/actions/users";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LocaleContext, LocaleProvider } from "@/providers/locale-provider";
+import { Locale } from "@/i18n.config";
 
 interface Props {
   data: CollaboratorColumn[];
   t: Record<string, any>;
+  locale: Locale;
 }
 
-export const CollaboratorClient: React.FC<Props> = ({ data, t }) => {
-  const { locale } = use(LocaleContext);
-
+export const CollaboratorClient: React.FC<Props> = ({ data, t, locale }) => {
   const [deleting, setDeleting] = useState(false);
 
   const { toast } = useToast();

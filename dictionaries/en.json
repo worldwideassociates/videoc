@@ -26,7 +26,8 @@
           "description": "a sign in link was sent to your mail box"
         }
       }
-    }
+    },
+    "emailSubject": "Signing into My Video Conference"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -156,6 +157,7 @@
         "selectFilterColumn": "Select filter column",
         "nextPage": "Next",
         "previousPage": "Previous",
+        "noResults": "No results",
         "actions": {
           "title": "Actions",
           "edit": "Edit",
@@ -285,6 +287,7 @@
       "selectFilterColumn": "Select filter column",
       "nextPage": "Next",
       "previousPage": "Previous",
+      "noResults": "No results",
       "actions": {
         "title": "Actions",
         "edit": "Edit",
@@ -380,6 +383,7 @@
       "selectFilterColumn": "Select filter column",
       "nextPage": "Next",
       "previousPage": "Previous",
+      "noResults": "No results",
       "actions": {
         "title": "Actions",
         "edit": "Edit",
@@ -657,6 +661,7 @@
       "selectFilterColumn": "Select filter column",
       "nextPage": "Next",
       "previousPage": "Previous",
+      "noResults": "No results",
       "actions": {
         "title": "Actions",
         "edit": "Edit",

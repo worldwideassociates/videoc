@@ -160,7 +160,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t.table.noResults}
                 </TableCell>
               </TableRow>
             )}
