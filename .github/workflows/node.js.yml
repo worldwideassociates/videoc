@@ -49,6 +49,12 @@ jobs:
 
       BUNNY_API_KEY: ${{secrets.BUNNY_API_KEY}}
 
+      SMTP_2GO_API_KEY: ${{secrets.SMTP_2GO_API_KEY}}
+      SMTP_2GO_URL: ${{secrets.SMTP_2GO_URL}}
+      SMTP_2GO_SENDER: ${{secrets.SMTP_2GO_SENDER}}
+
+      BUNNY_CDN_BASE_URL: ${{secrets.BUNNY_CDN_BASE_URL}}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
