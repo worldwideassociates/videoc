@@ -8,7 +8,7 @@ export const sendInvites = async (
   participantMeetings: { meeting: Meeting; participant: User; token: string }[],
   message: string
 ) => {
-  console.log("-----------------------------------------------------------");
+  console.log("-------------------------------------------------------------");
   console.log("sending invites to participants", participantMeetings.length);
 
   const locale = (process.env.DEFAULT_LOCALE ?? "en") as Locale;
