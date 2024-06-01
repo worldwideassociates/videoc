@@ -45,7 +45,7 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
           key={route.href(locale)}
           href={route.href(locale)}
           className={cn(
-            "text-sm font-medium transition-colors hover:text-primary",
+            "text-lg font-medium transition-colors hover:text-primary",
             route.active
               ? "text-black dark:text-white"
               : "text-muted-foreground"
@@ -60,7 +60,7 @@ export const MainNav: React.FC<React.HTMLAttributes<HTMLElement>> = ({
             key={route.href(locale)}
             href={route.href(locale)}
             className={cn(
-              "text-sm font-medium transition-colors hover:text-primary",
+              "text-lg font-medium transition-colors hover:text-primary",
               route.active
                 ? "text-black dark:text-white"
                 : "text-muted-foreground"

@@ -37,6 +37,7 @@ import {
 import { CheckIcon } from "lucide-react";
 import { UploadButton } from "@/lib/utils/uploadthing";
 import { LocaleContext } from "@/providers/locale-provider";
+import { CustomAvatar } from "../custom-avatar";
 
 const currentYear = new Date().getFullYear();
 
@@ -361,9 +362,13 @@ const UserForm: React.FC<Props> = ({
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-meduim">
-                    {role == Role.EMPLOYEE ? "Profile Image" : "Logo"}
-                  </FormLabel>
+                  <CustomAvatar
+                    className="w-[50px] h-[50px]"
+                    image={field.value}
+                    initials={""}
+                  />
+
+                  <FormLabel className="text-meduim">Profile Image</FormLabel>
                   <FormControl>
                     <div className="flex w-full max-w-sm items-center space-x-2">
                       <UploadButton
@@ -390,8 +395,8 @@ const UserForm: React.FC<Props> = ({
                         appearance={{
                           button: {
                             background: "transparent",
-                            border: "2px solid black",
-                            color: "black",
+                            border: "2px solid #64748b",
+                            color: "#64748b",
                           },
                         }}
                       />

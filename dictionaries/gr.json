@@ -461,14 +461,14 @@
           "placeholder": "Χώρα Εταιρίας"
         },
         "websiteUrl": {
-          "label": "Website URL",
+          "label": "Url ιστότοπου",
           "placeholder": "https://www.example.com",
-          "helpText": "Company website URL"
+          "helpText": "Url ιστότοπου εταιρείας"
         },
         "accountingEmail": {
-          "label": "Accounting Email",
-          "placeholder": "accounting email",
-          "helpText": "Email for accounting department"
+          "label": "Λογιστικό Email",
+          "placeholder": "Λογιστικό Email",
+          "helpText": "Email για το τμήμα λογιστηρίου"
         },
         "generalEmail": {
           "label": "Email",
@@ -485,7 +485,7 @@
         },
         "companyLogo": {
           "label": "Λογότυπο",
-          "placeholder": "Λόγότυπο Εταιρίας"
+          "placeholder": "μεταφόρτωση"
         }
       },
       "buttons": {

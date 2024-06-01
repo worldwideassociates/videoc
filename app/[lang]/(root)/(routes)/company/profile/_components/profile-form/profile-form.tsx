@@ -23,6 +23,8 @@ import { toast } from "@/components/ui/use-toast";
 import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
 import { useAdmin } from "@/hooks/use-admin";
+import { CustomAvatar } from "@/components/custom-avatar";
+import { UploadButton } from "@/lib/utils/uploadthing";
 
 const formSchema = z.object({
   name: z.string().optional(),
@@ -362,20 +364,58 @@ const ProfileForm: React.FC<Props> = ({ company, t }) => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="companyLogo"
               render={({ field }) => (
                 <FormItem>
+                  <CustomAvatar
+                    className="w-[50px] h-[50px]"
+                    image={field.value}
+                    initials={""}
+                  />
+
                   <FormLabel className="text-meduim">
                     {t.form.fields.companyLogo.label}
                   </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={t.form.fields.companyLogo.placeholder}
-                      {...field}
-                    />
-                  </FormControl>
+                  {isEditMode ? (
+                    <FormControl>
+                      <div className="flex w-full max-w-sm items-center space-x-2">
+                        <UploadButton
+                          endpoint="imageUploader"
+                          onClientUploadComplete={(res) => {
+                            field.onChange(res[0].url);
+                          }}
+                          onBeforeUploadBegin={(files: any) => {
+                            return files;
+                          }}
+                          onUploadError={(error: Error) => {
+                            alert(`ERROR! ${error.message}`);
+                          }}
+                          content={{
+                            button({ ready }: any) {
+                              if (ready)
+                                return (
+                                  <div>
+                                    {t.form.fields.companyLogo.placeholder}
+                                  </div>
+                                );
+                              return "Getting ready...";
+                            },
+                          }}
+                          appearance={{
+                            button: {
+                              background: "transparent",
+                              border: "2px solid #64748b",
+                              color: "#64748b",
+                            },
+                          }}
+                        />
+                        <p className="text-xs text-gray-600">{field.value}</p>
+                      </div>
+                    </FormControl>
+                  ) : null}
                   <FormMessage />
                 </FormItem>
               )}
