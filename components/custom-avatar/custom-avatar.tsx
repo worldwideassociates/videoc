@@ -14,6 +14,15 @@ const CustomAvatar: React.FC<Props> = ({
   initials,
   ...props
 }) => {
+  const placeholder = `${process.env.NEXT_PUBLIC_BUNNY_CDN_BASE_URL}/assets/profile-placeholder.png`;
+
+  //set an image placeholder if the is no image and there is not initials
+  image = image
+    ? image
+    : initials.trim().length === 0
+      ? placeholder
+      : undefined;
+
   return (
     <div className="relative mb-2">
       <Avatar className="w-[50px] h-[50px]" {...props}>

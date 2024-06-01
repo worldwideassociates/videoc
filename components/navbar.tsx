@@ -48,20 +48,20 @@ export const Navbar = ({ t }: { t: any }) => {
   return (
     <LocaleProvider dictionary={t}>
       <div className="border-b pl-16">
-        <div className="flex h-16 items-center px-4">
+        <div className="flex h-20 px-4 items-center">
           <MainNav />
-          <div className="ml-auto flex space-x-3">
+          <div className="ml-auto flex items-center space-x-3">
             <LocaleSwitcher />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="link" className="px-0 mr-2">
+                <span className="px-0 mr-2">
                   <CustomAvatar
                     className="w-[50px] h-[50px]"
                     image={session?.user?.image || ""}
                     isOnline={true}
                     initials={initials}
                   />
-                </Button>
+                </span>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 mr-10">
                 <DropdownMenuGroup>

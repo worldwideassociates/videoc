@@ -1,6 +1,21 @@
 version: "3.3"
 
 services:
+  videoc:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    working_dir: /home/node/app/
+    command: sh -c "pnpm install && pnpm dev"
+    depends_on:
+      - mysql
+    env_file:
+      - .env 
   mysql:
     image: mysql:latest
     ports:
@@ -18,3 +33,4 @@ services:
 
 volumes:
   mysql_data:
+  node_modules:
