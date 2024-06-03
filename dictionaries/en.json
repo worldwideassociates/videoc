@@ -602,7 +602,7 @@
         },
         "email": {
           "label": "Email",
-          "placeholder": "Employee name"
+          "placeholder": "Employee email"
         },
         "position": {
           "label": "Position",
@@ -610,7 +610,8 @@
         },
         "department": {
           "label": "Department",
-          "placeholder": "Select a department"
+          "placeholder": "Select a department",
+          "helpText": "Note: navigate to the departments to departments page to add the you to a department"
         },
         "vatNumber": {
           "label": "VAT Number",
@@ -648,6 +649,10 @@
         "country": {
           "label": "Country",
           "placeholder": "Employee country"
+        },
+        "isAdmin": {
+          "label": "Admin",
+          "helpText": "Admins have permissions to modify records"
         }
       },
       "buttons": {

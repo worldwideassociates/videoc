@@ -14,7 +14,7 @@ const EmployeePage: React.FC<Props> = async ({ params }) => {
 
   const employees = await prismadb.user.findMany({
     where: {
-      role: Role.EMPLOYEE,
+      OR: [{ role: Role.ADMIN }, { role: Role.EMPLOYEE }],
     },
     include: {
       department: true,

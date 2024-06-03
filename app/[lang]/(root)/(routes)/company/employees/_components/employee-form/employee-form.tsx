@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,6 +31,7 @@ import { CalendarDate, toCalendarDate } from "@internationalized/date";
 import { createCalendarDate } from "@/lib/utils";
 import { DatePicker } from "@/components/ui/date-picker";
 import { LocaleContext } from "@/providers/locale-provider";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Props {
   employee?: User | null;
@@ -48,6 +50,7 @@ const formSchema = z.object({
   position: z.string().optional(),
   image: z.string().optional(),
   dateOfBirth: z.date().optional(),
+  isAdmin: z.boolean().default(false),
 });
 
 const EmployeeForm: React.FC<Props> = ({
@@ -66,7 +69,7 @@ const EmployeeForm: React.FC<Props> = ({
     resolver: zodResolver(formSchema),
     // TODO: fix types error
     defaultValues: employee
-      ? (employee as any)
+      ? ({ ...employee, isAdmin: employee.role == Role.ADMIN } as any)
       : {
           name: "",
           email: "",
@@ -75,6 +78,7 @@ const EmployeeForm: React.FC<Props> = ({
           position: "",
           dateOfBirth: undefined,
           image: "",
+          isAdmin: false,
         },
   });
 
@@ -85,8 +89,12 @@ const EmployeeForm: React.FC<Props> = ({
         ...employee,
         ...values,
         dateOfBirth: values.dateOfBirth ?? undefined,
-        role: Role.EMPLOYEE,
+        role: values.isAdmin ? Role.ADMIN : Role.EMPLOYEE,
       } as any;
+
+      //Hack
+      delete payload.departmentId;
+      delete payload.isAdmin;
 
       const result = await upsert(payload);
 
@@ -184,36 +192,43 @@ const EmployeeForm: React.FC<Props> = ({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="departmentId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t.form.fields.department.label}</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  disabled={loading || readonly}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={t.form.fields.department.placeholder}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {departmentsOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {/* Only for display we can not edit department from this form */}
+          {employee ? (
+            <FormField
+              disabled={true}
+              control={form.control}
+              name="departmentId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t.form.fields.department.label}</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={true}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={t.form.fields.department.placeholder}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {departmentsOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                  <FormDescription>
+                    {t.form.fields.department.helpText}
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+          ) : null}
           <FormField
             control={form.control}
             name="dateOfBirth"
@@ -226,6 +241,27 @@ const EmployeeForm: React.FC<Props> = ({
                   placeholder={t.form.fields.dateOfBirth.placeholder}
                 />
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="isAdmin"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>{t.form.fields.isAdmin.label}</FormLabel>
+                  <FormDescription>
+                    {t.form.fields.isAdmin.helpText}
+                  </FormDescription>
+                </div>
               </FormItem>
             )}
           />
