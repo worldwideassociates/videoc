@@ -26,8 +26,9 @@ COPY pnpm-lock.yaml ./
 COPY package*.json ./
 
 RUN pnpm install --production
-COPY --from=builder /home/node/app/dist ./dist
+COPY --from=builder /home/node/app/.next ./.next
+COPY --from=builder /home/node/app/public ./public
 
 EXPOSE 3000
 
-CMD ["node", "dist/server.js"]
+CMD ["npx", "next", "start"]
