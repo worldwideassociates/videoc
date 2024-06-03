@@ -28,6 +28,7 @@ COPY package*.json ./
 RUN pnpm install --production
 COPY --from=builder /home/node/app/.next ./.next
 COPY --from=builder /home/node/app/public ./public
+COPY --from=builder /home/node/app/prisma ./prisma
 
 RUN npx prisma generate
 
