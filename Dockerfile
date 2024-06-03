@@ -29,6 +29,8 @@ RUN pnpm install --production
 COPY --from=builder /home/node/app/.next ./.next
 COPY --from=builder /home/node/app/public ./public
 
+RUN npx prisma generate
+
 EXPOSE 3000
 
 CMD ["npx", "next", "start"]
